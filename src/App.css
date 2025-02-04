@@ -712,7 +712,7 @@ div#countryProfile div.extraOptions {
   text-align: center;
 }
 
-div#countryProfile div.extraOptions > button {
+div#countryProfile div.extraOptions div#btns button {
   display: inline-block;
   padding: 1.5%;
   border-radius: 30% 5%;

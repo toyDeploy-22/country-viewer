@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import ModalDeletion from './ModalDeletion.jsx';
 import NoImage from '../screenshot/no-image.512x512.png';
@@ -28,8 +31,11 @@ return(
         <h1>Discover {cnt.country.country_name} <span>{cnt.country.country_flag ? <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.country_flag} alt={!hasSource ? 'No Flag' : cnt.country.country_name} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span></h1>
         <br />
         <div className="extraOptions">
+        <div className="goBack_logo"><Link to="/"><FontAwesomeIcon icon={faArrowLeftLong} size="lg" style={{color: "#63E6BE",}} /></Link>{' '}<span style={{ color: '#63E6BE', fontWeight: '700', fontFamily: 'Courier New, Courier, monospace' }}>Go Back</span></div><br />
+        <div id="btns">
 <Button className="edit-btn" onClick={ () => setClickEdit(true) }>Edit Country</Button>
     <ModalDeletion cnt={cnt} />
+    </div>
   </div>
   <br />
   <div className="countryContainer p-2">
