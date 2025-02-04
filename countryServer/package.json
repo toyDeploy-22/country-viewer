@@ -1,0 +1,20 @@
+{
+  "name": "countryserver",
+  "version": "1.0.0",
+  "description": "list of countries stored in mySQL database",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"dev": "node -r dotenv/config ./app.js",
+	"start" : "node -r dotenv/config ./app.js"	
+  },
+  "keywords": ["country", "countries", "continent", "SQL", "mysql", "database", "RDBMS"],
+  "author": "eelismey-jf",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.2"
+  }
+}

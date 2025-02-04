@@ -1,0 +1,1443 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+/* ToggleBtn 
+
+.container {
+text-align: center;
+}
+
+.toggle-switch {
+position: relative;
+width: 75px;
+display: inline-block;
+text-align: left;
+top: 8px;
+}
+
+.checkbox {
+display: none;
+}
+
+.label {
+display: block;
+overflow: hidden;
+cursor: pointer;
+border: 0 solid #bbb;
+border-radius: 20px;
+}
+
+.inner {
+display: block;
+width: 200%;
+margin-left: -100%;
+transition: margin 0.3s ease-in 0s;
+}
+
+.inner:before,
+
+.inner:after {
+
+float: left;
+width: 50%;
+height: 36px;
+padding: 0;
+line-height: 36px;
+color: #fff;
+font-weight: bold;
+box-sizing: border-box;
+}
+
+.inner:before {
+
+content: "YES";
+padding-left: 10px;
+background-color: #060;
+color: #fff;
+}
+
+.inner:after {
+content: "NO";
+padding-right: 10px;
+background-color: #bbb;
+color: #fff;
+text-align: right;
+}
+
+.switch {
+display: block;
+width: 24px;
+margin: 5px;
+background: #fff;
+position: absolute;
+top: 0;
+bottom: 0;
+right: 40px;
+border: 0 solid #bbb;
+border-radius: 20px;
+transition: all 0.3s ease-in 0s;
+}
+
+.checkbox:checked + .label .inner {
+margin-left: 0;
+}
+
+.checkbox:checked + .label .switch {
+right: 0px;
+}
+*/
+
+/* Components */
+
+/* 
+#mainNavbar {}
+*/
+
+nav#menu {
+    background: linear-gradient(46deg, #01dca0, #ea270f);
+    font-family: 'Roboto', sans-serif;
+  font-size: 1.15em;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+    font-weight: 600;
+    box-sizing: border-box;
+    perspective: 154px;
+    letter-spacing: 0.5px;
+    min-height: 3.25em;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.home-link {
+  font-size: 1.55em;
+  text-decoration: underline;
+}
+
+.menu-item .menu-link {
+    color: white;
+    text-decoration: none;
+    text-shadow: 1px 1px black;
+    transition: color 0.1s ease-out;
+    text-align: center;
+}
+
+nav .menu-text a:hover {
+  font-size: 0.9em;
+  font-weight: 800;
+  text-shadow: none;
+  transition: color 0.2s ease-in;
+
+    /* color: rgba(255,255,255,0.5);*/
+}
+
+
+/* AllCountriesList */
+section#CountriesList-Section {
+  background-image: url('./background/countriesBackground-1.png'); 
+  /*url('./background/countriesBackground-2.png'), url('./background/countriesBackground-3.png');*/
+  background-size: 40%;
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+section#CountriesList-Section > div.borderStyle {
+  width: 90%;
+  background-color: rgba(245, 245, 245, 0.646);
+  padding: 5px;
+}
+
+div.borderStyle > div.allCountriesList-Container {
+ width: 90%;
+ background-color: ghostwhite;
+ border: thin solid #122125;
+ margin: 0 auto;
+ padding: 10px;
+}
+
+div.allCountriesList-Container > h2.title {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: xx-large;
+  text-align: center;
+  letter-spacing: 2px;
+  color: darkblue;
+  text-shadow: teal 1px 1px;
+}
+
+div.allCountriesList-Container > div.countryLists-uls-container {
+  display: flex;
+  justify-content: center;
+}
+
+/*
+div.countryLists-uls-container ul.countryList-1, ul.countryList-2 {
+
+}
+*/
+
+ul li.countryLetter {
+  font-family: Georgia, 'Times New Roman', Times, serif
+  
+}
+
+li.countryLetter-child, li.not-found {
+  list-style-type: none;
+}
+
+ul.countryList-1 li:not(li.countryLetter), ul.countryList-2 li:not(li.countryLetter) {
+  text-indent: 10px;
+}
+
+/* addCountry */
+section#addCountries {
+  background-image: url('./background/countriesBackground-1.png'); 
+  /*url('./background/countriesBackground-2.png'), url('./background/countriesBackground-3.png');*/
+  background-size: 40%;
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+section#addCountries > div.paddingAxe {
+  width: 90%;
+  background-color: rgba(245, 245, 245, 0.646);
+  padding: 5px;
+}
+
+section#addCountries div.paddingAxe > form#addCountryForm {
+ width: 90%;
+ background-color: ghostwhite;
+ border: thin solid #122125;
+ margin: 0 auto;
+ padding: 10px;
+ text-align: center;
+}
+
+form#addCountryForm > h2#addCountry-title {
+  text-shadow: 1px 2px violet;
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+
+form#addCountryForm .labelForm {
+  margin-right: 10%;
+  font-family: math, monospace, serif;
+  font-size: 1.275em;
+  font-weight: 600;
+  color: dimgray;
+  text-shadow: .25px .25px #111111;
+}
+
+form#addCountryForm div.form-row {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+form#addCountryForm div.hasFlag-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 10%;
+}
+
+div.form-row p.requiredField {
+  font-size: .8em;
+  font-style: italic;
+}
+
+p.requiredField + input {
+  width: 60%;
+  height: 2em;
+}
+
+p#hasFlag-title {
+  font-family: Tahoma, Verdana, Geneva, sans-serif;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+}
+
+.hasFlag-no-badge {
+  background-color: lightgray;
+}
+
+.hasFlag-yes-badge{
+  background-color: lightblue;
+}
+
+.hasFlag-form > .hasFlag-no, .hasFlag-form > .hasFlag-yes {
+  font-family: emoji, Arial, Helvetica, sans-serif;
+  font-size: 1.25em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/*mainCountries*/
+div.countryContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+div.countryContainer > section#mainCountries {
+  flex-grow: 2;
+  background-image: url('./background/countriesBackground-1.png'); 
+  /*url('./background/countriesBackground-2.png'), url('./background/countriesBackground-3.png');*/
+  background-size: 40%;
+  background-repeat: repeat;
+  /* filter: saturate(80%) opacity(85%) contrast(105%); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+section#mainCountries > h3.mainCountries-title {
+  background-color: aliceblue;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 2px 1px 2px;
+  letter-spacing: 7px;
+  font-weight: 800;
+  margin-top: 2px;
+  padding: 3px 11px;
+  border-radius: 10px;
+}
+
+div#allCountries {
+  width: 85%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 7px;
+  margin-bottom: 5px;
+}
+
+div#allCountries div.countryContainer-block {
+background-color: aliceblue;
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+div#allCountries div.countryContainer-block > img {
+  width: 60%;
+  height: 60%;
+  border: solid 1px #111111;
+}
+
+div#decription-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10%;
+}
+/*
+div#allCountries div.countryContainer-block > p.countryContainer-name {
+  text-align: center;
+}
+*/
+
+div#allCountries div.countryContainer-block img + button {
+  font-size: .9em;
+  letter-spacing: 1.5px;
+}
+
+div.countryContainer > section#extraCountries {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section#extraCountries div#questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  margin: 2px 5px;
+  margin-top: 5px;
+  padding: 3px;
+}
+
+div#questionContainer > h5 {
+  text-align: center;
+  margin-top: 2px;
+  padding: 3px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+div#questionContainer h5#play-h5 {
+background-color: #111111;
+padding: 3px 8px;
+border-radius: 0 10px;
+color: whitesmoke;
+margin-bottom: .05rem;
+}
+
+div#questionContainer div.extraCountries-block {
+  height: 1.5em;
+}
+
+div#questionContainer > img {
+  width: 75%;
+  border: outset 1px #13232f;
+  margin-bottom: 5px;
+}
+
+div#questionContainer img + ol[type="A"] {
+display: grid;
+grid-template-columns: repeat(2, 2fr);
+grid-gap: 4px;
+padding: 0;
+}
+
+div#questionContainer ol[type="A"] > button {
+  font-size: .9em;
+  font-family: cursive, serif;
+}
+
+div#answerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+div#answerContainer + button {
+  width: 90%;
+  border-radius: 10px;
+  border: solid .5px green;
+}
+
+div#answerContainer + button:hover {
+  background-color: #317f31;
+  font-family: cursive, serif;
+  color: whitesmoke;
+  transition: all .15s ease-in-out;
+  border: none;
+}
+
+div#answerContainer > div#correctAnswer {
+  color: #114411;
+  text-shadow: yellowgreen .5px .5px 1px;
+}
+
+div#answerContainer > div#incorrectAnswer {
+  color: rgb(108, 106, 106);
+  text-shadow: rgb(84, 84, 84) .5px .5px 1px;
+}
+
+
+/*searchCountries-title*/
+
+div.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.25em;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div#searchCountries {
+  font-family: Tahoma, Geneva, 'Segoe UI', Verdana, sans-serif;
+  background-image: url('./background/countriesBackground-1.png');
+  background-size: 40%;
+  background-repeat: repeat, repeat, repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+section#searchNameContainer {
+  /*
+  background-image: url(../images/Search_001.png);
+  background-size: cover;
+  background-repeat: initial;
+  background-position: center center;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: initial;
+  filter: saturate(80%) opacity(85%) contrast(105%);
+  */
+
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+section#searchNameContainer > form {
+  width: 100%; 
+  background-color: #FFFFFF; 
+  padding: 2%;
+}
+
+section#searchNameContainer form > fieldset {
+  border: none;
+}
+
+section#searchNameContainer form fieldset legend > h2 {
+  text-shadow: 1px 1px rgb(107, 107, 171);
+  text-align: center;
+  color: darkblue;
+}
+
+section#searchNameContainer form p.indication-letters {
+  font-size: .78em;
+  font-style: italic;
+  text-align: center;
+  margin: auto;
+}
+
+div.countriesList div#countryList-container img + p {
+  font-family: fantasy, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+div.countriesList div#countryList-container img + p:hover {
+  color: #545454;
+  font-size: 1.1em;
+  transition:  0.25s ease-in-out 0.15s;
+}
+
+div#search-and-btn {
+  text-align: center;
+}
+
+div#search-and-btn input#searchByName {
+display: block;
+margin: 0 auto;
+width: 90%;
+font-family: verdana;
+padding: 2% 3%;
+}
+
+div#search-and-btn button {
+  color: whitesmoke;
+  background-color: #1b4896;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+div#search-and-btn button:hover {
+font-weight: bold;
+background-color: #4c9fb1;
+border-radius: 3.5px;
+transition: all .15s ease-out /*,color .15s ease-out*/;
+}
+
+ div#countriesFound div.countriesList h3.countries-results-nb > span {
+  font-weight: 700;
+  color: rgb(127, 14, 127);
+ }
+
+section.resultSection div.countriesResultsInit {
+  background-color: azure;
+  font-family: monospace;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+ section.resultSection {
+  width: 100%;
+/* padding set with Bootstrap*/
+}
+
+section.resultSection div#countriesFound {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgb(214, 205, 205)
+}
+
+div#countriesFound div.countriesList, div.countryNotFound > div.errorContainer-notFound {
+  flex-basis: 70%;
+  text-align: center;
+}
+
+
+/* 'SUGGESTION' class */
+
+div#countriesFound div.country-suggestion, div.countryNotFound div.country-suggestion {
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div#countriesFound div.country-suggestion, div.countryNotFound div.country-suggestion > h6 {
+  font-weight: 700;
+}
+
+div#countriesFound div.country-suggestion figure, div.countryNotFound div.country-suggestion figure {
+  background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
+  border: outset rgb(141, 139, 139) 2px;
+  text-align: center;
+  width: 60%;
+  padding-top: 2px;
+  width: 50%;
+}
+
+div#countriesFound div.country-suggestion figure .countryFound-link > img, div.countryNotFound div.country-suggestion figure .countryFound-link > img {
+  width: 50%;
+}
+
+div#countriesFound div.country-suggestion figcaption > button {
+
+  color: rgb(245, 245, 245);
+}
+
+div#countriesFound div.country-suggestion .countryFound-link {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+
+div#countriesFound div.country-suggestion figure:hover {
+  background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
+  transition: all 0.2s linear;
+}
+
+div.countryNotFound div.country-suggestion figure:hover {
+  background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
+  transition: all 0.2s linear;
+}
+
+div#countriesFound div.country-suggestion figure .countryFound-link > img:hover {
+  border: thin sandybrown solid;
+  transition: all 0.2s ease-in;
+}
+
+div.countryNotFound div.country-suggestion figure .countryFound-link > img:hover {
+  border: thin sandybrown solid;
+  transition: all 0.2s ease-in;
+}
+
+div#countriesFound div.country-suggestion .countryFound-link figcaption > button:hover {
+  color: rgba(157, 157, 239, 0.779); 
+}
+*/
+
+div#deleteCountries div.countryNotFound {
+  background-color: beige;
+  display: flex;
+  flex-direction: row;
+}
+
+div.countryNotFound div.errorContainer-notFound h5.errorContainer-title > span {
+  color: crimson;
+  text-shadow: #2b62cd 1px 1px;
+}
+
+div.countryNotFound div.errorContainer-notFound h5.errorContainer-title :not(span) {
+  color: #2b62cd;
+}
+
+div.countryNotFound div.errorContainer-notFound > p.errorContainer-text {
+  font-family: 'Times New Roman', Times, serif;
+
+}
+
+/* CountryProfile */
+
+div#countryProfile {
+  background-image: url('./background/countriesBackground-1.png');  
+  background-size: 40%;
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  border: outset 2px gray;
+}
+
+div#countryProfile div.backgroundProfile {
+  background-color: azure;
+  width: 95%;
+  margin-top: 3px;
+  height: 90%;
+}
+
+div#countryProfile div.backgroundProfile > h1 {
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+div#countryProfile div.extraOptions {
+  display: block;
+  text-align: center;
+}
+
+div#countryProfile div.extraOptions > button {
+  display: inline-block;
+  padding: 1.5%;
+  border-radius: 30% 5%;
+  margin: 1px 3px;
+  font-weight: bold;
+  color: ghostwhite;
+}
+
+div#countryProfile div.extraOptions button.edit-btn {
+  background: linear-gradient(45deg, rgba(2,0,36,1) 48%, rgba(201,191,191,1) 89%);
+}
+
+div#countryProfile div.extraOptions button.edit-btn:hover {
+  background: linear-gradient(190deg, rgb(3, 0, 50) 48%, rgb(214, 205, 205) 89%);
+  transition: background 0.2s ease-in-out;
+}
+
+div#countryProfile div.extraOptions button.delete-btn {
+  /* background: linear-gradient(13deg, rgba(213,40,40,1) 48%, rgba(201,191,191,1) 89%);*/
+  background: linear-gradient(45deg, rgba(121,9,9,1) 4%, rgba(226,76,76,1) 69%, rgba(255,255,255,1) 94%);
+}
+
+div#countryProfile div.extraOptions button.delete-btn:hover {
+  background: linear-gradient(145deg, rgb(214, 61, 61) 52%, rgba(214, 205, 205) 87%);
+  transition: background 0.2s ease-in-out;
+}
+
+div#countryProfile div.countryContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+div#countryProfile div.countryContainer > section.flagDetails {
+  flex-basis: 60%;
+  text-align: center;
+}
+
+div.countryContainer section.flagDetails figure {
+  width: 90%;
+}
+
+div.countryContainer section.flagDetails figure > img {
+  width: 80%;
+  border: thick slategray solid;
+}
+
+div.countryContainer section.flagDetails figure img + figcaption {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: slategray;
+  color: whitesmoke;
+  font-weight: bold;
+  width: 80%;
+  margin: 0 auto;
+}
+
+div#countryProfile div.countryContainer > section.descriptionDetails {
+  flex-basis: 40%;
+}
+
+div#countryProfile div.countryContainer section.descriptionDetails > ul {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div#countryProfile div.backgroundProfile article > p {
+  font-family: cursive, 'Times New Roman', Times, sans-serif;
+  text-align: center;
+  margin: 0 5px;
+}
+
+/* Editpage */
+
+div#editCountry-container {
+  background: linear-gradient(176deg, rgba(9,121,77,1) 0%, rgba(2,0,36,0.9801838594324449) 60%);
+  color: whitesmoke;
+  font-family: tahoma, sans-serif;
+  min-height: 100vh;
+}
+
+div#editCountry-container form {
+  margin: 0 auto;
+  box-shadow:0 4px 10px 4px rgba(#13232f, .3)
+}
+
+div#editCountry-container h1 {
+  padding-top: .5em;
+  margin-bottom: 1em;
+  text-align: center;
+  color: whitesmoke;
+  text-shadow: 1px 1px 1px ghostwhite;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+} 
+
+div#editCountry-container form > div.ids {
+  width: 40%;
+ text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2px auto;
+}
+
+div.ids section.ids-section {
+  flex-basis: 40%;
+}
+
+label {
+  font-family: calibri, sans-serif;
+  font-weight: bold;
+  font-size: 1em;
+  display: block;
+  margin-bottom: 5px;
+  text-shadow: .25px .25px .5px white;
+}
+
+section.ids-section input {
+  width: 30%;
+}
+
+.edit-readOnly:disabled {
+  color: whitesmoke;
+  opacity: 1;
+}
+
+select.continent_id-selection {
+  background: linear-gradient(176deg, rgba(9,121,77,1) 0%, rgba(2,0,36,0.9801838594324449) 60%);
+  color: whitesmoke;
+  font-family: console, serif;
+  font-size: .9em;
+}
+
+select.continent_id-selection option {
+  background-color: #114411;
+  color: ghostwhite;
+}
+
+select.continent_id-selection:hover {
+background: linear-gradient(0deg, rgba(28,190,126,1) 6%, rgba(2,0,36,0.98) 94%);
+   transition: opacity 3s ease-in;
+}
+p#country_id-zone {
+  margin-top: 0;
+  font-size: .8em;
+}
+
+p.editcountry-note {
+  font-style: italic;
+  font-size: .9em;
+}
+
+p.editcountry-note + hr {
+  width: 55%;
+  margin: 7px auto;
+}
+
+div.other-ids {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px auto;
+}
+
+input, textarea {
+  font-size: 1.25.em;
+  padding: 2% 4.5%;
+  background: none;
+  border: 1px inset #d3d3d3;
+  margin-bottom: 5px;
+  transition: ghostwhite .25s ease, box-shadow .25s ease;
+}
+
+textarea {
+  border: solid d3d3d3 3px;
+  width: 45%;
+}
+
+div#editCountry-container div.editButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  color: ghostwhite;
+  font-family: Tahoma, Verdana, Geneva, sans-serif;
+}
+
+button.btn-editpage {
+  border: none;
+  outline: none;
+  padding: 3px 7px;
+  margin-bottom: 5px;
+  border-radius: 30px;
+  font-weight: bold;
+  letter-spacing: .1em;
+  color: whitesmoke;
+}
+
+button.confirmedit {
+background: #1ab188;
+}
+
+button.canceledit {
+  background: #fe2411;
+}
+
+button.btn-editpage:hover, button.btn-editpage:focus {
+    color: ghostwhite;
+    transition: opacity 2.5s linear;
+}
+
+button.confirmedit:hover, button.confirmedit:focus {
+  background: linear-gradient(61deg, rgba(9,96,121,1) 0%, rgba(195,210,30,0.9801838594324449) 60%);
+}
+
+button.canceledit:hover, button.canceledit:focus {
+background: linear-gradient(145deg, rgba(255,27,27,1) 0%, rgba(243,125,22,1) 56%, rgba(163,26,26,1) 85%);
+}
+
+div.editpage-success > p {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: #060 5px 4px;
+}
+
+div.editpage-success > button.leaveedit {
+  background: linear-gradient(50deg, rgba(2,0,36,1) 0%, rgba(26,189,233,1) 35%, rgba(19,123,145,1) 100%);
+}
+
+div.editpage-success > button.leaveedit:hover {
+  background: linear-gradient(227deg, rgba(2,0,36,1) 0%, rgba(42,131,181,1) 35%, rgba(19,123,145,1) 100%);
+}
+
+div.editpage-failure-orange > div.editpage-failure-header, div.editpage-failure-red > div.editpage-failure-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: linear-gradient(108deg, rgba(53,54,41,1) 0%, rgba(97,121,9,1) 85%, rgba(228,255,0,1) 100%);
+  height: 3vh;
+  padding-bottom: 7%;
+  margin-bottom: 5px;
+}
+
+div.editpage-failure-header > .closeedit-button {
+  background-color: crimson;
+}
+
+div.editpage-failure-orange article, div.editpage-failure-red article {
+  background-color: beige;
+  color: crimson;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  padding: 5px;
+}
+
+
+/* ProfileEdit*/
+
+div#buttons_container {
+  display: flex;
+  justify-content: center;
+  width: 35%;
+}
+
+
+
+/*
+/*ExtraCountries*/
+/*
+#errorQuestion {}
+#questionContainer {}
+#answerContainer {}
+#incorrectAnswer {}
+*/
+
+/* notFoundPage */
+
+div#content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto
+}
+
+.mainbox {
+  background-color: #111111;
+  color: whitesmoke;
+  height: 55vh;
+}
+
+div.errorNumStack {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+  h3.err {
+    color: #Eeeeef;
+    margin-bottom: 0;
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+p#oops {
+  margin-top: 0;
+  font-style: italic;
+  font-size: .75em;
+}
+
+.msg {
+   background-color: #15274b;
+   color: whitesmoke;
+   text-align: center;
+   font-family: 'Nunito Sans', sans-serif;
+    font-size: 1.3em;
+  }
+
+.goToHome {
+  text-decoration: underline;
+  color: yellowgreen;
+}
+
+.goToHome:hover {
+  background-color: yellowgreen;
+  color: whitesmoke;
+}
+
+/* loaderPage */
+div#loaderPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.25em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #15274b;
+}
+
+/* Errorpage /*
+
+/* Sub styles */
+  
+div#errorPage {
+  background-color: beige;
+  text-align: center;
+  min-height: 150vh;
+}
+
+h1.oops {
+  	font-family: verdana, sans-serif;
+      font-size: 2.5em;
+      color: #122125;
+      text-shadow: 2px 2px 5px;
+      margin-top: 0;
+      padding-top: .5em;
+      letter-spacing: 2px;
+	}
+
+.err-messages {
+  width: 80%;
+  margin: 1em auto;
+    display: flex;
+	flex-direction: column;
+	align-items: center;
+  justify-content: center;
+	background-color: #FEFEFE;
+	padding: 3%;
+	border: 1px solid lightgray;
+	border-radius: 4%;
+}	
+
+.err-messages > p {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+	ul.instructions {
+      text-align: start;
+		list-style-type: none;
+	}
+
+ul.instructions > li {
+  padding-bottom: 5px;
+  font-size: .9em;
+}
+
+/* DeleteCountry */
+
+div#deleteCountries {
+  font-family: Tahoma, Geneva, 'Segoe UI', Verdana, sans-serif;
+  background-image: url('./background/countriesBackground-1.png');
+  background-size: 40%;
+  background-repeat: repeat, repeat, repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section#searchNameContainer-2 {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+section#searchNameContainer-2 > form {
+  width: 100%; 
+  background-color: #FFFFFF; 
+  padding: 2%;
+}
+
+section#searchNameContainer-2 form > fieldset {
+  border: none;
+}
+
+section#searchNameContainer-2 form fieldset legend > h2 {
+  text-shadow: 1px 1px rgb(220, 47, 81);
+  text-align: center;
+}
+
+section#searchNameContainer-2 form p.indication-letters {
+  font-size: .78em;
+  font-style: italic;
+  text-align: center;
+  margin: auto;
+}
+
+div#search-and-btn-2 {
+  text-align: center;
+}
+
+div#search-and-btn-2 input#searchByName-2 {
+display: block;
+margin: 0 auto;
+width: 90%;
+font-family: verdana;
+padding: 2% 3%;
+}
+
+div#search-and-btn-2 button {
+  color: whitesmoke;
+  background-color: #2b62cd;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+div#search-and-btn-2 button:hover {
+font-weight: bold;
+background-color: #1abde9;
+border-radius: 3.5px;
+transition: all .15s ease-out /*,color .15s ease-out*/;
+}
+
+section.resultSection div.countriesResultsInit {
+  background-color: azure;
+  font-family: monospace;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+ section.resultSection {
+  width: 100%;
+/* padding set with Bootstrap*/
+}
+
+section.resultSection div#countriesFound-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: azure;
+}
+
+div#countriesFound-2 div.countriesList, div.countryNotFound-2 > div.errorContainer-notFound {
+  flex-basis: 70%;
+  text-align: center;
+}
+
+ div#countriesFound-2 div.countriesList h3.countries-results-nb > span {
+  font-weight: 700;
+  color: rgb(127, 14, 127);
+ }
+
+div.countriesList div#countryList-container a > img:hover {
+  border: thin sandybrown solid;
+  /*border: 1.75px rgb(229, 122, 28) solid;*/
+  transition: all 0.25s ease;
+}
+
+div.countriesList div#countryList-container img {
+  width: 40%;
+}
+
+div.countriesList div#countryList-container a {
+  text-decoration: none;
+  color: #111111;
+}
+
+div#countryList-container-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+div.countriesList div#countryList-container-2 .link[target='_blank'] > p {
+  font-family: Tahoma, Verdana, Geneva, sans-serif
+}
+
+div.countriesList div#countryList-container-2 .link[target='_blank'] > p:hover {
+  color: #5b9fac;
+  font-size: 1.1em;
+  transition:  0.25s ease-in-out 0.15s;
+}
+
+div.countriesList div#countryList-container-2 .image[target="_blank"] {
+  width: 30%;
+}
+
+div.countriesList div#countryList-container-2 .image[target="_blank"] > img {
+  width: 60%;
+}
+
+div.countriesList div#countryList-container-2 .image[target="_blank"] > img:hover {
+  border: thin sandybrown solid;
+  /*border: 1.75px rgb(229, 122, 28) solid;*/
+  transition: all 0.25s ease;
+}
+
+div.countriesList div#countryList-container-2 a {
+  text-decoration: none;
+  color: #111111;
+}
+
+div#countryList-container-2 .trashIcon {
+  font-size: 1.15em;
+}
+
+div#countryList-container-2 .trashIcon:hover {
+  color: crimson;
+}
+
+div#countriesFound-2 div.country-suggestion, div.countryNotFound-2 div.country-suggestion {
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+div#countriesFound-2 div.country-suggestion, div.countryNotFound-2 div.country-suggestion > h6 {
+  font-weight: 700;
+}
+
+div#countriesFound-2 div.country-suggestion figure, div.countryNotFound-2 div.country-suggestion figure {
+  background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
+  border: outset rgb(141, 139, 139) 2px;
+  text-align: center;
+  width: 60%;
+  padding-top: 2px;
+  width: 50%;
+}
+
+div#countriesFound-2 div.country-suggestion figure .countryFound-link > img, div.countryNotFound-2 div.country-suggestion figure .countryFound-link > img {
+  width: 50%;
+}
+
+div#countriesFound-2 div.country-suggestion figcaption > button {
+  /*
+  background: linear-gradient(114deg, rgb(62, 62, 65) 0%, rgb(156, 156, 156) 25%, rgb(181, 179, 179) 100%);
+  border: outset rgb(141, 139, 139) 2px;
+  */
+  color: rgb(245, 245, 245);
+}
+
+div#countriesFound-2 div.country-suggestion .countryFound-link {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+
+div#countriesFound-2 div.country-suggestion figure:hover {
+  background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
+  transition: all 0.2s linear;
+}
+
+div.countryNotFound-2 div.country-suggestion figure:hover {
+  background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
+  transition: all 0.2s linear;
+}
+
+div#countriesFound-2 div.country-suggestion figure .countryFound-link > img:hover {
+  border: thin sandybrown solid;
+  /*border: 1.75px rgb(229, 122, 28) solid;*/
+  transition: all 0.2s ease-in;
+}
+
+div.countryNotFound-2 div.country-suggestion figure .countryFound-link > img:hover {
+  border: thin sandybrown solid;
+  transition: all 0.2s ease-in;
+}
+
+div#countriesFound-2 div.country-suggestion .countryFound-link figcaption > button:hover {
+  color: rgba(157, 157, 239, 0.779); 
+}
+
+div.countryNotFound-2 {
+  background-color: beige;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+div.countryNotFound-2 div.errorContainer-notFound h5 > span {
+  color: crimson;
+  text-shadow: #2b62cd 1px 1px;
+}
+
+div.countryNotFound-2 div.errorContainer-notFound h5:not(span) {
+  color: #2b62cd;
+}
+
+div.countryNotFound-2 div.errorContainer-notFound > p {
+  font-family: 'Times New Roman', Times, serif;
+
+}
+
+div#search-and-btn-2 {
+  text-align: center;
+}
+
+div#search-and-btn-2 input#searchByName-2 {
+display: block;
+margin: 0 auto;
+width: 90%;
+font-family: verdana;
+padding: 2% 3%;
+}
+
+div#search-and-btn-2 button {
+  color: whitesmoke;
+  background-color: #40403f;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+div#search-and-btn-2 button:hover {
+font-weight: bold;
+background-color: #090908;
+border-radius: 3.5px;
+transition: all .15s ease-out /*,color .15s ease-out*/;
+}
+
+ div#countriesFound-2 div.countriesList h3.countries-results-nb > span.nb {
+  font-weight: 700;
+  color: rgb(127, 14, 127);
+ }
+
+ /* ModalDeleteCountry */ 
+ 
+ #modaldelCo .modal-title {
+  text-shadow: 1px 1px rgba(109, 20, 38, 0.938)
+ }
+
+ div#buttons_container_2 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* CUSTOM */
+
+@media screen and (max-width: 576px) {
+  
+  section#mainCountries > h3.mainCountries-title {
+    font-size: 1.3em;
+    letter-spacing: 4px;
+  }
+
+  div#allCountries {
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.allCountriesList-Container > div.countryLists-uls-container {
+    flex-direction: column;
+  }
+
+  div#allCountries div.countryContainer-block button > .Link { 
+  font-family: 'Times New Roman', Times, serif;
+  font-size: .8em;
+  }
+
+  form#addCountryForm > div.form-row { 
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+  section.resultSection div#countriesFound {
+    flex-direction: column;
+  }
+
+  div#countriesFound div.countriesList {
+    text-align: center;
+  }
+
+  div#countriesFound div.country-suggestion {
+    align-items: center;
+    text-align: center;
+  }
+
+  div#countryProfile div.extraOptions > button {
+    width: 85px;
+  }
+
+  div#countryProfile div.countryContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+}
