@@ -17,10 +17,11 @@ const [errorStack, setErrorStack] = useState({ err: false, code: 0, title: '', m
 let { country } = useParams();
 
 useEffect(() => {
-    function fetchCountry(arr, cnt) {
+    async function fetchCountry(arr, cnt) {
       try {
         setLoader(true);
-        let userCountry = arr.filter((c) => c.country_name.toLowerCase() === cnt.toLowerCase());
+        let userCountry = await arr.filter((c) => c.country_name.toLowerCase() === cnt.toLowerCase());
+        
         if(userCountry.length === 0) {
           const obj3 = { err: true, code: 404, title: 'No Country Found', msg: [`We did not find any country under the name '${cnt}'.`, "Please check the name or try to add the country."]}
           setLoader(false);

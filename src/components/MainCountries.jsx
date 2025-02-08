@@ -5,11 +5,13 @@ import Button from 'react-bootstrap/Button';
 import randomFlags from '../functions/randomFlag.js';
 import ExtraCountries from './ExtraCountries.jsx';
 import NoImage from '../screenshot/no-image.512x512.png';
+import Loaderpage from './Loaderpage.jsx';
 import Pageerror from './Pageerror.jsx';
 
 function MainCountries({ countries }) {
 
 const [countriesSet, setCountriesSet] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
+const [status, setStatus] = useState(0);
 const [hasSource, setHasSource] = useState(true);
 const errorStack = { err: true, code: 404, title: 'No Country to Display', msg: ['No Country Available.', 'Please try to refresh the page.'] };
 
@@ -18,16 +20,43 @@ const errorImg = () => {
 }
 
 useEffect(() => {
-const countryFlagsOk = countries.all.filter((c)=>typeof c.country_flag !== 'undefined' && c.country_flag !== '');
-const newCountries = randomFlags(countryFlagsOk, 18);
-console.log(newCountries.length);
-setCountriesSet(()=>newCountries);
-}, []);
+async function launchCountries() {
+
+  try {
+
+    const data = await countries.all.json();
+
+    const countryFlagsOk = await data.filter((c)=>typeof c.country_flag !== 'undefined' && c.country_flag !== '');
+
+    const newCountries = await randomFlags(countryFlagsOk, 18);
+
+    if(newCountries.code === 200) {
+    // console.log(newCountries.length);
+    setStatus(200);
+    setCountriesSet(newCountries.finalArr);
+      } else {
+        setStatus(400);
+      }
+      console.log({status: status})
+    } catch(err) {
+      setStatus(500);
+      console.error({
+        status: 500,
+        message: err.message
+        });
+    }
+  }
+  launchCountries();
+}, [countriesSet]);
 
 return(
   <React.Fragment>
   {
-    countriesSet.length > 0 ? 
+    status === 0 ? 
+    <Loaderpage />
+    :
+    <>
+    {status === 200 && 
     <div className="countryContainer">
         <section id="mainCountries">
         <h3 className='mainCountries-title'>Countries</h3> 
@@ -47,8 +76,12 @@ return(
       </section>
       <ExtraCountries countries={{ ...countries }} />
       </div>
-      :
-      <Pageerror errStk={ errorStack } />
+      }
+      {
+        [400, 500].indexOf(status) > -1 &&
+        <Pageerror errStk={ errorStack } />
+      }
+      </>
       }
   </React.Fragment>
 )

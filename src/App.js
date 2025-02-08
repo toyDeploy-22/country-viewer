@@ -33,9 +33,12 @@ function App() {
       } catch (err) {
         setSpinner(false);
         setResult('Nok');
+        if(axios.isCancel(err)){
+          console.error('Connection Aborted!', err.message)
+        } else {
         console.error(err);
         console.log(result)
-      }
+      }}
     }
     fetchCountries();
     return () => controller.abort();
