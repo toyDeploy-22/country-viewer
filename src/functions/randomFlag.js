@@ -59,9 +59,9 @@ function randomFlags(arr, nb) {
       const finalArr = [];
       let splicedArr = arr;
       let x = 0;
-      let random = Math.ceil(Math.random() * splicedArr.length);
 
   while(x < nb) {
+    let random = Math.floor(Math.random() * (splicedArr.length - 1));
     let index = random === 0 ? random : random - 1;
     let splicer = splicedArr.splice(index, 1)[0];
     finalArr.push(splicer);

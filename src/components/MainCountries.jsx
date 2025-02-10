@@ -13,6 +13,8 @@ function MainCountries({ countries }) {
 const [countriesSet, setCountriesSet] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
 const [status, setStatus] = useState(0);
 const [hasSource, setHasSource] = useState(true);
+
+const {all} = countries;
 const errorStack = { err: true, code: 404, title: 'No Country Available', msg: ['Cannot display countries.', 'Please try to refresh the page.'] };
 
 const errorImg = () => {
@@ -20,11 +22,12 @@ const errorImg = () => {
 }
 
 useEffect(() => {
+
 async function launchCountries() {
 
   try {
-
-    const data = await countries.all;
+    
+    const data = await all;
 
     const countryFlagsOk = await data.filter((c)=>typeof c.country_flag !== 'undefined' && c.country_flag !== '');
 
@@ -47,7 +50,7 @@ async function launchCountries() {
     }
   }
   launchCountries();
-}, [countriesSet]);
+}, [all, status]);
 
 return(
   <React.Fragment>
