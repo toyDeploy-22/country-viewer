@@ -13,7 +13,7 @@ function MainCountries({ countries }) {
 const [countriesSet, setCountriesSet] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
 const [status, setStatus] = useState(0);
 const [hasSource, setHasSource] = useState(true);
-const errorStack = { err: true, code: 404, title: 'No Country to Display', msg: ['No Country Available.', 'Please try to refresh the page.'] };
+const errorStack = { err: true, code: 404, title: 'No Country Available', msg: ['Cannot display countries.', 'Please try to refresh the page.'] };
 
 const errorImg = () => {
   setHasSource(false)
@@ -24,11 +24,11 @@ async function launchCountries() {
 
   try {
 
-    const data = await countries.all.json();
+    const data = await countries.all;
 
     const countryFlagsOk = await data.filter((c)=>typeof c.country_flag !== 'undefined' && c.country_flag !== '');
 
-    const newCountries = await randomFlags(countryFlagsOk, 18);
+    const newCountries = randomFlags(countryFlagsOk, 18);
 
     if(newCountries.code === 200) {
     // console.log(newCountries.length);

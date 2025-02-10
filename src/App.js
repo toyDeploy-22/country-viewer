@@ -11,7 +11,7 @@ import Errorpage from './components/Errorpage.jsx';
 import axios from 'axios';
 
 function App() {
-  const [allCountries, setAllCountries] = useState([]);
+  const [allCountries, setAllCountries] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
   const [spinner, setSpinner] = useState(false);
   const [result, setResult] = useState('init');
 
