@@ -6,13 +6,13 @@ function Pageerror({ errStk }) {
 return(
 <div id="notFoundContainer">
   <div id="content">
-  <div class="mainbox">
-    <div class="errorNumStack">
-    <h3 class="err">Error {errStk.code}</h3>
+  <div className="mainbox">
+    <div className="errorNumStack">
+    <h3 className="err">Error {errStk.code}</h3>
     <p id="oops">{errStk.title}</p>
     </div>
     </div>
-    <div class="msg">
+    <div className="msg">
     <br />
     {
         errStk.msg.map((msg, _ind)=><p key={_ind}>{msg}</p>)
