@@ -67,7 +67,7 @@ function randomFlags(arr, nb) {
     finalArr.push(splicer);
     x++
     }
-    finalResult.finalArr = finalArr
+    finalResult.finalArr = finalArr.filter((id) => !id.country_id === false)
     } else {
     finalResult.finalArr = []
     }
