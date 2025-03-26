@@ -1,0 +1,16 @@
+{
+ "builds": [
+ {
+ "src": "app.js",
+ "use": "@vercel/node"
+ }
+ ],
+ "routes": [
+ {
+ "src": "/(.*)",
+"dest": "app.js",
+"methods": ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
+ }
+ ],
+ "buildCommand": "npm install --prefix countryServer"
+ }
