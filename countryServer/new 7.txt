@@ -1,6 +1,6 @@
 /*
 Countries = {
- countryId: varchar(6) NOT NULL STRING NOT NUMBER UPPERCASE,,
+ countryId: varchar(6) NOT NULL STRING NOT NUMBER UPPERCASE UNIQUE,
  countryName: varchar(40) NOT NULL UPPERCASE First Letter,
  countryFlag_url: varchar(255) DEFAULT NULL,, 
  countryDescription: varchar(999) DEFAULT NULL Uppercase first Letter,,
