@@ -9,7 +9,8 @@ const continentSchema = new mongoose.Schema({
 	  values: ["NA", "SA", "EU", "AF", "AS", "OC"],
 	  message: "The continent is not recognized. Make sure the continent is a listed abbreviation."
   }, 
-  required: [true, "The continent ID is mandatory."}
+  required: [true, "The continent ID is mandatory."
+  }
 });
 
 const countrySchema = new mongoose.Schema({

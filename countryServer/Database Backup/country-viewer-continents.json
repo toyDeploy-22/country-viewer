@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "67e4690591d070a368506807"
+  },
+  "continentName": "North-America",
+  "continentId": "NA",
+  "continentNb": 1
+},
+{
+  "_id": {
+    "$oid": "67e4690591d070a368506808"
+  },
+  "continentName": "South-America",
+  "continentId": "SA",
+  "continentNb": 2
+},
+{
+  "_id": {
+    "$oid": "67e4690591d070a368506809"
+  },
+  "continentName": "Europe",
+  "continentId": "EU",
+  "continentNb": 3
+},
+{
+  "_id": {
+    "$oid": "67e59295c0ae47fd2eb47827"
+  },
+  "continentName": "Africa",
+  "continentId": "AF",
+  "continentNb": 4
+},
+{
+  "_id": {
+    "$oid": "67e59295c0ae47fd2eb47828"
+  },
+  "continentName": "Asia",
+  "continentId": "AS",
+  "continentNb": 5
+},
+{
+  "_id": {
+    "$oid": "67e59295c0ae47fd2eb47829"
+  },
+  "continentName": "Oceania",
+  "continentId": "OC",
+  "continentNb": 6
+},
+{
+  "_id": {
+    "$oid": "67e59295c0ae47fd2eb4782a"
+  },
+  "continentName": "Antarctica",
+  "continentId": "AN",
+  "continentNb": 7
+}]

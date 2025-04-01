@@ -30,14 +30,14 @@ try {
          const obj = {
 			 error: true,
 			 title: "Unable to get all the results",
-			 msg: err
+			 msg: err.message
 		 };
 		 console.error(err);
          res.status(500).json(obj)
 	}
 })
  
- 
+// search with exact name
 myCountryRoutes.get("/country/:country", async(req,res)=>{
  try { 
  
@@ -69,7 +69,7 @@ myCountryRoutes.get("/country/:country", async(req,res)=>{
 		}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);
 	}
 })
@@ -77,7 +77,7 @@ myCountryRoutes.get("/country/:country", async(req,res)=>{
 
 
 
-// Search by name
+// Search with occurence letters include letters query
 myCountryRoutes.get("/countrysearch/name", async(req,res)=>{
  try { 
  
@@ -111,7 +111,7 @@ myCountryRoutes.get("/countrysearch/name", async(req,res)=>{
 		}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);
 	}
 })
