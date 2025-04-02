@@ -10,6 +10,7 @@ import { mongoTypesCheck, mongoosePatchCheck, mongooseDeleteCheck } from './coun
 
 const myCountryRoutes = Express.Router();
 
+// get all countries
 myCountryRoutes.get("/allcountries", async(req,res)=>{
   // connection
  
@@ -24,14 +25,14 @@ try {
          const obj = {
 			 error: true,
 			 title: "Server Error: unable to find countries",
-			 msg: err.message
+			 ...err
 		 };
 		 console.error(err);
          res.status(500).json(obj)
 	}
 })
  
- 
+// get country with exact country name
 myCountryRoutes.get("/country/:country", async(req,res)=>{
  try { 
  
@@ -50,17 +51,17 @@ myCountryRoutes.get("/country/:country", async(req,res)=>{
 		}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err.message};
+	const obj = {error: true, title: "Internal Server Error", ...err};
 	res.status(500).json(obj);
 	}
 })
 
 
-// Search by name
-myCountryRoutes.get("/countrysearch/name", async(req,res)=>{
+// Search by characters
+myCountryRoutes.get("/countrysearch/:countryQuery", async(req,res)=>{
  try { 
 	
-	const countryName = req.params.country;
+	const countryName = req.params.countryQuery;
 	const myQuery = {
 	 $regex: countryName,
 	 $options: "i"
@@ -81,7 +82,7 @@ myCountryRoutes.get("/countrysearch/name", async(req,res)=>{
 		}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err.message};
+	const obj = {error: true, title: "Internal Server Error", ...err};
 	res.status(500).json(obj);
 	}
 })
@@ -97,12 +98,13 @@ let failure = {};
 const checkTypes = mongoTypesCheck(req.body);
 
 if(checkTypes.length > 0) {
-	console.error("A or more types not authorized detected");
+	console.error("One or more types not authorized detected");
 	res.status(401).json({
 		error: true,
 		title: "Unauthorized: Incorrect Value",
-		msg: `The ${checkTypes.join(", ")} fields must be only composed of letters.` 		
-	})
+		fields: checkTypes, // Array
+		msg: `The ${checkTypes.join(", and ")} fields must be only composed of letters.` })
+		
 } else {
   const { countryId, countryName, continentId, hasFlag, hasDescription } = req.body; 
   const country = {
@@ -113,8 +115,23 @@ if(checkTypes.length > 0) {
 	  }
   };
   
+  const isDuplicate = await countryModel.findOne({$or: [
+  {countryId: country.countryId}, 
+  {countryName: country.countryName}
+  ]});
+  
+  if(isDuplicate){
+	  const obj = {
+		  error: true,
+		  title: "Duplicate Country",
+		  msg: "The country creation failed because the country Name or country Id already exists." 
+	  }
+	  console.log("duplicate");
+	  res.status(401).json(obj)
+  } else {
+  
   if(hasFlag === true) {
-	if(req.body.countryFlag_url === '' && req.body.countryDescription === '' || typeof req.body.countryFlag_url === 'undefined' && typeof req.body.countryDescription === 'undefined'){
+	if(req.body.countryFlag_url === '' || typeof req.body.countryFlag_url === 'undefined')	{
 	const obj = {
 	 error: true, 
 	 title: "Invalid Flag Data", 
@@ -126,18 +143,18 @@ if(checkTypes.length > 0) {
 		 const checkFlag_url = mongoTypesCheck({countryFlag_url: req.body.countryFlag_url});
 		 
 		if(checkFlag_url.length > 0){
-		console.error("A or more types not authorized detected");
+		console.error("One or more types not authorized detected");
 		res.status(401).json({
 		error: true,
 		title: "Unauthorized: Incorrect Value",
-		msg: `The ${checkTypes.join(", ")} fields must be only composed of letters.` })
+		msg: `The country flag field must be only composed of letters.` })
 		} else {
-			country.countryFlag_url = req.body.countryFlag
+			country.countryFlag_url = req.body.countryFlag_url
 	  }
   };
   
   if(hasDescription === true) {
-	 if(req.body.countryDescription === '' && req.body.countryFlag_url === ''  || typeof req.body.countryDescription === 'undefined' && typeof req.body.countryFlag_url === 'undefined'){
+	 if(req.body.countryDescription === '' || typeof req.body.countryDescription === 'undefined'){
 	const obj = {
 	 error: true, 
 	 title: "Invalid Description Data", 
@@ -148,11 +165,11 @@ if(checkTypes.length > 0) {
 	  } else {
 	  const checkDescription = mongoTypesCheck({countryDescription: req.body.countryDescription});
 	  if(checkDescription.length > 0) {
-		console.error("A or more types not authorized detected");
+		console.error("One or more types not authorized detected");
 		res.status(401).json({
 		error: true,
 		title: "Unauthorized: Incorrect Value",
-		msg: `The ${checkTypes.join(", ")} fields must be only composed of letters.` })
+		msg: `The country description field must be only composed of letters.` })
 	  } else {
 	  country.countryDescription = req.body.countryDescription;
 	  }
@@ -162,47 +179,30 @@ if(checkTypes.length > 0) {
 if(valid === 0) {
 	res.status(401).json(failure);
 } else {
-	const finalResult = await statementPostCheck(country, mysql, conn);
-	  
- switch (finalResult === 1) {
-	case true:
-	const obj = { affectedRows: 1 };
-	console.log(obj);
-	conn.release(); // don't include it in the function statementPostCheck
-	res.status(201).json(obj);
-	break;
-	
-	case false: 
-	console.error(finalResult);
-	conn.release(); // don't include it in the function statementPostCheck
-	res.status(400).json(finalResult);	
-		}
+	// const finalResult = await new countryModel.create(country).save();
+	const newCountry = new countryModel(country)
+	const finalResult = await newCountry.save();
+	console.log({ok: {...finalResult}})
+	res.status(201).json({ insertedRow: 1 })
 }}
-	} catch(err){
+	}} catch(err){
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", ...err};
 	res.status(500).json(obj);	
 	}
   })                    
 
 
 
-
-
-
 myCountryRoutes.options("/editcountry/:country", cors());
 
 myCountryRoutes.patch("/editcountry/:country", cors(), async(req,res)=>{
-
+// edit only country flag and (or) country description field
 try {
 let valid = 1;
 let failure = {};
-const conn = await countryPoolAsync.getConnection();
 const editCountry = req.params.country;
-
-// Object.keys && Object.values manual 
-const countryProps = [ ];
-const countryVal = ["countries"];
+const countryProps = {};
 
 if(req.body.hasFlag === true){
 	if(req.body.countryFlag === '' || typeof req.body.countryFlag === 'undefined'){
@@ -211,13 +211,20 @@ if(req.body.hasFlag === true){
 	 title: "Invalid Flag Data", 
 	 msg: "If set to 'yes', flag value cannot be empty."
 	 };
-	 conn.release();
 	 valid = 0;
 	 failure = {...obj};
 	 } else {
-  countryProps.push("country_flag");
-  countryVal.push(req.body.countryFlag);
+		const checkFlag = mongoTypesCheck({countryFlag_url: req.body.countryFlag_url})
+		if(checkFlag.length > 0) {
+		console.error("One or more types not authorized detected");
+		res.status(401).json({
+		error: true,
+		title: "Unauthorized: Incorrect Value",
+		msg: `The country flag field must be only composed of letters.` })
+		} else {
+		countryProps["countryFlag_url"] = req.body.countryFlag_url;
 		}
+	 }
 	}
 
 
@@ -228,42 +235,45 @@ if(req.body.hasDescription === true){
 	 title: "Invalid Description Data", 
 	 msg: "If set to 'yes', description value cannot be empty."
 	 };
-	 conn.release();
 	 valid = 0;
 	 failure = {...obj};
 	  } else {
-	countryProps.push("country_description");
-	countryVal.push(req.body.countryDescription);
+	const checkDescription = mongoTypesCheck({countryDescription: req.body.countryDescription});
+	if(checkDescription.length > 0) {
+		console.error("One or more types not authorized detected");
+		res.status(401).json({
+		error: true,
+		title: "Unauthorized: Incorrect Value",
+		msg: `The country description field must be only composed of letters.` })
+		
+	} else {
+	countryProps["countryDescription"] = req.body.countryDescription
+	}
 		}
 	} 
 
 
  if(valid === 0) {
 	console.error(failure);
-	conn.release();
 	res.status(401).json(failure);	 	 
  } else {
-	countryProps.push("country_name");
-	countryVal.push(editCountry);
-	const finalResult = await statementPatchCheck(countryProps, countryVal, mysql, conn); 
+	const finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'  
 	
-	switch(finalResult === 1) {
+	switch(!finalResult) {
 		
 		case true:
-	const obj = { affectedRows: 1 };
-	conn.release(); 
-	console.log(obj);
-    res.status(202).json(obj);
+	console.error(failure);
+    res.status(404).json(failure);
 	break;
 		
 		case false:
-	conn.release();
-	console.log(obj);
-	res.status(404).json(finalResult)	
+	const obj = { editedRow: 1 };
+	console.log({ok: {...obj}});
+	res.status(202).json(obj) // Accepted	
 			}
 		}
 	} catch(err) {
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", ...err};
 	console.error(obj);
 	res.status(500).json(obj);	  
 	  }
@@ -273,32 +283,31 @@ if(req.body.hasDescription === true){
 
 
 myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
+	// Delete by country ID or country Name 
 	try {
-	const conn = await countryPoolAsync.getConnection();
-    const placeholders = {
-	plc1: 'countries',
-	plc2: 'country_name',
-	plc3: req.params.country,
-	};
-	const country = Object.values(placeholders);
 	
+    const countryDelete = req.params.country;
+	const isCountryName = countryDelete.substring(0, 1).toUpperCase() + countryDelete.substring(1).toLowerCase();
+	const isCountryID = countryDelete.toUpperCase();
 	
-	const result = await statementDeleteCheck(country, mysql, conn);
-    conn.release();
+	const finalResult = await countryModel.findOneAndDelete({$or: [
+	{countryId: isCountryID}, 
+	{countryName: isCountryName}
+	]})
 	
-	if(result.affectedRows === 0){
+	if(!finalResult){
 	const obj = {
 	error: true, 
 	title: "No Result found", 
-	msg: "Deletion failed because the query does not have any result."};
+	msg: "Deletion failed because the query did not have any country."};
 	console.error(obj)
 	res.status(404).json(obj)
 	} else {
-	console.log(result);
-    res.json(result);
+	console.log(finalResult);
+    res.json({deletionRow: 1});
         }
 	} catch(err) {
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(obj);
 	res.status(500).json(obj);	 	
 		}

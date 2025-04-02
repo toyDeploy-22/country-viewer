@@ -31,6 +31,9 @@ const countrySchema = new mongoose.Schema({
  
  continent: {
  continentId: [continentSchema]
+	},
+
+{ timestamps: true }
 });
 
 const countryModel = mongoose.model('Countrie', countrySchema);

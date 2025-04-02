@@ -37,7 +37,7 @@ try {
 	}
 })
  
-// search with exact name
+ 
 myCountryRoutes.get("/country/:country", async(req,res)=>{
  try { 
  
@@ -77,7 +77,7 @@ myCountryRoutes.get("/country/:country", async(req,res)=>{
 
 
 
-// Search with occurence letters include letters query
+// Search by name
 myCountryRoutes.get("/countrysearch/name", async(req,res)=>{
  try { 
  
@@ -203,7 +203,7 @@ if(valid === 0) {
 }
 	} catch(err){
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);	
 	}
   })                    
@@ -286,7 +286,7 @@ if(req.body.hasDescription === true){
 			}
 		}
 	} catch(err) {
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(obj);
 	res.status(500).json(obj);	  
 	  }
@@ -321,7 +321,7 @@ myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
     res.json(result);
         }
 	} catch(err) {
-	const obj = {error: true, title: "Internal Server Error", msg: err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(obj);
 	res.status(500).json(obj);	 	
 		}
