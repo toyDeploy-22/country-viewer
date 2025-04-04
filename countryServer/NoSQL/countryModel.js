@@ -1,17 +1,18 @@
 import mongoose from 'mongoose';
 
-const continentsAbbr = ;
+
 
 const continentSchema = new mongoose.Schema({
-  continentId: {type: String, 
-  maxLength: 2, 
+  continentId: {
+	  type: String, 
+	  maxLength: 2, 
   enum: {
 	  values: ["NA", "SA", "EU", "AF", "AS", "OC"],
 	  message: "The continent is not recognized. Make sure the continent is a listed abbreviation."
   }, 
-  required: [true, "The continent ID is mandatory."
+  required: [true, "The continent ID is mandatory."]
   }
-});
+}, { timestamps: true });
 
 const countrySchema = new mongoose.Schema({
 	
@@ -31,10 +32,9 @@ const countrySchema = new mongoose.Schema({
  
  continent: {
  continentId: [continentSchema]
-	},
-
-{ timestamps: true }
-});
+	}
+},
+{ timestamps: true });
 
 const countryModel = mongoose.model('Countrie', countrySchema);
 

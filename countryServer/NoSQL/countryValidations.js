@@ -1,7 +1,7 @@
 
 const noNumbers_NoSpecial = new RegExp(/[0-9+\]\(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm)
 
-function mongoTypesCheck = (obj) => {
+function mongoTypesCheck(obj) {
 	  
 	  let result;
 	  const checkType = (k, v) => { const arr = typeof v !== "string" || noNumbers_NoSpecial.test(v) ? [k]: []; return arr }; 

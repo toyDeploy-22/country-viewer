@@ -3,9 +3,9 @@ import Express from 'express';
 import cors from 'cors';
 // import mysql from 'mysql2/promise';
 import mongoose from "mongoose";
-import countryModel from "./countryModel";
+import countryModel from "./countryModel.js";
 // import countryPoolAsync from './myCountryPool.js';
-import { mongoTypesCheck, mongoosePatchCheck, mongooseDeleteCheck } from './countryFunctions.js';
+import { mongoTypesCheck } from './countryValidations.js';
 
 
 const myCountryRoutes = Express.Router();
@@ -17,10 +17,11 @@ myCountryRoutes.get("/allcountries", async(req,res)=>{
 try { 
 
    // Query
- const myResults = await countryModel.find({});
+ const myQuery = await countryModel.find({});
+ const myResults = { resultsFound: myQuery.length + " countries" }
  
- console.log({ resultsFound: myResults.length });
- res.json(results);
+ console.log(myResults);
+ res.json(myResults);
 } catch(err) {
          const obj = {
 			 error: true,
@@ -185,7 +186,8 @@ if(valid === 0) {
 	console.log({ok: {...finalResult}})
 	res.status(201).json({ insertedRow: 1 })
 }}
-	}} catch(err){
+	}}
+	} catch(err){
 	console.error(err);
 	const obj = {error: true, title: "Internal Server Error", ...err};
 	res.status(500).json(obj);	

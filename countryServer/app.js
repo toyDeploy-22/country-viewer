@@ -7,18 +7,15 @@ import Express from "express";
 import cors from "cors";
 
 // Local
+// import myCountryRoutes from "./SQL/myCountryRoutes.js";
 import countryPoolAsync from "./NoSQL/myCountryPool.js";
-// import myCountryRoutes from "./NoSQL/myCountryRoutes.js";
-/*
-import countryPoolAsync from "./SQL/myCountryPool.js";
-import myCountryRoutes from "./SQL/myCountryRoutes.js";
-*/
-
+import myCountryRoutes from "./NoSQL/myCountryRoutes.js";
 
 // Variables
 const myServer = Express();
 let connectionData = new Object();
-const {MY_PORT, MY_MONGO_LOCAL} = process.env;
+const {MY_PORT, MY_MONGO_DB, MY_MONGO_LOCAL} = process.env;
+const options = { dbName: MY_MONGO_DB };
 const successPage = join(dirname(fileURLToPath(import.meta.url)), "htmlSuccessPage.html");
 
 // const myPort = process.env.MY_PORT || 5000;
@@ -39,7 +36,7 @@ const countryPoolConn = async() => {
 myServer.use(Express.json());
 myServer.use(cors());
 // myServer.use("/sql", myCountryRoutes);
-// myServer.use("/nosql", myCountryRoutes);
+myServer.use("/nosql", myCountryRoutes);
 
 myServer.get("/", (req, res) => {
 	try {
@@ -61,9 +58,10 @@ myServer.get("/", (req, res) => {
 // Method
 // await countryPoolConn();
 
+
 myServer.listen(MY_PORT || 5000, async() => {
 	console.log("server connected !");
-	const conn = await countryPoolAsync(MY_MONGO_LOCAL);
+	const conn = await countryPoolAsync(MY_MONGO_LOCAL, options);
 	connectionData = {...conn} // overwrite
 	console.log("Database connected !")
 })
