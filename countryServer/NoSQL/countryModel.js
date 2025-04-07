@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 
-
-
 const continentSchema = new mongoose.Schema({
   continentId: {
+	  type: {
 	  type: String, 
 	  maxLength: 2, 
   enum: {
@@ -11,6 +10,7 @@ const continentSchema = new mongoose.Schema({
 	  message: "The continent is not recognized. Make sure the continent is a listed abbreviation."
   }, 
   required: [true, "The continent ID is mandatory."]
+	}
   }
 }, { timestamps: true });
 
@@ -30,9 +30,7 @@ const countrySchema = new mongoose.Schema({
 	 type: String, minLength: [10, "If filled-in, the country Description must at least contain a sentence of 10 characters. You can leave this field empty if you want."], maxLength: [250, "The country Description cannot contain more than 250 characters."], required: false
 	 },
  
- continent: {
- continentId: [continentSchema]
-	}
+ continent: { continentSchema }
 },
 { timestamps: true });
 

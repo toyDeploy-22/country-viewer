@@ -33,18 +33,20 @@ try {
 	}
 })
  
-// get country with exact country name
+// get country with exact country name (SENSIBLE QUERY)
 myCountryRoutes.get("/country/:country", async(req,res)=>{
  try { 
- 
-	const country_Exact_Name = req.params.country;
-	const myResult = await countryModel.find({ countryName: country_Exact_Name })
+	const firstPart = req.params.country[0].toUpperCase(); // will not find without uppercase
+	const secondPart = req.params.country.substring(1).toLowerCase();
+	const country_Exact_Name = firstPart + secondPart;
+	
+	const myResult = await countryModel.findOne({ countryName: country_Exact_Name }) // return object type
  
  if(!myResult) {
 	 const myObj = {
 		  error: true,
 		  title: "Country Not Found",
-		  msg: `The country "${countryName}" is not found.`
+		  msg: `The country "${country_Exact_Name}" is not found.`
 	 };
 		res.status(404).json(myObj)
  } else {
@@ -63,14 +65,25 @@ myCountryRoutes.get("/countrysearch/:countryQuery", async(req,res)=>{
  try { 
 	
 	const countryName = req.params.countryQuery;
+	
+	if(countryName.length < 2) {
+		
+		 const myObj = {
+		  error: true,
+		  title: "Few Characters",
+		  msg: `You must type at least two characters in order to search your country.`
+	 };	
+	
+	res.status(404).json(myObj)
+	} else {
 	const myQuery = {
 	 $regex: countryName,
 	 $options: "i"
 	};
  
-	const myResult = await countryModel.find({ countryName: {...myQuery} }); 
+	const myResult = await countryModel.find({ countryName: {...myQuery} }); // returns Array object type
 	
-	if(!myResult) {
+	if(myResult.length < 1) {
 	 const myObj = {
 		  error: true,
 		  title: "Country Not Found",
@@ -79,8 +92,8 @@ myCountryRoutes.get("/countrysearch/:countryQuery", async(req,res)=>{
 	
 	res.status(404).json(myObj)
 	} else {
-		res.json(myResult) 
-		}
+		res.json(myResult)
+		}}
 	} catch(err) {	
 	console.error(err);
 	const obj = {error: true, title: "Internal Server Error", ...err};
@@ -97,14 +110,15 @@ try {
 let valid = 1;
 let failure = {};
 const checkTypes = mongoTypesCheck(req.body);
+const requiredKeys = ["countryId", "countryName", "continentId", "hasFlag", "hasDescription"].filter((k) => !req.body.hasOwnProperty(k)? k : null);
 
-if(checkTypes.length > 0) {
+if(checkTypes.length > 0 || requiredKeys.length > 0 ) {
 	console.error("One or more types not authorized detected");
 	res.status(401).json({
 		error: true,
 		title: "Unauthorized: Incorrect Value",
-		fields: checkTypes, // Array
-		msg: `The ${checkTypes.join(", and ")} fields must be only composed of letters.` })
+		fields: checkTypes.length > 0 ? checkTypes : requiredKeys, // Array
+		msg: `The ${checkTypes.join(", and ")} fields must exist and values must only be letters.` })
 		
 } else {
   const { countryId, countryName, continentId, hasFlag, hasDescription } = req.body; 
@@ -116,21 +130,21 @@ if(checkTypes.length > 0) {
 	  }
   };
   
-  const isDuplicate = await countryModel.findOne({$or: [
+  const isDuplicate = await countryModel.find({$or: [
   {countryId: country.countryId}, 
   {countryName: country.countryName}
   ]});
   
-  if(isDuplicate){
+  if(isDuplicate.length > 0){
 	  const obj = {
 		  error: true,
 		  title: "Duplicate Country",
-		  msg: "The country creation failed because the country Name or country Id already exists." 
+		  msg: "The country creation failed because the country Name or country Id entered already exists." 
 	  }
 	  console.log("duplicate");
 	  res.status(401).json(obj)
   } else {
-  
+ 
   if(hasFlag === true) {
 	if(req.body.countryFlag_url === '' || typeof req.body.countryFlag_url === 'undefined')	{
 	const obj = {
@@ -152,6 +166,7 @@ if(checkTypes.length > 0) {
 		} else {
 			country.countryFlag_url = req.body.countryFlag_url
 	  }
+	}
   };
   
   if(hasDescription === true) {
@@ -181,12 +196,13 @@ if(valid === 0) {
 	res.status(401).json(failure);
 } else {
 	// const finalResult = await new countryModel.create(country).save();
+	console.log(country)
 	const newCountry = new countryModel(country)
 	const finalResult = await newCountry.save();
 	console.log({ok: {...finalResult}})
 	res.status(201).json({ insertedRow: 1 })
 }}
-	}}
+		}
 	} catch(err){
 	console.error(err);
 	const obj = {error: true, title: "Internal Server Error", ...err};

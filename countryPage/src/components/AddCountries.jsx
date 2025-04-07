@@ -57,13 +57,13 @@ const submitCountry = async(e) => {
   const fnc = async() => {
   try{
     setShowCanvas(true);
-    const continents = ["europe", "americas", "asia", "middle east and africa", "oceania"];
-    let continentSelected = continents.indexOf(newCountry.continent.toLocaleLowerCase()) + 1;
+    const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
+    let continentSelected = continents.indexOf(newCountry.continent.toUpperCase());
 
     const checker = await addCountriesChecker(newCountry, cnt);
     console.log(checker) 
 
-    if(continentSelected <= -1 || continentSelected > 5) {
+    if(continentSelected === -1) {
       setResult("false");
       setMessage("The continent is not in the list. Please select a valid continent in the list to proceed.");
     } else if(checker.ok) {
@@ -75,13 +75,15 @@ const submitCountry = async(e) => {
     setSpinner(true);
     const countryBody = {
       countryId: newCountry.id,
-      continentId: continentSelected,
-      countryName: newCountry.name,
+	  countryName: newCountry.name,
+	  continentId: continents[continentSelected],
+	  hasFlag: newCountry.hasFlag,
+	  hasDescription: newCountry.description ? true : false	  
     }
      
  // check flag:
       if(newCountry.hasFlag) {
-      (countryBody['countryFlag'] = newCountry.flag)
+      (countryBody['countryFlag_url'] = newCountry.flag)
       }
   
 // check description:
@@ -187,11 +189,13 @@ return(
        defaultValue=""         
       >
 <option disabled value="">Click here to select</option>         
-<option value="Europe">Europe</option>
-<option value="Americas">America</option>
-<option value="Asia">Asia</option>
-<option value="Middle East and Africa">Middle East/Africa</option>
-<option value="Oceania">Oceania</option>
+<option value="Eu">Europe</option>
+<option value="Na">North America</option>
+<option value="Sa">South America</option>
+<option value="As">Asia</option>
+<option value="Af">Middle East/Africa</option>
+<option value="Oc">Oceania</option>
+<option value="An">Antarctica</option>
 </select>
 </div>
 <br />

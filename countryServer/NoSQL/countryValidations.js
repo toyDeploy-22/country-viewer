@@ -5,7 +5,9 @@ function mongoTypesCheck(obj) {
 	  
 	  let result;
 	  const checkType = (k, v) => { const arr = typeof v !== "string" || noNumbers_NoSpecial.test(v) ? [k]: []; return arr }; 
-	  const checkTypes = (object) => {const arr = []; for([k, v] of Object.entries(object)){if(typeof v !== "string" || noNumbers_NoSpecial.test(v)){arr.push(k)}} return arr };
+	  
+	  const checkTypes = (object) => {const arr = []; for(const [k, v] of Object.entries(object)){if(typeof v !== "string" || noNumbers_NoSpecial.test(v)){arr.push(k)}} return arr };
+	  
 	  const flagUrlKey = obj.hasOwnProperty("countryFlag_url");
 	  const descriptionKey = obj.hasOwnProperty("countryDescription");
 	  

@@ -14,7 +14,7 @@ import myCountryRoutes from "./NoSQL/myCountryRoutes.js";
 // Variables
 const myServer = Express();
 let connectionData = new Object();
-const {MY_PORT, MY_MONGO_DB, MY_MONGO_LOCAL} = process.env;
+const { MY_PORT, MY_MONGO_DB, MY_MONGO_LOCAL } = process.env;
 const options = { dbName: MY_MONGO_DB };
 const successPage = join(dirname(fileURLToPath(import.meta.url)), "htmlSuccessPage.html");
 
@@ -38,10 +38,23 @@ myServer.use(cors());
 // myServer.use("/sql", myCountryRoutes);
 myServer.use("/nosql", myCountryRoutes);
 
+const launchConnect = async() => {
+try {
+	const conn = await countryPoolAsync(MY_MONGO_LOCAL, options);
+	connectionData = {...conn} // overwrite
+	console.log("Database connected !")
+} catch(err) {
+	console.error("Database not connected");
+	console.error(err)
+	}
+}
+
+await launchConnect();
+
 myServer.get("/", (req, res) => {
 	try {
 		if(connectionData.hasOwnProperty('db_Host')) {
-		console.log("DB data collection successful");
+		console.log("successful webpage displaying");
 		for (const [k, v] of Object.entries(connectionData)) {
 			res.setHeader(k, v)
 			}
@@ -59,11 +72,8 @@ myServer.get("/", (req, res) => {
 // await countryPoolConn();
 
 
-myServer.listen(MY_PORT || 5000, async() => {
-	console.log("server connected !");
-	const conn = await countryPoolAsync(MY_MONGO_LOCAL, options);
-	connectionData = {...conn} // overwrite
-	console.log("Database connected !")
+myServer.listen(MY_PORT || 5000, () => {
+	console.log("server connected !")
 })
 
 myServer.on("error", 
