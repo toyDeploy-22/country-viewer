@@ -5,7 +5,7 @@ import cors from 'cors';
 import mongoose from "mongoose";
 import countryModel from "./countryModel.js";
 // import countryPoolAsync from './myCountryPool.js';
-import { mongoTypesCheck } from './countryValidations.js';
+import { bodyValidator } from './countryValidations.js';
 
 
 const myCountryRoutes = Express.Router();
@@ -26,7 +26,7 @@ try {
          const obj = {
 			 error: true,
 			 title: "Server Error: unable to find countries",
-			 ...err
+			 msg: err.message
 		 };
 		 console.error(err);
          res.status(500).json(obj)
@@ -54,7 +54,7 @@ myCountryRoutes.get("/country/:country", async(req,res)=>{
 		}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", ...err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);
 	}
 })
@@ -96,7 +96,7 @@ myCountryRoutes.get("/countrysearch/:countryQuery", async(req,res)=>{
 		}}
 	} catch(err) {	
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", ...err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);
 	}
 })
@@ -107,21 +107,23 @@ myCountryRoutes.options("/addcountry", cors());
 myCountryRoutes.post("/addcountry", cors(), async(req, res)=>{
 
 try {
-let valid = 1;
-let failure = {};
-const checkTypes = mongoTypesCheck(req.body);
-const requiredKeys = ["countryId", "countryName", "continentId", "hasFlag", "hasDescription"].filter((k) => !req.body.hasOwnProperty(k)? k : null);
-
-if(checkTypes.length > 0 || requiredKeys.length > 0 ) {
-	console.error("One or more types not authorized detected");
-	res.status(401).json({
-		error: true,
-		title: "Unauthorized: Incorrect Value",
-		fields: checkTypes.length > 0 ? checkTypes : requiredKeys, // Array
-		msg: `The ${checkTypes.join(", and ")} fields must exist and values must only be letters.` })
+	const checker = bodyValidator("POST", req.body);
+	
+	 console.log(checker)
+	
+	if(checker.length > 0) {
+		const obj = {
+		err: true,
+		msg: "The creation country request is not authorized for the following reasons: ",
+		reasons: checker		
+		};
 		
-} else {
+		console.log(obj.reasons);
+		res.status(401).json(obj)
+	} else {
+	
   const { countryId, countryName, continentId, hasFlag, hasDescription } = req.body; 
+  
   const country = {
 	  countryId: countryId.toUpperCase(),
 	  countryName: countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase(),
@@ -130,82 +132,38 @@ if(checkTypes.length > 0 || requiredKeys.length > 0 ) {
 	  }
   };
   
-  const isDuplicate = await countryModel.find({$or: [
-  {countryId: country.countryId}, 
-  {countryName: country.countryName}
-  ]});
+ const isDuplicate = await countryModel.find({$or: [
+			{countryId: country.countryId}, 
+			{countryName: country.countryName}
+			]});  
+
   
-  if(isDuplicate.length > 0){
+	if(isDuplicate.length > 0){
 	  const obj = {
-		  error: true,
-		  title: "Duplicate Country",
-		  msg: "The country creation failed because the country Name or country Id entered already exists." 
+			reason: "duplicate country",
+			error: true,
+			title: "Country already exists",
+			msg: "The country creation failed because the country Name or country Id entered already exists." 		  
 	  }
 	  console.log("duplicate");
 	  res.status(401).json(obj)
+	  
   } else {
- 
-  if(hasFlag === true) {
-	if(req.body.countryFlag_url === '' || typeof req.body.countryFlag_url === 'undefined')	{
-	const obj = {
-	 error: true, 
-	 title: "Invalid Flag Data", 
-	 msg: "If country Flag set to 'yes', flag value cannot be empty."
-	 };
-	 valid = 0;
-	 failure = {...obj} 
-	  } else {
-		 const checkFlag_url = mongoTypesCheck({countryFlag_url: req.body.countryFlag_url});
-		 
-		if(checkFlag_url.length > 0){
-		console.error("One or more types not authorized detected");
-		res.status(401).json({
-		error: true,
-		title: "Unauthorized: Incorrect Value",
-		msg: `The country flag field must be only composed of letters.` })
-		} else {
-			country.countryFlag_url = req.body.countryFlag_url
-	  }
-	}
-  };
-  
-  if(hasDescription === true) {
-	 if(req.body.countryDescription === '' || typeof req.body.countryDescription === 'undefined'){
-	const obj = {
-	 error: true, 
-	 title: "Invalid Description Data", 
-	 msg: "If country Description set to 'yes', the field cannot be empty."
-	 };
-	 valid = 0;
-	 failure = {...obj};
-	  } else {
-	  const checkDescription = mongoTypesCheck({countryDescription: req.body.countryDescription});
-	  if(checkDescription.length > 0) {
-		console.error("One or more types not authorized detected");
-		res.status(401).json({
-		error: true,
-		title: "Unauthorized: Incorrect Value",
-		msg: `The country description field must be only composed of letters.` })
-	  } else {
-	  country.countryDescription = req.body.countryDescription;
-	  }
-	}
-  }
-  
-if(valid === 0) {
-	res.status(401).json(failure);
-} else {
-	// const finalResult = await new countryModel.create(country).save();
-	console.log(country)
+	  
+	req.body.hasOwnProperty('countryFlag_url') ? Object.assign(country, {countryFlag_url: req.body.countryFlag_url }) : null;  
+   req.body.hasOwnProperty('countryDescription') ? Object.assign(country, { countryDescription: req.body.countryDescription }) : null;
+   
+   // const finalResult = await new countryModel.create(country).save();
+	// console.log(country)
 	const newCountry = new countryModel(country)
 	const finalResult = await newCountry.save();
-	console.log({ok: {...finalResult}})
+	
+	console.log(finalResult)
 	res.status(201).json({ insertedRow: 1 })
-}}
-		}
-	} catch(err){
+	
+	}}} catch(err){
 	console.error(err);
-	const obj = {error: true, title: "Internal Server Error", ...err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	res.status(500).json(obj);	
 	}
   })                    
@@ -217,65 +175,29 @@ myCountryRoutes.options("/editcountry/:country", cors());
 myCountryRoutes.patch("/editcountry/:country", cors(), async(req,res)=>{
 // edit only country flag and (or) country description field
 try {
-let valid = 1;
-let failure = {};
-const editCountry = req.params.country;
+
+const editCountry = req.params.country.substring(0, 1).toUpperCase() + req.params.country.substring(1).toLowerCase();
+const checker = bodyValidator('PATCH', req.body);
+
+if(checker.length > 0) {
+		const obj = {
+		err: true,
+		msg: "The edition country request is not authorized for the following reasons: ",
+		reasons: checker		
+		};
+		
+		console.log(obj.reasons);
+		res.status(401).json(obj)	
+	} else {
+		
 const countryProps = {};
 
-if(req.body.hasFlag === true){
-	if(req.body.countryFlag === '' || typeof req.body.countryFlag === 'undefined'){
-	const obj = {
-	 error: true, 
-	 title: "Invalid Flag Data", 
-	 msg: "If set to 'yes', flag value cannot be empty."
-	 };
-	 valid = 0;
-	 failure = {...obj};
-	 } else {
-		const checkFlag = mongoTypesCheck({countryFlag_url: req.body.countryFlag_url})
-		if(checkFlag.length > 0) {
-		console.error("One or more types not authorized detected");
-		res.status(401).json({
-		error: true,
-		title: "Unauthorized: Incorrect Value",
-		msg: `The country flag field must be only composed of letters.` })
-		} else {
-		countryProps["countryFlag_url"] = req.body.countryFlag_url;
-		}
-	 }
-	}
+		req.body.hasOwnProperty('countryFlag_url') ? Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url }) : null;  
+   req.body.hasOwnProperty('countryDescription') ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : null;
 
-
-if(req.body.hasDescription === true){
-	if(req.body.countryDescription === '' || typeof req.body.countryDescription === 'undefined'){
-	 const obj = {
-	 error: true, 
-	 title: "Invalid Description Data", 
-	 msg: "If set to 'yes', description value cannot be empty."
-	 };
-	 valid = 0;
-	 failure = {...obj};
-	  } else {
-	const checkDescription = mongoTypesCheck({countryDescription: req.body.countryDescription});
-	if(checkDescription.length > 0) {
-		console.error("One or more types not authorized detected");
-		res.status(401).json({
-		error: true,
-		title: "Unauthorized: Incorrect Value",
-		msg: `The country description field must be only composed of letters.` })
-		
-	} else {
-	countryProps["countryDescription"] = req.body.countryDescription
-	}
-		}
-	} 
-
-
- if(valid === 0) {
-	console.error(failure);
-	res.status(401).json(failure);	 	 
- } else {
 	const finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'  
+	
+	console.log(finalResult)
 	
 	switch(!finalResult) {
 		
@@ -291,7 +213,7 @@ if(req.body.hasDescription === true){
 			}
 		}
 	} catch(err) {
-	const obj = {error: true, title: "Internal Server Error", ...err};
+	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(obj);
 	res.status(500).json(obj);	  
 	  }
@@ -317,7 +239,7 @@ myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
 	const obj = {
 	error: true, 
 	title: "No Result found", 
-	msg: "Deletion failed because the query did not have any country."};
+	msg: "Deletion failed because the query did not match any country."};
 	console.error(obj)
 	res.status(404).json(obj)
 	} else {

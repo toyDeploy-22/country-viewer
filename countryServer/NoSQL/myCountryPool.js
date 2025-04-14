@@ -13,7 +13,7 @@ async function countryPoolAsync(URI, opts) {
 	result.db_Host = "cgf###.mongodb.net"
 	}
 	catch(err){
-	result = new Object({...err})
+	result = new Object({error: true, title: "Pooling Error", msg: err.message})
 	}
 	return result
 }

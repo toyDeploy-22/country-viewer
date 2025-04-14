@@ -30,7 +30,7 @@ const countrySchema = new mongoose.Schema({
 	 type: String, minLength: [10, "If filled-in, the country Description must at least contain a sentence of 10 characters. You can leave this field empty if you want."], maxLength: [250, "The country Description cannot contain more than 250 characters."], required: false
 	 },
  
- continent: { continentSchema }
+ continent: { type: continentSchema }
 },
 { timestamps: true });
 
