@@ -126,10 +126,8 @@ try {
   
   const country = {
 	  countryId: countryId.toUpperCase(),
-	  countryName: countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase(),
-	  continent: {
-		  continentId: continentId
-	  }
+	  countryName: countryName.substring(0,1).toUpperCase() + countryName.substring(1).toLowerCase()
+	  // continent: { continentId: continentId }
   };
   
  const isDuplicate = await countryModel.find({$or: [
@@ -155,11 +153,13 @@ try {
    
    // const finalResult = await new countryModel.create(country).save();
 	// console.log(country)
-	const newCountry = new countryModel(country)
+	const newCountry = new countryModel(country);
+	newCountry.continent = { continentId: continentId }; // embbed
+	
 	const finalResult = await newCountry.save();
 	
-	console.log(finalResult)
-	res.status(201).json({ insertedRow: 1 })
+	// console.log(finalResult)
+	finalResult.id ? res.status(201).json({ insertedRow: 1 }) : res.status(400).json({ error: true, title: "Country Creation Process Stopped", msg: "Something went wrong. Please try again.", insertedRow: 0 })
 	
 	}}} catch(err){
 	console.error(err);

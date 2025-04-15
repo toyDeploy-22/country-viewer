@@ -51,12 +51,12 @@ function bodyValidator(req, body) {
 		{	reason: "countryFlag value unauthorized",
 			error: true,
 			title: "Incorrect countryFlag Value",
-			msg: "The country flag field must be only composed of letters."
+			msg: "The country flag field must exist and has to be composed of letters only."
 		},
 		{	reason: "countryDescription value unauthorized",
 			error: true,
 			title: "Incorrect countryDescription Value",
-			msg: "The country description field must be only composed of letters."
+			msg: "The country description field must exist and has to be composed of letters only."
 		},
 		{
 			reason: "countryDescription value empty",
@@ -87,20 +87,20 @@ function bodyValidator(req, body) {
 			
 			checkFlag_url.length > 0 ? results.push(reasons.filter((err) => err.reason === "countryFlag value unauthorized")[0]) : null;
 			
+			!body.hasOwnProperty("countryFlag_url") && results.filter((r) => r.reason === "countryFlag value unauthorized").length === 0 ? results.push(reasons.filter((err) => err.reason === "countryFlag value unauthorized")[0]) : null;
+			
 			body.countryFlag_url === '' ? results.push(reasons.filter((err) => err.reason === "countryFlag value empty")[0]) : null;
 			
-			!body.hasOwnProperty("countryFlag_url") ? results.push(reasons.filter((err) => err.reason === "countryFlag value unauthorized")[0]) : null;
-			
-			checkFlag_url.length > 0 ? results.push(reasons.filter((err) => err.reason === "countryFlag value unauthorized")[0]) : null;
 		}
 		
 		if(body.hasDescription === true) {
 			
 			checkDescription.length > 0 ? results.push(reasons.filter((err) => err.reason === "countryDescription value unauthorized")[0]) : null;
 			
+			!body.hasOwnProperty("countryDescription") && results.filter((r) => r.reason === "countryDescription value unauthorized").length === 0 ? results.push(reasons.filter((err) => err.reason === "countryDescription value unauthorized")[0]) : null;
+			
 			body.countryDescription === '' ? results.push(reasons.filter((err) => err.reason === "countryDescription value empty")[0]) : null;
 			
-			!body.hasOwnProperty("countryDescription") ? results.push(reasons.filter((err) => err.reason === "countryDescription value empty")[0]) : null;
 		}
 		
 		return results
