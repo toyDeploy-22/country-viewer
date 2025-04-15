@@ -109,7 +109,7 @@ myCountryRoutes.post("/addcountry", cors(), async(req, res)=>{
 try {
 	const checker = bodyValidator("POST", req.body);
 	
-	 console.log(checker)
+	 // console.log(checker)
 	
 	if(checker.length > 0) {
 		const obj = {
@@ -193,7 +193,8 @@ if(checker.length > 0) {
 const countryProps = {};
 
 		req.body.hasOwnProperty('countryFlag_url') ? Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url }) : null;  
-   req.body.hasOwnProperty('countryDescription') ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : null;
+		
+		req.body.hasOwnProperty('countryDescription') ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : null;
 
 	const finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'  
 	
@@ -202,14 +203,19 @@ const countryProps = {};
 	switch(!finalResult) {
 		
 		case true:
-	console.error(failure);
-    res.status(404).json(failure);
-	break;
+		const failure = {
+		  error: true,
+		  title: "Country Not Found",
+		  msg: `The edition failed because the country has not been found. Please make sure that the country still exists and try again.`
+		}
+		console.error(failure);
+		res.status(404).json(failure);
+		break;
 		
 		case false:
-	const obj = { editedRow: 1 };
-	console.log({ok: {...obj}});
-	res.status(202).json(obj) // Accepted	
+		const success = { editedRow: 1 };
+		console.log(success);
+		res.status(202).json(success) // Accepted	
 			}
 		}
 	} catch(err) {

@@ -79,6 +79,7 @@ function bodyValidator(req, body) {
 		results.push(fieldsReason)
 		
 		return results
+		}
 	} 
 	
 	authorizedContinents.indexOf(body.continentId.toUpperCase()) === -1 && req === 'POST' ? results.push(reasons.filter((err) => err.reason === "Invalid Continent ID")[0]): null;
@@ -104,7 +105,6 @@ function bodyValidator(req, body) {
 		}
 		
 		return results
-		}
 }
 
 export { bodyValidator }
