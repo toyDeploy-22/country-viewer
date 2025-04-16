@@ -194,21 +194,37 @@ if(checker.length > 0) {
 	const countryProps = {};
 	const removeProps = {};
 
-		req.body.hasFlag === true ? Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url }) : Object.assign(removeProps, {countryFlag_url: "" });  
+		req.body.countryFlag_url === '' || !req.body.hasOwnProperty('countryFlag_url') ? Object.assign(removeProps, {countryFlag_url: "" }) : Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url });  
 		
-		req.body.hasDescription === true ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : Object.assign(removeProps, {countryDescription: "" });
+		req.body.countryDescription === '' || !req.body.hasOwnProperty('countryDescription') ? Object.assign(removeProps, { countryDescription: "" }) : Object.assign(countryProps, { countryDescription: req.body.countryDescription });
 	
-	if(Object.keys(removeProps).length === 0) {
-	finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'
+	if(Object.keys(removeProps).length > 0) {
+		
+	const finder = await countryModel.findOne({ countryName: editCountry });
+	const countryFinder = {
+			countryId: finder.countryId,
+			countryName: finder.countryName,
+			continent: { continentId: req.body.continentId }
+		}
+		
+		finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryFinder});
+		
 	} else {
-	finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryProps});
+		
+		finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'
 	}	
 	
 	console.log(finalResult)
 	
 	switch(!finalResult) {
 		
-		case true:
+		case false:
+		const success = { editedRow: 1 };
+		console.log(success);
+		res.status(202).json(success) // Accepted
+		break;
+		
+		default:
 		const failure = {
 		  error: true,
 		  title: "Country Not Found",
@@ -216,12 +232,7 @@ if(checker.length > 0) {
 		}
 		console.error(failure);
 		res.status(404).json(failure);
-		break;
 		
-		case false:
-		const success = { editedRow: 1 };
-		console.log(success);
-		res.status(202).json(success) // Accepted	
 			}
 		}
 	} catch(err) {
@@ -230,7 +241,6 @@ if(checker.length > 0) {
 	res.status(500).json(obj);	  
 	  }
   })
-
 
 
 
@@ -247,17 +257,23 @@ myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
 	{countryName: isCountryName}
 	]})
 	
-	if(!finalResult){
+	switch(!finalResult){
+	
+	case true:
 	const obj = {
 	error: true, 
 	title: "No Result found", 
 	msg: "Deletion failed because the query did not match any country."};
 	console.error(obj)
 	res.status(404).json(obj)
-	} else {
+	break;
+	
+	default:
 	console.log(finalResult);
     res.json({deletionRow: 1});
-        }
+	break;
+	
+        
 	} catch(err) {
 	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(obj);
