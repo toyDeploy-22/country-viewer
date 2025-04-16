@@ -94,7 +94,7 @@ const submitCountry = async(e) => {
   console.log(countryBody)
   await axios({
     method: 'post',
-    url: 'http://localhost:5000/addcountry',   
+    url: 'http://localhost:5000/nosql/addcountry',   
     headers: {'Content-Type': 'application/json'},
     data: countryBody
   });
@@ -189,13 +189,13 @@ return(
        defaultValue=""         
       >
 <option disabled value="">Click here to select</option>         
-<option value="Eu">Europe</option>
-<option value="Na">North America</option>
-<option value="Sa">South America</option>
-<option value="As">Asia</option>
-<option value="Af">Middle East/Africa</option>
-<option value="Oc">Oceania</option>
-<option value="An">Antarctica</option>
+<option value="EU">Europe</option>
+<option value="NA">North America</option>
+<option value="SA">South America</option>
+<option value="AS">Asia</option>
+<option value="AF">Middle East/Africa</option>
+<option value="OC">Oceania</option>
+<option value="AN">Antartica</option>
 </select>
 </div>
 <br />

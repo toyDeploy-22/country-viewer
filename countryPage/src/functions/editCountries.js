@@ -4,7 +4,7 @@ import axios from 'axios';
 
 let result = {};
 
-const editChecker = (cnt, body) => {
+const editChecker = (req, cnt, body) => {
 
 // variables
 const reasons = [{
@@ -36,18 +36,18 @@ const success = {
 };
 
 let validation = {};
-const { country_flag, country_description } = body;
+const { countryFlag_url, countryDescription } = body;
 
 // conditions
-if( country_flag === '' && country_description === '' ) {
+if( req !== "PATCH" && countryFlag_url === '' && countryDescription === '' ) {
  validation = reasons[0];
-} else if(typeof country_flag === 'undefined' && typeof country_description === 'undefined') { //added in another else/if block to simplify the visibility
+} else if( req !== "PATCH" && typeof countryFlag_url === 'undefined' && typeof countryDescription === 'undefined') { //added in another else/if block to simplify the visibility
  validation = reasons[0];
-} else if(cnt.country_flag === country_flag && cnt.country_description === country_description){
+} else if(cnt.countryFlag_url === countryFlag_url && cnt.countryDescription === countryDescription){
  validation = reasons[1];
-} else if(country_flag !== '' && typeof country_flag !== 'string') {
+} else if(countryFlag_url !== '' && ['string', 'undefined'].indexOf(typeof countryFlag_url) === -1) {
  validation = reasons[2];
-} else if(country_description.length > 160 ){
+} else if(countryDescription.length > 160 ){
     validation = { ...reasons[3] };
 } else {
  validation = { ...success };
@@ -59,10 +59,10 @@ const editCountries = async(cnt) => {
     try {
         let currBody = {};
         let newBody = {};
-        const url = `http://localhost:5000/editcountry/${cnt.country_name}`;
+        const url = `http://localhost:5000/nosql/editcountry/${cnt.countryName}`;
         const validProps = Object.entries(cnt);
-        const flag = validProps.filter((cf)=>cf[0] === "country_flag")[0];
-        const description = validProps.filter((cd)=>cd[0] === "country_description")[0];
+        const flag = validProps.filter((cf)=>cf[0] === "countryFlag_url")[0];
+        const description = validProps.filter((cd)=>cd[0] === "countryDescription")[0];
 
         if(flag.indexOf('') < 0 && description.indexOf('') < 0 ) {
            currBody.hasFlag = true;
@@ -112,10 +112,11 @@ const editCountries = async(cnt) => {
 
 const addCountriesChecker = async(body, arr) => {
     console.log(arr.length)
-    const duplicate = await arr.filter((c) => c.country_id.toLowerCase() === body.id.toLowerCase())
+    const duplicate = await arr.filter((c) => c.countryId.toLowerCase() === body.id.toLowerCase())
     let result = {// ok: boolean, msg: string
     };
-    const continents = ["Europe", "Americas", "Asia", "Middle East and Africa", "Oceania"];
+    // const continents = ["Europe", "North America", "South America", "Asia", "Middle East and Africa", "Oceania", "Antarctica"];
+    const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
     const noNumbers = new RegExp(/^[^0-9]/);
     // No number allowed for all sequence const noNumbers = new RegExp(/^[^0-9]+$/);
 

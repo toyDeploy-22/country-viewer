@@ -9,7 +9,7 @@ function Editpage({ cnt }) {
 
 // states
 const [loader, setLoader] = useState(false);
-const [editable, setEditable] = useState({ country_name: cnt.country.country_name, country_flag: '', country_description: '' });
+const [editable, setEditable] = useState({ countryName: cnt.country.countryName, countryFlag_url: '', countryDescription: '' });
 const [modalShow, setModalShow] = useState(false);
 // const [modalResult, setModalResult] = useState({ err: false, code: 0, title: '', msg: '' });
 const [errorStack, setErrorStack] = useState({
@@ -27,7 +27,7 @@ setEditable(() => editObject)
 }
 
 const cancelediting = () => {
-  const initialEdition = { country_flag: '', country_description: '' };
+  const initialEdition = { countryFlag_url: '', countryDescription: '' };
   setEditable(()=>initialEdition);
 }
 
@@ -41,7 +41,7 @@ const submitCountry = async(e) => {
   setModalShow(false);
   try {
     setLoader(true);
-    const checker = editChecker(cnt, editable);
+    const checker = editChecker("PATCH", cnt, editable);
     if(checker.err) {
       setErrorStack(() => checker);
       setLoader(false);
@@ -78,14 +78,14 @@ return (
   <React.Fragment>
   <div id="editCountry-container">
           <form>
-            <h1>Edit {cnt.country.country_name} Country</h1>
+            <h1>Edit {cnt.country.countryName} Country</h1>
           <div className="ids">
             <section className="ids-section">
               <label htmlFor="continent_id">
                 Continent ID<span className="req">{'*'}</span>
               </label>
               <br />
-              <select id="continent_id" className="continent_id-selection" name="continent_id" autoComplete="on" defaultValue={cnt.country.continent_id} disabled>
+              <select id="continent_id" className="continent_id-selection" name="continent_id" autoComplete="on" defaultValue={cnt.country.continent.continentId} disabled>
                 {
                   [1, 2, 3, 4, 5].map((c)=><option key={c} value={c}>{
                     c === 1 ? "Europe" : c === 2 ? "America" : c === 3 ? "Asia" : c === 4 ? "Africa/Middle-East" : "Oceania"
@@ -93,13 +93,13 @@ return (
                 }
               </select>
             </section>
-<p id="country_id-zone"><small>The continent ID is <span>{cnt.country.continent_id}</span></small></p>
+<p id="country_id-zone"><small>The continent ID is <span>{cnt.country.continent.continentId}</span></small></p>
             <section className="ids-section">
               <label htmlFor="country_id">
                 Country ID<span className="req">*</span>
               </label>
               <br />
-              <input id="country_id" type="text" className="edit-readOnly" value={cnt.country.country_id} autoComplete="off" name="country_id" required disabled />
+              <input id="country_id" type="text" className="edit-readOnly" value={cnt.country.countryId} autoComplete="off" name="countryId" required disabled />
             </section>
           </div>
             <br />
@@ -107,7 +107,7 @@ return (
             <label htmlFor="country_name">
               Country Name<span className="req">*</span>
             </label>
-            <input id="country_name" type="text" className="edit-readOnly" autoComplete="on" name="country_name" value={Object.entries(cnt.country).filter((obj)=>obj[0] === 'country_name')[0].map((p)=>p)[1].substring(0,25)} disabled />
+            <input id="country_name" type="text" className="edit-readOnly" autoComplete="on" name="countryName" value={Object.entries(cnt.country).filter((obj)=>obj[0] === 'countryName')[0].map((p)=>p)[1].substring(0,25)} disabled />
             
           <p className="editcountry-note"><small><b>Note: </b> Due to technical and organizational reasons, the country name, ID and continent ID are not editable.</small></p>
           <hr />
@@ -115,15 +115,15 @@ return (
             <label htmlFor="country_flag">
             Flag
             </label>
-            <input type="text" className="text-light" id="country_flag" placeholder={cnt.country.country_flag ? cnt.country.country_flag : "ex: http://www.image.com"} autoComplete="on" name="country_flag" value={editable.country_flag} onChange={handleCountry} />
+            <input type="text" className="text-light" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             <br />
         
             <label>
             Description
             </label>
-            <textarea className="text-light" cols="6" rows="3" placeholder={cnt.country.country_description && cnt.country.country_description.length > 15 ? cnt.country.country_description.substring(0, Math.ceil(cnt.country.country_description.length/9)) + "..." : cnt.country.country_description && cnt.country.country_description.length < 15 ? cnt.country.country_description : "Add some text here if needed..."} name="country_description" value={editable.country_description} onChange={handleCountry} maxLength={160}></textarea>
+            <textarea className="text-light" cols="6" rows="3" placeholder={cnt.country.countryDescription && cnt.country.countryDescription.length > 15 ? cnt.country.countryDescription.substring(0, Math.ceil(cnt.country.countryDescription.length/9)) + "..." : cnt.country.countryDescription && cnt.country.countryDescription.length < 15 ? cnt.country.countryDescription : "Add some text here if needed..."} name="countryDescription" value={editable.countryDescription} onChange={handleCountry} maxLength={160}></textarea>
             <br />
-            {typeof editable.country_description !== 'undefined' && editable.country_description.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.country_description.length >= 80 && editable.country_description.length < 150 ? "primary" : editable.country_description.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.country_description.length)}</small></p> : null}
+            {typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null}
             <br />
             {
               errorStack.err === false && errorStack.code === 200 && 
@@ -153,11 +153,11 @@ return (
             >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-         Edit {editable.country_name} Country
+         Edit {editable.countryName} Country
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Confirm changes for {editable.country_name} country ?</p>
+        <p>Confirm changes for {editable.countryName} country ?</p>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={submitCountry} disabled={loader ? true : false } variant={loader ? 'info' : 'primary'}>{ loader ? "Editing..." : "Yes" }</Button>
