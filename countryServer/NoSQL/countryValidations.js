@@ -80,9 +80,9 @@ function bodyValidator(req, body) {
 		
 		return results
 		}
-	} 
+	}
 	
-	authorizedContinents.indexOf(body.continentId.toUpperCase()) === -1 && req === 'POST' ? results.push(reasons.filter((err) => err.reason === "Invalid Continent ID")[0]): null;
+	authorizedContinents.indexOf(body.continentId.toUpperCase()) === -1 ? results.push(reasons.filter((err) => err.reason === "Invalid Continent ID")[0]): null;
 		
 		if(body.hasFlag === true) {
 			

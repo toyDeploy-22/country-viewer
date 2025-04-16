@@ -60,21 +60,21 @@ function SearchCountry({ countries }) {
     } else {
     // const url = "http://localhost:5000/countrysearch/name?countryname=" + input;
     // const findCountry = await axios.get(url);
-    const continents = [1, 2, 3, 4, 5];
+    const continents = ["NA", "SA", "EU", "AF", "AS", "OC", "AN"];
     let indexContinent = Math.ceil(Math.random() * continents.length);
 
-    const inputCountry = countries.filter((c) => c.country_name.toLowerCase().includes(input.toLowerCase()));
+    const inputCountry = countries.filter((c) => c.countryName.toLowerCase().includes(input.toLowerCase()));
     
-    const findCountry = inputCountry.length === 0 ? [{ country_id: '0000', country_name: input, continent_id: continents[indexContinent === 0 ? indexContinent : indexContinent - 1] }] : inputCountry;
+    const findCountry = inputCountry.length === 0 ? [{ countryId: '0000', countryName: input, continentId: continents[indexContinent === 0 ? indexContinent : indexContinent - 1] }] : inputCountry;
 
-    const suggestion = countries.filter((c) => c.continent_id === findCountry[0].continent_id).filter((c) => c.country_name !== findCountry[0].country_name);
+    const suggestion = countries.filter((c) => c.continent.continentId === findCountry[0].continentId).filter((c) => c.countryName !== findCountry[0].countryNname);
 
     let index = Math.ceil(Math.random() * suggestion.length);
     let index_2 = Math.ceil(Math.random() * countries.length); 
 
     let suggestedCountry = suggestion.length > 1 ? suggestion[index === 0 ? index : index - 1] : countries[index_2 === 0 ? index_2 : index_2 - 1];
 
-    if(findCountry[0].country_id === '0000') {
+    if(findCountry[0].countryId === '0000') {
       setLoader(false);
       const obj2 = {
 	    error: true,
@@ -153,10 +153,10 @@ onChange={handleCountryName}
     <h3 className="countries-results-nb"><span>{results.length}</span> { results.length > 1 ? 'Countries' : 'Country' } Found:</h3>
     {
     results.map((countries, _ind) =>
-          <div id="countryList-container" key={countries.country_id + _ind}>
-          <Link to={"/country/" + countries.country_name} target='_blank'>
-          <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.country_flag} alt={fakeSource ? "Unknown Flag" : countries.country_name} />
-          <p>{countries.country_name}</p>
+          <div id="countryList-container" key={countries.countryId + _ind}>
+          <Link to={"/country/" + countries.countryName} target='_blank'>
+          <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.countryFlag_url} alt={fakeSource ? "Unknown Flag" : countries.countryName} />
+          <p>{countries.countryName}</p>
           </Link>
           </div>
         )}
@@ -164,8 +164,8 @@ onChange={handleCountryName}
         <div className="country-suggestion me-2">
         <h6>A country that might interest:</h6>
         <figure>
-        <Link className="countryFound-link" to={"/country/" + suggest[0].country_name} target='_blank'>
-        <img src={suggest[0].country_flag} alt={suggest[0].country_name} />
+        <Link className="countryFound-link" to={"/country/" + suggest[0].countryName} target='_blank'>
+        <img src={suggest[0].countryFlag_url} alt={suggest[0].countryName} />
         <figcaption><Button variant="">Visit country</Button></figcaption>
         </Link>
         </figure>
@@ -184,8 +184,8 @@ onChange={handleCountryName}
       <div className="country-suggestion">
         <h6>A country that might interest:</h6>
         <figure>
-        <Link className="countryFound-link" to={"/country/" + suggest[0].country_name} target='_blank'>
-        <img src={suggest[0].country_flag} alt={suggest[0].country_name} />
+        <Link className="countryFound-link" to={"/country/" + suggest[0].countryName} target='_blank'>
+        <img src={suggest[0].countryFlag_url} alt={suggest[0].countryName} />
         <figcaption><Button variant="">Visit country</Button></figcaption>
         </Link>
         </figure>

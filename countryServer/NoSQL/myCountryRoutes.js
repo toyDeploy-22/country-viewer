@@ -18,10 +18,10 @@ try {
 
    // Query
  const myQuery = await countryModel.find({});
- const myResults = { resultsFound: myQuery.length + " countries" }
+ const myResultsNum = { resultsFound: myQuery.length + " countries" }
  
- console.log(myResults);
- res.json(myResults);
+ console.log(myResultsNum);
+ res.json(myQuery);
 } catch(err) {
          const obj = {
 			 error: true,
@@ -190,13 +190,19 @@ if(checker.length > 0) {
 		res.status(401).json(obj)	
 	} else {
 		
-const countryProps = {};
+	let finalResult;
+	const countryProps = {};
+	const removeProps = {};
 
-		req.body.hasOwnProperty('countryFlag_url') ? Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url }) : null;  
+		req.body.hasFlag === true ? Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url }) : Object.assign(removeProps, {countryFlag_url: "" });  
 		
-		req.body.hasOwnProperty('countryDescription') ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : null;
-
-	const finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'  
+		req.body.hasDescription === true ? Object.assign(countryProps, { countryDescription: req.body.countryDescription }) : Object.assign(removeProps, {countryDescription: "" });
+	
+	if(Object.keys(removeProps).length === 0) {
+	finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'
+	} else {
+	finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryProps});
+	}	
 	
 	console.log(finalResult)
 	

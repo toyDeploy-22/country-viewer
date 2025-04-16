@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import countrySchema from '../functions/countrySchema.js';
 import Button from 'react-bootstrap/Button';
 import randomFlags from '../functions/randomFlag.js';
 import ExtraCountries from './ExtraCountries.jsx';
@@ -10,11 +11,10 @@ import Pageerror from './Pageerror.jsx';
 
 function MainCountries({ countries }) {
 
-const [countriesSet, setCountriesSet] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
+const [countriesSet, setCountriesSet] = useState([{ ...countrySchema }]);
 const [status, setStatus] = useState(0);
 const [hasSource, setHasSource] = useState(true);
 
-const {all} = countries;
 const errorStack = { err: true, code: 404, title: 'No Country Available', msg: ['Cannot display countries.', 'Please try to refresh the page.'] };
 
 const errorImg = () => {
@@ -27,9 +27,9 @@ async function launchCountries() {
 
   try {
     
-    const data = await all;
+    const data = await countries.all;
 
-    const countryFlagsOk = await data.filter((c)=>typeof c.country_flag !== 'undefined' && c.country_flag !== '');
+    const countryFlagsOk = await data.filter((c)=>typeof c.countryFlag_url !== 'undefined' && c.countryFlag_url !== '');
 
     const newCountries = randomFlags(countryFlagsOk, 18);
 
@@ -50,7 +50,7 @@ async function launchCountries() {
     }
   }
   launchCountries();
-}, [all, status]);
+}, [countries, status]);
 
 return(
   <React.Fragment>
@@ -67,11 +67,11 @@ return(
       {
         countriesSet.map(
           (country, _ind)=>
-          <div className="countryContainer-block" key={country.country_id + _ind}>
+          <div className="countryContainer-block" key={country.countryId + _ind}>
           <img 
-          onError={()=>errorImg} src={!hasSource ? NoImage : country.country_flag} alt={!hasSource ? 'No Flag' : country.country_name} ></img>
+          onError={()=>errorImg} src={!hasSource ? NoImage : country.countryFlag_url} alt={!hasSource ? 'No Flag' : country.countryName} ></img>
           {/*<img /> gives error contrary to <img></img>*/}
-          <Button variant="secondary" className="w-75 p-1 mt-1"><Link className="Link fw-bold text-light text-decoration-none" to={`/country/${country.country_name}`}>{country.country_name}</Link></Button>
+          <Button variant="secondary" className="w-75 p-1 mt-1"><Link className="Link fw-bold text-light text-decoration-none" to={`/country/${country.countryName}`}>{country.countryName}</Link></Button>
           </div>            
         )
       }

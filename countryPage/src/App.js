@@ -11,7 +11,13 @@ import Errorpage from './components/Errorpage.jsx';
 import axios from 'axios';
 
 function App() {
-  const [allCountries, setAllCountries] = useState([{ country_id: '', country_name: '', country_description: '', country_flag: '' }]);
+  const [allCountries, setAllCountries] = useState([{ 
+      countryId: "",
+      countryName: "",
+      countryFlag_url: "",
+      countryDescription: "",
+      continent: { continentId: "EU" }
+  }]);
   const [spinner, setSpinner] = useState(false);
   const [result, setResult] = useState('init');
 
@@ -22,12 +28,12 @@ function App() {
       
       try {
         setSpinner(true);
-        const myUrl = 'http://localhost:5000/allcountries';
+        const myUrl = 'http://localhost:5000/nosql/allcountries';
         // const getCountries = 
         const countriesJson = await axios.get(myUrl, {
           signal: signal
         });
-        setAllCountries(countriesJson.data);
+        setAllCountries(countriesJson.data); // Array of Objects
         setSpinner(false);
         setResult('Ok');
       } catch (err) {

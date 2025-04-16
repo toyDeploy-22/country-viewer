@@ -8,7 +8,7 @@ function Errorpage() {
 
 return(
 <div id="errorPage">
-	<h1 class="oops">Ooops...</h1>
+	<h1 className="oops">Ooops...</h1>
 	<br />
 	<div class="err-messages">
 		<p>An error occured. We are sorry for the inconvenience.</p>

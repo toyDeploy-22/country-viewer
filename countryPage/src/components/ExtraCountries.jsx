@@ -35,7 +35,7 @@ const errorImg = () => {
 
  const submitResult = () => {
   selected === "" ? setAnswerResult("empty") :
-   selected.toLowerCase() === answer[0].country_name.toLowerCase() ? 
+   selected.toLowerCase() === answer[0].countryName.toLowerCase() ? 
      setAnswerResult("true") : setAnswerResult("false")
  }
 
@@ -73,17 +73,17 @@ errorStack[0].err === true ?
 <div className="extraCountries-block"></div>
 <h5 id="play-h5">Play With Us!</h5> 
 <h5>What is the country name of this flag ?</h5>
-<img onError={()=>errorImg} src={!hasSource ? NoImage : answer[0].country_flag} alt={!hasSource ? "No Image" : "country flag"} />    
+<img onError={()=>errorImg} src={!hasSource ? NoImage : answer[0].countryFlag_url} alt={!hasSource ? "No Image" : "country flag"} />    
 <ol type="A">
 {
 proposals.map((land, _ind)=>
 <Button 
 variant={`outline-${randomColors()}`}
-key={land.country_id + "-" + _ind}
-value={land.country_name}
+key={land.countryId + "-" + _ind}
+value={land.countryName}
 onClick={handleResult}
 >
-{land.country_name}
+{land.countryName}
 </Button>)
 }
 </ol>
