@@ -12,6 +12,9 @@ function ProfileEdit({ cnt }) {
 const [clickEdit, setClickEdit] = useState(false);
 const [hasSource, setHasSource] = useState(true);
 
+// variables
+const continents = [{id: "eu", name: "Europe"}, {id: "na", name: "North America"}, {id: "sa", name: "South America"}, {id: "af", name: "Middle East/Africa"}, {id: "as", name: "Asia"}, {id: "oc", name: "Oceania" }, {id: "an", name: "Antarctica"}];
+
 // function
 const fakeSource = () => {
   setHasSource(false);
@@ -26,9 +29,9 @@ const trueSource = () => {
 return(
   <React.Fragment>
   { !clickEdit && 
-    <div id="countryProfile" key={cnt.country.country_id}>
+    <div id="countryProfile" key={cnt.country.countryId}>
     <div className="backgroundProfile">
-        <h1>Discover {cnt.country.country_name} <span>{cnt.country.country_flag ? <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.country_flag} alt={!hasSource ? 'No Flag' : cnt.country.country_name} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span></h1>
+        <h1>Discover {cnt.country.countryName} <span>{cnt.country.countryFlag_url ? <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.countryFlag_url} alt={!hasSource ? 'No Flag' : cnt.country.countryName} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span></h1>
         <br />
         <div className="extraOptions">
         <div className="goBack_logo"><Link to="/"><FontAwesomeIcon icon={faArrowLeftLong} size="lg" style={{color: "#63E6BE",}} /></Link>{' '}<span style={{ color: '#63E6BE', fontWeight: '700', fontFamily: 'Courier New, Courier, monospace' }}>Go Back</span></div><br />
@@ -41,11 +44,11 @@ return(
   <div className="countryContainer p-2">
   
   {
-  cnt.country.country_flag ?
+  cnt.country.hasOwnProperty("countryFlag_url") ?
   <section className="flagDetails">
     <figure>
-    <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.country_flag} alt={!hasSource ? 'No Flag' : cnt.country.country_name} />
-    <figcaption>{!hasSource ? 'Flag is unknown' : 'Flag of ' + cnt.country.country_name}</figcaption>
+    <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.countryFlag_url} alt={!hasSource ? 'No Flag' : cnt.country.countryName} />
+    <figcaption>{!hasSource ? 'Flag is unknown' : 'Flag of ' + cnt.country.countryName}</figcaption>
     </figure>
   </section>
     :
@@ -59,13 +62,13 @@ return(
 
   <section className="descriptionDetails">
   <ul>
-  <li>ID: <b>{cnt.country.country_id}</b></li>
-  <li>Area: <b>{cnt.country.continent_id === 1 ? 'Europe' : cnt.country.continent_id === 2 ? 'America' : cnt.country.continent_id === 3 ? 'Asia' : cnt.country.continent_id === 4 ? 'Africa-Middle East': 'Oceania' }</b></li>
+  <li>Country ID: <b>{cnt.country.countryId}</b></li>
+  <li>Area: <b>{continents.filter((c) => c.id === cnt.country.continent.continentId.toLowerCase()).map((c) => c.name)[0] }</b></li>
   </ul>
   </section>
   </div>
   <article>
-  <p>{cnt.country.country_description ? cnt.country.country_description : <i>-No description-</i>}</p>
+  <p>{cnt.country.hasOwnProperty("countryDescription") ? cnt.country.countryDescription : <i>-No description-</i>}</p>
   <br />
   </article>
   </div>

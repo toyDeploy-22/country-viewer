@@ -20,7 +20,7 @@ useEffect(() => {
     async function fetchCountry(arr, cnt) {
       try {
         setLoader(true);
-        let userCountry = await arr.filter((c) => c.country_name.toLowerCase() === cnt.toLowerCase());
+        let userCountry = await arr.filter((c) => c.countryName.toLowerCase() === cnt.toLowerCase());
         
         if(userCountry.length === 0) {
           const obj3 = { err: true, code: 404, title: 'No Country Found', msg: [`We did not find any country under the name '${cnt}'.`, "Please check the name or try to add the country."]}
