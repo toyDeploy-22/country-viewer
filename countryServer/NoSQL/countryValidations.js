@@ -27,6 +27,7 @@ function mongoTypesCheck(obj) {
 function bodyValidator(req, body) {
 		
 	const results = [];
+	let validation;
 	
 	const checkTypes = mongoTypesCheck(body);
 	const requiredKeys = ["countryId", "countryName", "continentId", "hasFlag", "hasDescription"].filter((k) => !body.hasOwnProperty(k) ? k : null);
@@ -41,6 +42,12 @@ function bodyValidator(req, body) {
 			error: true,
 			title: "Invalid Continent ID Value",
 			msg: "The contient ID is not recognized. Please make sure that the continent ID is selected from the list." 
+		},
+		{
+			reason: "Invalid required values",
+			error: true,
+			title: "Incorrect values",
+			msg: "Some required key values are invalid. Please make sure that there are not special characters nor numbers." 
 		},
 		{ 
 			reason: "countryFlag value empty",
@@ -77,11 +84,30 @@ function bodyValidator(req, body) {
 			msg: `The ${checkTypes.length > 0 ? checkTypes.join(", and ") : requiredKeys.join(", and ")} fields must exist and values must only be letters.` 
 		}
 		results.push(fieldsReason)
+		validation = 0;
+		} else {
+		validation = 1
+		}
+	} else if(req === 'PATCH') {
+		const arr = [];
+		const requiredPatchKeys = ["countryId", "countryName", "continentId"];
+		for(let [k,v] of Object.entries(body)) {
+			requiredPatchKeys.indexOf(k) === -1 ? arr.push(k) : null;
+		}
+		if(arr.length > 0){
+		validation = 0;
+		results.push(reasons.filter((err) => err.reason === "Invalid Continent ID")[0])
+		} else {
+		const patchKeys = Object.keys(body);
 		
-		return results
+	const patchVal = Object.values({ ...body.countryId, ...body.countryName, ...body.continentId });
+		
+		patchVal.filter((v) => noNumbers_NoSpecial.test(v) === true).length > 0 ? (validation = 0, results.push(reasons.filter((err) => err.reason === "Invalid required values")[0])) : validation = 1;
+		
 		}
 	}
 	
+	if(validation === 1) {
 	authorizedContinents.indexOf(body.continentId.toUpperCase()) === -1 ? results.push(reasons.filter((err) => err.reason === "Invalid Continent ID")[0]): null;
 		
 		if(body.hasFlag === true) {
@@ -103,7 +129,8 @@ function bodyValidator(req, body) {
 			body.countryDescription === '' ? results.push(reasons.filter((err) => err.reason === "countryDescription value empty")[0]) : null;
 			
 		}
-		
+	}
+			
 		return results
 }
 

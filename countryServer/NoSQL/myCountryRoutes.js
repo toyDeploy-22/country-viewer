@@ -207,11 +207,11 @@ if(checker.length > 0) {
 			continent: { continentId: req.body.continentId }
 		}
 		
-		finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryFinder});
+		finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryFinder}, {returnDocument: 'after'});
 		
 	} else {
 		
-		finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true}); // no need to specify '$set'
+		finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true, returnDocument: 'after'}); // no need to specify '$set'
 	}	
 	
 	console.log(finalResult)
@@ -237,7 +237,7 @@ if(checker.length > 0) {
 		}
 	} catch(err) {
 	const obj = {error: true, title: "Internal Server Error", msg: err.message};
-	console.error(obj);
+	console.error(err);
 	res.status(500).json(obj);	  
 	  }
   })
@@ -274,9 +274,9 @@ myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
 	break;
 	
         
-	} catch(err) {
+	}} catch(err) {
 	const obj = {error: true, title: "Internal Server Error", msg: err.message};
-	console.error(obj);
+	console.error(err);
 	res.status(500).json(obj);	 	
 		}
 })
