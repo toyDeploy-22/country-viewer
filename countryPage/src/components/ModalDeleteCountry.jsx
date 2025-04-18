@@ -25,7 +25,7 @@ setSpinner(true);
 await deleteCountry(arr, country); // Full object
 setResult("true");
 setSpinner(false);
-setMessage(`${country.country_name} country has been successfully deleted from the database.`);
+setMessage(`${country.countryName} country has been successfully deleted from the database.`);
 } catch(err) {
   setSpinner(false); 
   console.error(err);
@@ -44,7 +44,7 @@ setMessage(`${country.country_name} country has been successfully deleted from t
         </Modal.Header>
         <Modal.Body>
         { result === "init" &&
-        <p>Are you sure you want to delete {country.country_name} country ?</p>
+        <p>Are you sure you want to delete {country.countryName} country ?</p>
         }
         <div id="buttons_container_2">
         { result === "init" && 
@@ -83,10 +83,10 @@ setMessage(`${country.country_name} country has been successfully deleted from t
           }
         </div>
         { result === "true" &&
-        <Badge bg="success">Deletion of {country.country_name} complete.</Badge>
+        <Badge bg="success">Deletion of {country.countryName} complete.</Badge>
         }
         { result === "false" &&
-        <Badge bg="danger">The deletion of {country.country_name} country not complete.</Badge>
+        <Badge bg="danger">The deletion of {country.countryName} country not complete.</Badge>
         }
         </Modal.Body>
         <Modal.Footer>

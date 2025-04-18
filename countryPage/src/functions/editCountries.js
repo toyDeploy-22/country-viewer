@@ -61,8 +61,8 @@ const editCountries = async(cnt) => {
         let newBody = {};
         const url = `http://localhost:5000/nosql/editcountry/${cnt.countryName}`;
         const validProps = Object.entries(cnt);
-        const flag = validProps.filter((cf)=>cf[0] === "countryFlag_url")[0];
-        const description = validProps.filter((cd)=>cd[0] === "countryDescription")[0];
+        const flag = validProps.filter((cf)=>cf[0] === "countryFlag_url")[0]; // returns 1D array 
+        const description = validProps.filter((cd)=>cd[0] === "countryDescription")[0]; // returns 1D array
 
         if(flag.indexOf('') < 0 && description.indexOf('') < 0 ) {
            currBody.hasFlag = true;

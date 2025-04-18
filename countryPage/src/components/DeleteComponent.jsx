@@ -53,11 +53,11 @@ function DeleteComponent ({ cnt, wannaDelete }) {
     // const url = "http://localhost:5000/countrysearch/name?countryname=" + input;
     // const findCountry = await axios.get(url)
 
-    const inputCountry = cnt.filter((c) => c.country_name.toLowerCase().includes(input.toLowerCase()) || c.country_id.toUpperCase().includes(input.toUpperCase()));
+    const inputCountry = cnt.filter((c) => c.countryName.toLowerCase().includes(input.toLowerCase()) || c.countryId.toUpperCase().includes(input.toUpperCase()));
 
-    const findCountry = inputCountry.length === 0 ? [{ country_id: '0000', country_name: input, continent_id: 0 }] : inputCountry;
+    const findCountry = inputCountry.length === 0 ? [{ countryId: '0000', countryName: input, continentId: 0 }] : inputCountry;
 
-    if(findCountry[0].country_id === '0000') {
+    if(findCountry[0].countryId === '0000') {
       setLoader(false);
       const obj2 = {
 	    err: true,
@@ -145,15 +145,15 @@ onChange={handleCountryName}
     <br />
     {
     results.map((countries, _ind) =>
-          <div id="countryList-container-2" className="mb-2" key={countries.country_id + _ind}>
+          <div id="countryList-container-2" className="mb-2" key={countries.countryId + _ind}>
           <p><span>{_ind + 1}</span></p>
           <span className="p-2">{' '}</span>
-          <Link to={"/country/" + countries.country_name} className="link" target='_blank'>
-          <p>{countries.country_name}</p>
+          <Link to={"/country/" + countries.countryName} className="link" target='_blank'>
+          <p>{countries.countryName}</p>
           </Link>
           <span className="p-2">{' '}</span>
-          <Link to={"/country/" + countries.country_name} className="image" target='_blank'>
-          <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.country_flag} alt={fakeSource ? "Unknown Flag" : countries.country_name} />
+          <Link to={"/country/" + countries.countryName} className="image" target='_blank'>
+          <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.countryFlag_url} alt={fakeSource ? "Unknown Flag" : countries.countryName} />
           </Link>
           <span className="p-2">{' '}</span>
           <FontAwesomeIcon className="trashIcon" onClick={() => wannaDelete(countries)} icon={faTrashCan} />

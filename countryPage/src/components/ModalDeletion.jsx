@@ -19,10 +19,10 @@ const handleDelete = async() => {
 // function and spinner
 try {
 setSpinner(true);
-await deletion(cnt.country.country_name); // Full object
+await deletion(cnt.country.countryName); // Full object
 setResult("true");
 setSpinner(false);
-setMessage(`${cnt.country.country_name} country has been successfully deleted from the database.`);
+setMessage(`${cnt.country.countryName} country has been successfully deleted from the database.`);
 } catch(err) {
   setSpinner(false); 
   console.error(err);
@@ -52,7 +52,7 @@ setMessage(`${cnt.country.country_name} country has been successfully deleted fr
         </Modal.Header>
         <Modal.Body>
         { result === "init" &&
-        <p>Are you sure you want to delete {cnt.country.country_name} country ?</p>
+        <p>Are you sure you want to delete {cnt.country.countryName} country ?</p>
         }
         <div id="buttons_container">
         { result === "init" && 
@@ -86,10 +86,10 @@ setMessage(`${cnt.country.country_name} country has been successfully deleted fr
           }
         </div>
         { result === "true" &&
-        <Badge bg="success">Deletion of {cnt.country.country_name} complete.</Badge>
+        <Badge bg="success">Deletion of {cnt.country.countryName} complete.</Badge>
         }
         { result === "false" &&
-        <Badge bg="danger">The deletion of {cnt.country.country_name} country not complete.</Badge>
+        <Badge bg="danger">The deletion of {cnt.country.countryName} country not complete.</Badge>
         }
         </Modal.Body>
         <Modal.Footer>

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import CloseButton from 'react-bootstrap/CloseButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { editChecker, editCountries } from '../functions/editCountries.js';
 
 function Editpage({ cnt }) {
@@ -117,6 +119,8 @@ return (
             </label>
             <input type="text" className="text-light" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             <br />
+            
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> The country Flag details will be removed after confirmation if the field is left in blank.{")"}</small></p>
         
             <label>
             Description
@@ -125,6 +129,7 @@ return (
             <br />
             {typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null}
             <br />
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> The country Description details will be removed after confirmation if the field is left in blank.{")"}</small></p>
             {
               errorStack.err === false && errorStack.code === 200 && 
               <div className="editpage-success">
