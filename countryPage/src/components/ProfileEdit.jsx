@@ -16,9 +16,6 @@ const [hasSource, setHasSource] = useState(true);
 const continents = [{id: "eu", name: "Europe"}, {id: "na", name: "North America"}, {id: "sa", name: "South America"}, {id: "af", name: "Middle East/Africa"}, {id: "as", name: "Asia"}, {id: "oc", name: "Oceania" }, {id: "an", name: "Antarctica"}];
 
 // function
-const fakeSource = () => {
-  setHasSource(false);
-}
 
 /*
 const trueSource = () => {
@@ -31,7 +28,7 @@ return(
   { !clickEdit && 
     <div id="countryProfile" key={cnt.country.countryId}>
     <div className="backgroundProfile">
-        <h1>Discover {cnt.country.countryName} <span>{cnt.country.countryFlag_url ? <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.countryFlag_url} alt={!hasSource ? 'No Flag' : cnt.country.countryName} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span></h1>
+        <h1 className='my-3'><span>{cnt.country.hasOwnProperty("countryFlag_url") ? <img src={cnt.country.countryFlag_url} alt={cnt.country.countryName} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span> Discover {cnt.country.countryName} <span>{cnt.country.hasOwnProperty("countryFlag_url") ? <img src={cnt.country.countryFlag_url} alt={cnt.country.countryName} width="20" /> : <img src={NoImage} alt={'No Flag'} width="20" />}</span></h1>
         <br />
         <div className="extraOptions">
         <div className="goBack_logo"><Link to="/"><FontAwesomeIcon icon={faArrowLeftLong} size="lg" style={{color: "#63E6BE",}} /></Link>{' '}<span style={{ color: '#63E6BE', fontWeight: '700', fontFamily: 'Courier New, Courier, monospace' }}>Go Back</span></div><br />
@@ -47,8 +44,9 @@ return(
   cnt.country.hasOwnProperty("countryFlag_url") ?
   <section className="flagDetails">
     <figure>
-    <img onError={fakeSource} src={!hasSource ? NoImage : cnt.country.countryFlag_url} alt={!hasSource ? 'No Flag' : cnt.country.countryName} />
-    <figcaption>{!hasSource ? 'Flag is unknown' : 'Flag of ' + cnt.country.countryName}</figcaption>
+    <img src={cnt.country.countryFlag_url} 
+    alt={cnt.country.countryName} />
+    <figcaption>{'Flag of ' + cnt.country.countryName}</figcaption>
     </figure>
   </section>
     :

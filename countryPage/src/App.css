@@ -789,6 +789,7 @@ div#countryProfile div.backgroundProfile article > p {
   font-family: cursive, 'Times New Roman', Times, sans-serif;
   text-align: center;
   margin: 0 5px;
+  text-wrap: balance;
 }
 
 /* Editpage */
