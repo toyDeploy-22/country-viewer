@@ -34,7 +34,7 @@ const errorImg = () => {
 }
 
  const submitResult = () => {
-  selected === "" ? setAnswerResult("empty") :
+  selected === "" || typeof selected !== "string" ? setAnswerResult("empty") :
    selected.toLowerCase() === answer[0].countryName.toLowerCase() ? 
      setAnswerResult("true") : setAnswerResult("false")
  }
@@ -50,6 +50,11 @@ const playAgain = () => {
   setSelected(""); 
   setAnswerResult("init");
   randomGame(countries, setProposal, setAnswer, setErrorStack);
+}
+
+const tryAgain = () => {
+  setSelected(""); 
+  setAnswerResult("init"); 
 }
   
   return(
@@ -104,12 +109,22 @@ selected === "" ? <p className="fw-bold bg-dark text-light p-2">Select the count
   <p>Incorrect !</p>
   </div>}
   {answerResult === "empty" && 
-  <div id="emptyAnswer"> 
-  <p>Please select a country before confirming.</p>
+  <div id="emptyAnswer" style={{color: "#DE7F02"}}> 
+  <p className="fw-bold">{"*"}Please select a country before confirming.</p>
   </div>
   }
 </div>
-{answerResult !== "true" && <button onClick={submitResult}>{answerResult === "false" ? "try again" : "confirm"}</button> }  
+{/*
+{answerResult !== "true" && <button onClick={submitResult}>{answerResult === "false" ? "try again" : "confirm"}</button>}
+*/}
+{answerResult !== "true" && <div id="optionsBtns">
+{ answerResult === "false" ?
+  <button onClick={tryAgain}>Try again</ button>
+  :
+  <button onClick={submitResult}>Validate Answer</button>
+  }
+<button onClick={playAgain}>Skip Question</button>
+</div>}  
 </div>
 }    
 </section>    

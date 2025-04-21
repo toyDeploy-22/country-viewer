@@ -438,13 +438,21 @@ div#answerContainer {
   text-align: center;
 }
 
-div#answerContainer + button {
-  width: 90%;
+div#answerContainer + div#optionsBtns {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+div#answerContainer + div#optionsBtns button {
+  width: 45%;
+  text-wrap: pretty;
   border-radius: 10px;
   border: solid .5px green;
 }
 
-div#answerContainer + button:hover {
+div#answerContainer + div#optionsBtns button:hover {
   background-color: #317f31;
   font-family: cursive, serif;
   color: whitesmoke;
