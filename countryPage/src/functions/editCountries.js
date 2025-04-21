@@ -167,7 +167,7 @@ const addCountriesChecker = async(body, arr) => {
 
     ]
 
-    if(typeof body.id !== 'string' || body.id === '') {
+    if(!noNumbers.test(body.id) || !noSpecial.test(body.id) || body.id === '') {
         result.ok = false;
         result.message = reasons[0].message
     } else if(duplicate.length > 0) {
