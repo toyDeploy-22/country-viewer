@@ -568,6 +568,7 @@
   },
   "countryId": "SA",
   "countryName": "South Africa",
+  "countryFlag_url": "https://www.worldometers.info/img/flags/sf-flag.gif",
   "countryDescription": "South Africa, on the continent's southern tip, is bordered by the Atlantic Ocean on the west and by the Indian Ocean on the south and east. Its neighbors are Namibia in the northwest, Zimbabwe and Botswana in the north, and Mozambique and Swaziland in the northeast. The kingdom of Lesotho forms an enclave within the southeast part of South Africa, which occupies an area nearly three times that of California.",
   "continent": {
     "continentId": "AF"
