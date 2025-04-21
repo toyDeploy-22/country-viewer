@@ -15,7 +15,7 @@ const continentSchema = new mongoose.Schema({
 const countrySchema = new mongoose.Schema({
 	
  countryId: {
-	 type: String, uppercase: true, minLength: [2, "The country ID must contain at least two characters."], maxLength: [7, "The country ID cannot contain more than 6 characters."], required: [true, "country ID is required."]
+	 type: String, uppercase: true, minLength: [2, "The country ID must contain at least two characters."], maxLength: [7, "The country ID cannot contain more than 7 characters."], required: [true, "country ID is required."]
  },
  
  countryName: {

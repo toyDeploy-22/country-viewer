@@ -117,7 +117,8 @@ const addCountriesChecker = async(body, arr) => {
     };
     // const continents = ["Europe", "North America", "South America", "Asia", "Middle East and Africa", "Oceania", "Antarctica"];
     const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
-    const noNumbers = new RegExp(/^[^0-9]/);
+    const noNumbers = new RegExp(/[0-9]/);
+    const noSpecial = new RegExp(/[+\]\(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm);
     // No number allowed for all sequence const noNumbers = new RegExp(/^[^0-9]+$/);
 
     let reasons = [
@@ -129,7 +130,7 @@ const addCountriesChecker = async(body, arr) => {
         message: 'The country initials you have entered already exists in the list. Please delete the existing country or create a country with other initials. '},
         { reasonId: 3,
         title: 'Country Initials Too Short', 
-        message: 'The country initials must contain 3 letters at least.'},
+        message: 'The country initials must contain 2 letters at least.'},
         { reasonId: 4,
         title: 'Continent Value Invalid', 
         message: 'Make sure that you select the continent in the list.'},
@@ -141,12 +142,29 @@ const addCountriesChecker = async(body, arr) => {
         message: 'The country name field must only contain letters.'},
         { reasonId: 7,
         title: 'Country Name Number', 
-        message: 'The country name cannot start with a number.'},
+        message: 'The country name cannot contain any number.'},
         {
             reasonId: 8,
             title: 'Too Long Description',
             message: 'A valid description can only contain 160 characters.'
-        }
+        },
+        {
+            reasonId: 9,
+            title: 'Country Initials Too long', 
+            message: 'The country initials cannot contain more than 7 characters.'
+        },
+        { reasonId: 10,
+        title: 'Country Name With Special Character', 
+        message: 'The country name cannot contain any special character.'},
+        { reasonId: 11,
+        title: 'Country Name Too Long', 
+        message: 'The country name cannot contain more than 40 characters.'},
+        {
+            reasonId: 12,
+            title: 'Too Short Description',
+            message: 'A valid description must contain at least 10 characters.'
+        },
+
     ]
 
     if(typeof body.id !== 'string' || body.id === '') {
@@ -158,21 +176,33 @@ const addCountriesChecker = async(body, arr) => {
     } else if(body.id.length < 3) {
         result.ok = false;
         result.message = reasons[2].message
-    } else if(continents.filter((c) => body.continent === c).length !== 1 ) {
+    } else if(body.id.length > 7) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 9).map((r) => r.message)[0]
+    } else if(continents.indexOf(body.continent.toUpperCase()) === -1 ) {
         result.ok = false;
         result.message = reasons[3].message
-    } else if(body.name.length <= 3) {
+    } else if(body.name.length < 2) {
         result.ok = false;
         result.message = reasons[4].message
     } else if(typeof body.name !== 'string' || body.name === '') {
         result.ok = false;
         result.message = reasons[5].message
+    } else if(body.name.length > 40 ) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 11).map((r) => r.message)[0]
     } else if(!noNumbers.test(body.name)) {
         result.ok = false;
         result.message = reasons[6]
-    } else if(body.continent && body.continent.length > 160) {
+    } else if(!noSpecial.test(body.name)) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 10).map((r) => r.message)[0]
+    } else if(body.hasOwnProperty("description") && body.description.length > 250) {
         result.ok = false;
         result.message = reasons[7]
+    } else if(body.hasOwnProperty("description") && body.description < 10) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 12).map((r) => r.message)[0]
     } else {
         result.ok = true;
         result.message = `The country ${body.name} has been successfully added !`

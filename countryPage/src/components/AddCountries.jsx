@@ -87,7 +87,7 @@ const submitCountry = async(e) => {
       }
   
 // check description:
-   if(typeof newCountry.description === 'string' && newCountry.description !== '') {
+   if(typeof newCountry.description === 'string' && newCountry.description !== '' && newCountry.description.length >= 10 ) {
    (countryBody['countryDescription'] = newCountry.description)
    }
 
