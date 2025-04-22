@@ -27,7 +27,7 @@ try{
     console.log(err);
     result.ok = false;
     result.code = 500;
-    result.msg = err
+    result.msg = err.message
   }
   return result;
 }

@@ -16,7 +16,7 @@ const reasons = [{
     err: true,
     code: 401,
     title: "Duplicate Fields",
-    msg: "No change have been detected. Make sure that you have enter the new details in the specific fields."
+    msg: "No change have been detected. Make sure that you have entered the new details in the specific fields."
     }, {
     err: true,
     code: 401,
@@ -112,7 +112,11 @@ const editCountries = async(cnt) => {
 
 const addCountriesChecker = async(body, arr) => {
     console.log(arr.length)
-    const duplicate = await arr.filter((c) => c.countryId.toLowerCase() === body.id.toLowerCase())
+
+    const duplicateId = await arr.filter((c) => c.countryId.toLowerCase() === body.id.toLowerCase());
+
+    const duplicateName = await arr.filter((c) => c.countryName.toLowerCase() === body.name.toLowerCase());
+
     let result = {// ok: boolean, msg: string
     };
     // const continents = ["Europe", "North America", "South America", "Asia", "Middle East and Africa", "Oceania", "Antarctica"];
@@ -164,16 +168,27 @@ const addCountriesChecker = async(body, arr) => {
             title: 'Too Short Description',
             message: 'A valid description must contain at least 10 characters.'
         },
+        {
+            reasonId: 13,
+            title: 'Country Flag Invalid',
+            message: 'The country flag url is not mandatory. Make sure to fill-in this field only if you have a valid link address.'
+        },
+        { reasonId: 14, 
+        title: 'Country Name Already Exists',
+        message: 'The country Name you have entered already exists in the list. Please delete the existing country or create a country with another name. '}
 
     ]
 
-    if(!noNumbers.test(body.id) || !noSpecial.test(body.id) || body.id === '') {
+    if(noNumbers.test(body.id) || noSpecial.test(body.id)) {
         result.ok = false;
         result.message = reasons[0].message
-    } else if(duplicate.length > 0) {
+    } else if(duplicateId.length > 0) {
         result.ok = false;
         result.message = reasons[1].message
-    } else if(body.id.length < 3) {
+    } else if(duplicateName.length > 0) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 14).map((r) => r.message)[0]
+    } else if(body.id.length < 3 || typeof body.id !== "string") {
         result.ok = false;
         result.message = reasons[2].message
     } else if(body.id.length > 7) {
@@ -191,16 +206,19 @@ const addCountriesChecker = async(body, arr) => {
     } else if(body.name.length > 40 ) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 11).map((r) => r.message)[0]
-    } else if(!noNumbers.test(body.name)) {
+    } else if(noNumbers.test(body.name)) {
         result.ok = false;
-        result.message = reasons[6]
-    } else if(!noSpecial.test(body.name)) {
+        result.message = reasons[6].message
+    } else if(noSpecial.test(body.name)) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 10).map((r) => r.message)[0]
+    } else if (body.hasFlag && body.flag.length < 3) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 13).map((r) => r.message)[0] 
     } else if(body.hasOwnProperty("description") && body.description.length > 250) {
         result.ok = false;
         result.message = reasons[7]
-    } else if(body.hasOwnProperty("description") && body.description < 10) {
+    } else if(body.hasOwnProperty("description") && body.description.length < 10) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 12).map((r) => r.message)[0]
     } else {

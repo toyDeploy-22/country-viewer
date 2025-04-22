@@ -56,6 +56,7 @@ const submitCountry = async(e) => {
   e.preventDefault();
   const fnc = async() => {
   try{
+    setSpinner(true);
     setShowCanvas(true);
     const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
     let continentSelected = continents.indexOf(newCountry.continent.toUpperCase());
@@ -64,15 +65,16 @@ const submitCountry = async(e) => {
     console.log(checker) 
 
     if(continentSelected === -1) {
+      setSpinner(false);
       setResult("false");
       setMessage("The continent is not in the list. Please select a valid continent in the list to proceed.");
     } else if(checker.ok) {
-    if(newCountry.hasFlag && newCountry.flag === ""){
+    if(newCountry.hasFlag && typeof newCountry.flag !== "string" ||typeof newCountry.description !== "string"){
+      setSpinner(false);
       setResult("false");
-      setMessage("You must add a valid URL flag. If not, please uncheck the option and confirm again.");
+      setMessage("You must add a valid URL flag and description. If not, please uncheck the option concerned and confirm again.");
       console.log(message);
     } else  {
-    setSpinner(true);
     const countryBody = {
       countryId: newCountry.id,
 	  countryName: newCountry.name,
@@ -256,7 +258,7 @@ onChange={handleCountry}
    rows={6} cols={50}>
    </textarea>
    {newCountry.description.length <= 9 && <p className="fw-light fst-italic"><small>{"("}<b>Note:</b> Your description needs to contain <b>at least 10 characters</b> at the end. Otherwise, your description will be ignored.{")"}</small></p>}
-   <p style={{fontFamily: 'cursive, monospace, sans-serif', fontSize: '.9em'}} >{newCountry.description.length === 160 ? "no character remaining" : "characters remaining:"} <b className={Number(160 - newCountry.description.length) < 11 && Number(160 - newCountry.description.length) > 0 ? "text-danger" : Number(160 - newCountry.description.length) === 0 ? "d-none" : "text-success"}>{160 - newCountry.description.length}</b></p>
+   <p style={{fontFamily: 'cursive, monospace, sans-serif', fontSize: '.9em'}} >{newCountry.description.length === 160 ? "no character remaining" : "characters remaining:"} <b className={Number(160 - newCountry.description.length) < 11 && Number(160 - newCountry.description.length) > 0 ? "text-danger" : Number(160 - newCountry.description.length) === 0 ? "d-none" : Number(160 - newCountry.description.length) >= 11 && Number(160 - newCountry.description.length) <= 60 ? "mid-Characters-Remain" : "text-success"}>{160 - newCountry.description.length}</b></p>
   </div>
  
   { ["true", "false"].indexOf(result) > -1 &&

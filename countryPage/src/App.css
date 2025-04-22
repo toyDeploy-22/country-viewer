@@ -305,6 +305,10 @@ p#hasFlag-title {
   letter-spacing: 1px;
 }
 
+textarea + p > b.mid-Characters-Remain {
+  color: #A5D93D;
+}
+
 /*mainCountries*/
 div.countryContainer {
   display: flex;

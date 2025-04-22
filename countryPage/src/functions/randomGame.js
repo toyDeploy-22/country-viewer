@@ -24,9 +24,9 @@ const allCountries = cnt.all.filter((c) => typeof c.countryFlag_url !== 'undefin
 
 proposition(()=>[answerVar, proposal1, proposal2, proposal3].sort((a,b) => a.countryId < b.countryId ? -1 : 1)); // sort() in ASC order to shuffle the answer.
 answer(()=>[answerVar])
-  } catch {
+  } catch(err) {
 const obj = { err: true, title: 'Cannot load countries', msg: 'Countries are not found and cannot be loaded.' };
-console.error(obj);
+console.error(err);
 error(()=>[obj])
   }
  }
