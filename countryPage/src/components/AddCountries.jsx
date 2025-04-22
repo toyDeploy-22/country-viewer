@@ -56,9 +56,16 @@ const submitCountry = async(e) => {
   e.preventDefault();
   const fnc = async() => {
   try{
-    setSpinner(true);
     setShowCanvas(true);
     const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
+    const conditions = {
+      flagTrue: newCountry.hasFlag  === true,
+       flagType: typeof newCountry.flag !== "string",
+       descriptionType: typeof newCountry.description !== "string",
+
+       emptyDescription: newCountry.description !== '', 
+       fewDescription: newCountry.description.length >= 10
+    };
     let continentSelected = continents.indexOf(newCountry.continent.toUpperCase());
 
     const checker = await addCountriesChecker(newCountry, cnt);
@@ -69,7 +76,7 @@ const submitCountry = async(e) => {
       setResult("false");
       setMessage("The continent is not in the list. Please select a valid continent in the list to proceed.");
     } else if(checker.ok) {
-    if(newCountry.hasFlag && typeof newCountry.flag !== "string" ||typeof newCountry.description !== "string"){
+    if((conditions.flagTrue && conditions.flagType) || (conditions.descriptionType)){
       setSpinner(false);
       setResult("false");
       setMessage("You must add a valid URL flag and description. If not, please uncheck the option concerned and confirm again.");
@@ -80,7 +87,7 @@ const submitCountry = async(e) => {
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
 	  hasFlag: newCountry.hasFlag,
-	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length > 9  ? true : false	  
+	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length >= 10  ? true : false	  
     }
      
  // check flag:
@@ -89,7 +96,7 @@ const submitCountry = async(e) => {
       }
   
 // check description:
-   if(typeof newCountry.description === 'string' && newCountry.description !== '' && newCountry.description.length >= 10 ) {
+   if((!conditions.descriptionType) && (conditions.emptyDescription) && (conditions.fewDescription)) {
    (countryBody['countryDescription'] = newCountry.description)
    }
 
@@ -102,6 +109,7 @@ const submitCountry = async(e) => {
   });
     setSpinner(false);  
     setResult("true");
+    setMessage(checker.message)
     }
   } else {
     setSpinner(false);   
@@ -116,6 +124,7 @@ const submitCountry = async(e) => {
     // setMessage(`System Message Error ${err.response.status}: ${err.response.data.msg.message}`)
   }
 }
+setSpinner(true);
 setTimeout(fnc, 2000) 
 }
 
@@ -266,7 +275,7 @@ onChange={handleCountry}
         <Offcanvas.Header className="p-0" closeButton>
           <Offcanvas.Title className={`w-100 text-center p-2 text-${result === "false" ? "warning" : "light"} bg-${result === "true" ? "success" : "dark"}`} style={{letterSpacing: '2px'}}>{result === "true" ? "Success !" : "Failure !"}</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body className={[message].includes("System Message Error") ? "bg-dark text-danger border border-warning" : result === "false" && ![message].includes("System Message Error") ? "bg-dark text-warning border border-danger" : "bg-light text-success fw-bold border border-info"}>
+        <Offcanvas.Body className={`text-center ${[message].includes("System Message Error") ? "bg-dark text-danger border border-warning" : result === "false" && ![message].includes("System Message Error") ? "bg-dark text-warning border border-danger" : "bg-light text-success fw-bold border border-info"}`}>
         <br />
         <p>{message}</p>
         </Offcanvas.Body>
@@ -274,7 +283,7 @@ onChange={handleCountry}
 }
 
 <Button 
-variant="primary" 
+variant={result === "true" ? "dark" : "primary"} 
 className="text-light border border-secondary"
 size="lg"
 style={{ marginRight: '10%' }}
@@ -290,13 +299,13 @@ role="status"
 aria-hidden="true"
 />
 }
-{result === "true" ? "Country Submitted" : result === "false" ? "Not Submitted" : spinner ? 'Adding Country...' : 'Submit Country'}
+{result === "true" ? "Submitted" : result === "false" ? "Not Submitted" : spinner ? ' Adding Country...' : 'Submit Country'}
 {' '}
-{["true", "false"].indexOf(result) > -1 && 
+{["true", "init"].indexOf(result) === -1 && 
 <FontAwesomeIcon className="text-warning" icon={faTriangleExclamation} />
 }{''}
 { result === "true" &&
-<FontAwesomeIcon className="text-success" icon={faSquareCheck} />
+<FontAwesomeIcon icon={faSquareCheck} beat style={{color: "#63E6BE",}} />
 }
 </Button>
 </form>
