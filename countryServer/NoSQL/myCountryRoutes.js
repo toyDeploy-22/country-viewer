@@ -244,18 +244,22 @@ if(checker.length > 0) {
 
 
 
-myCountryRoutes.delete("/deletecountry/:country", async(req, res)=>{
+myCountryRoutes.delete("/deletecountry/:countryid", async(req, res)=>{
 	// Delete by country ID or country Name 
 	try {
 	
-    const countryDelete = req.params.country;
-	const isCountryName = countryDelete.substring(0, 1).toUpperCase() + countryDelete.substring(1).toLowerCase();
+    const countryDelete = req.params.countryid;
+	// const isCountryName = countryDelete.substring(0, 1).toUpperCase() + countryDelete.substring(1).toLowerCase();
 	const isCountryID = countryDelete.toUpperCase();
 	
+	/*
 	const finalResult = await countryModel.findOneAndDelete({$or: [
 	{countryId: isCountryID}, 
 	{countryName: isCountryName}
 	]})
+	*/
+	
+	const finalResult = await countryModel.findOneAndDelete({ countryId: isCountryID })
 	
 	switch(!finalResult){
 	

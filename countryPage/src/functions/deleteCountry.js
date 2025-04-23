@@ -57,7 +57,7 @@ if( countryFlag_url === '' && countryDescription === '' ) {
 // full object of the country selected to retrieve id and name
 const deleteCountry = async(arr, cnt) => {
     try {
-        const found = arr.filter((c) => c.countryName === cnt.countryName || c.countryId === cnt.countryId);
+        const found = arr.filter((c) => c.countryId.toLowerCase() === cnt.countryId.toLowerCase() || c.countryName.toLowerCase() === cnt.countryName.toLowerCase());
 
         if(found.length === 0) {
         result.err = true;
@@ -65,16 +65,30 @@ const deleteCountry = async(arr, cnt) => {
         result.title = 'Not Found For Deletion';
         result.msg = "Cannot proceed deletion of '" + cnt.countryName + "' because the country does not appear in the list. It is possible that the country has already been deleted.";    
         } else {
-        const url = `http://localhost:5000/nosql/deletecountry/${cnt.countryName}`;
+        const url = `http://localhost:5000/nosql/deletecountry/${found[0].countryId}`;
 
-        const deletor = await axios.delete(url, {headers: { 'Content-Type': 'application/json' }});
+        const deletor = await axios({
+            url: url, 
+            method: 'delete',
+            headers: { 'Content-Type': 'application/json' },
+            validateStatus: function (status) {
+            return status >= 200 && status < 300 // default
+                }
+            });
 
-        console.log(deletor.status);
+        // console.log(deletor.statusText);
 
+        if(deletor.statusText === 'OK') {
         result.err = false;
         result.code = 200;
         result.title = 'Success';
         result.msg = 'The country ' + cnt.countryName + ' has been successfully deleted.';
+            } else {
+        result.err = true;
+        result.code = 400;
+        result.title = 'Error';
+        result.msg = 'The country ' + cnt.countryName + ' has not been deleted due to an error. Please try again.'; 
+            }
         }
         return result;
     } catch(err) {

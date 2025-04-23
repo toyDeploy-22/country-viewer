@@ -25,7 +25,7 @@ const countrySchema = new mongoose.Schema({
  countryFlag_url: {type: String, required: false,  minLength: [3, "The country flag url is not mandatory. Make sure to fill-in this field only if you have a valid link address."]}, 
  
  countryDescription: {
-	 type: String, minLength: [10, "If filled-in, the country Description must at least contain a sentence of 10 characters. You can leave this field empty if you want."], maxLength: [250, "The country Description cannot contain more than 250 characters."], required: false
+	 type: String, minLength: [10, "If filled-in, the country Description must at least contain a sentence of 10 characters. You can leave this field empty if you want."], maxLength: [150, "The country Description cannot contain more than 250 characters."], required: false
 	 },
  
  continent: continentSchema

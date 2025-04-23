@@ -1,12 +1,12 @@
 
-const noNumbers_NoSpecial = new RegExp(/[0-9+\]\(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm)
+const noNumbers_NoSpecial = new RegExp(/[0-9+\]\/\s(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm)
 
 function mongoTypesCheck(obj) {
 	  
 	  let result = [];
-	  const checkType = (k, v) => { const arr = typeof v !== "string" || noNumbers_NoSpecial.test(v) ? [k]: []; return arr }; 
+	  const checkType = (k, v) => { if(["countryFlag_url", "countryDescription"].indexOf(k) === -1) { const arr = typeof v !== "string" || noNumbers_NoSpecial.test(v) ? [k]: []; return arr } else { return []} }; 
 	  
-	  const checkTypes = (object) => {const arr = []; for(const [k, v] of Object.entries(object)){if(typeof v !== "string" || noNumbers_NoSpecial.test(v)){arr.push(k)}} return arr };
+	  const checkTypes = (object) => {const arr = []; for(const [k, v] of Object.entries(object)){if(["countryFlag_url", "countryDescription"].indexOf(k) === -1) {typeof v !== "string" || noNumbers_NoSpecial.test(v) ? arr.push(k) : null}} return arr };
 	  
 	  const flagUrlKey = obj.hasOwnProperty("countryFlag_url");
 	  const descriptionKey = obj.hasOwnProperty("countryDescription");

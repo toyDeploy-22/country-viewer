@@ -17,21 +17,31 @@ const [spinner, setSpinner] = useState(false);
 const [result, setResult] = useState("init");
 const [message, setMessage] = useState("");
 
-const handleDelete = async() => {
+async function handleDelete() {
 // setShow(false);
 // function and spinner
+const deletor = async() => {
 try {
-setSpinner(true);
-await deleteCountry(arr, country); // Full object
+const deletion = await deleteCountry(arr, country); // Full object
+
+if(deletion.err === false) {
 setResult("true");
 setSpinner(false);
 setMessage(`${country.countryName} country has been successfully deleted from the database.`);
+  } else {
+    setResult("false");
+    setSpinner(false);
+    setMessage(deletion.message);
+  }
 } catch(err) {
   setSpinner(false); 
   console.error(err);
   setResult("false");
   setMessage("An error occured during deletion. Please try again.")
   }
+ }
+ setSpinner(true);
+ setTimeout(deletor, 2000)
 };
 
   return (
@@ -48,7 +58,7 @@ setMessage(`${country.countryName} country has been successfully deleted from th
         }
         <div id="buttons_container_2">
         { result === "init" && 
-        <Button variant="primary" className='m-1' onClick={()=>setTimeout(handleDelete, 2000)} >
+        <Button variant="primary" className='m-1' onClick={() => handleDelete(arr, country)} >
         { spinner === true &&
         <Spinner
           as="span"
@@ -59,12 +69,12 @@ setMessage(`${country.countryName} country has been successfully deleted from th
           aria-hidden="true"
           />
           }
-          {spinner === true ? "Deleting..." : "Yes"}
+          {spinner === true ? " Deleting..." : "Yes"}
           </Button>
           }
          
           { result === "false" && 
-          <Button variant="dark" className='m-1' onClick={handleDelete}>
+          <Button variant="dark" className='m-1' onClick={() => handleDelete(arr, country)}>
             Try again
         </Button>
           }

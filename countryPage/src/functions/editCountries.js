@@ -122,13 +122,13 @@ const addCountriesChecker = async(body, arr) => {
     // const continents = ["Europe", "North America", "South America", "Asia", "Middle East and Africa", "Oceania", "Antarctica"];
     const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
     const noNumbers = new RegExp(/[0-9]/);
-    const noSpecial = new RegExp(/[+\]\(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm);
+    const noSpecial = new RegExp(/[\]\[\/\s(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm);
     // No number allowed for all sequence const noNumbers = new RegExp(/^[^0-9]+$/);
 
     let reasons = [
         { reasonId: 1, 
         title: 'Country Initials Value Type Incorrect',
-        message: 'The country initials field is mandatory and must only contain letters.'}, 
+        message: 'The country initials field is mandatory.'}, 
         { reasonId: 2, 
         title: 'Country Initials Already Exists',
         message: 'The country initials you have entered already exists in the list. Please delete the existing country or create a country with other initials. '},
@@ -159,7 +159,7 @@ const addCountriesChecker = async(body, arr) => {
         },
         { reasonId: 10,
         title: 'Country Name With Special Character', 
-        message: 'The country name cannot contain any special character.'},
+        message: 'The country name cannot contain any special character, except for the "-" character (example: United-States).'},
         { reasonId: 11,
         title: 'Country Name Too Long', 
         message: 'The country name cannot contain more than 40 characters.'},
@@ -175,13 +175,23 @@ const addCountriesChecker = async(body, arr) => {
         },
         { reasonId: 14, 
         title: 'Country Name Already Exists',
-        message: 'The country Name you have entered already exists in the list. Please delete the existing country or create a country with another name. '}
-
+        message: 'The country Name you have entered already exists in the list. Please delete the existing country or create a country with another name. '},
+        { reasonId: 15,
+        title: 'Country Initials With Special Character', 
+        message: 'The country Initials cannot contain any special character.'},
+        { 
+        reasonId: 16,
+        title: 'Country Intials Number', 
+        message: 'The country Initials cannot contain any number.'
+        },
     ]
 
-    if(noNumbers.test(body.id) || noSpecial.test(body.id)) {
+    if(noNumbers.test(body.id)) {
         result.ok = false;
-        result.message = reasons[0].message
+        result.message = reasons.filter((r) => r.reasonId === 16).map((r) => r.message)[0]
+    } else if(noSpecial.test(body.id)) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 15).map((r) => r.message)[0]
     } else if(duplicateId.length > 0) {
         result.ok = false;
         result.message = reasons[1].message
