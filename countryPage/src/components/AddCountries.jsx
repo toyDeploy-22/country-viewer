@@ -258,6 +258,7 @@ onChange={handleCountry}
     <label htmlFor="description" className="labelForm">V{")"} Description</label>
     <div id="decription-form">
    <p className="instructions">You can add a description below <b>(160 words max)</b>. If you don't want to, please leave it empty.</p>
+   <p className="mt-auto" style={{fontFamily: 'cursive, monospace, sans-serif', fontSize: '1.02em'}} >{newCountry.description.length === 160 ? "no character remaining" : "Characters Remaining:"} <b className={Number(160 - newCountry.description.length) < 11 && Number(160 - newCountry.description.length) > 0 ? "text-danger" : Number(160 - newCountry.description.length) === 0 ? "d-none" : Number(160 - newCountry.description.length) >= 11 && Number(160 - newCountry.description.length) <= 60 ? "mid-Characters-Remain" : "text-success"}>{160 - newCountry.description.length}</b></p>
    <textarea 
    id="description"
    name="description"
@@ -266,8 +267,8 @@ onChange={handleCountry}
    maxLength={160}
    rows={6} cols={50}>
    </textarea>
-   {newCountry.description.length <= 9 && <p className="fw-light fst-italic"><small>{"("}<b>Note:</b> Your description needs to contain <b>at least 10 characters</b> at the end. Otherwise, your description will be ignored.{")"}</small></p>}
-   <p style={{fontFamily: 'cursive, monospace, sans-serif', fontSize: '.9em'}} >{newCountry.description.length === 160 ? "no character remaining" : "characters remaining:"} <b className={Number(160 - newCountry.description.length) < 11 && Number(160 - newCountry.description.length) > 0 ? "text-danger" : Number(160 - newCountry.description.length) === 0 ? "d-none" : Number(160 - newCountry.description.length) >= 11 && Number(160 - newCountry.description.length) <= 60 ? "mid-Characters-Remain" : "text-success"}>{160 - newCountry.description.length}</b></p>
+   {newCountry.description.length <= 9 ? <p className="mt-auto fw-light fst-italic"><small>{"("}<b>Note:</b> Your description needs to contain <b>10 characters mimnimum</b>. Otherwise, your description will be ignored.{")"}</small></p> : <br />}
+   
   </div>
  
   { ["true", "false"].indexOf(result) > -1 &&
@@ -308,6 +309,7 @@ aria-hidden="true"
 <FontAwesomeIcon icon={faSquareCheck} beat style={{color: "#63E6BE",}} />
 }
 </Button>
+<br />
 </form>
 </div>
 </section>    

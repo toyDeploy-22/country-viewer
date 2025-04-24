@@ -229,6 +229,7 @@ section#addCountries {
   display: flex;
   justify-content: center;
   width: 100%;
+  padding: 25px 0 25px 0;
 }
 
 section#addCountries > div.paddingAxe {
@@ -242,7 +243,7 @@ section#addCountries div.paddingAxe > form#addCountryForm {
  background-color: ghostwhite;
  border: thin solid #122125;
  margin: 0 auto;
- padding: 10px;
+ padding: 16px;
  text-align: center;
 }
 
@@ -603,7 +604,11 @@ section.resultSection div#countriesFound {
   background-color: rgb(214, 205, 205)
 }
 
-div#countriesFound div.countriesList, div.countryNotFound > div.errorContainer-notFound {
+section.resultSection > div#countryNotFound {
+  background-color: whitesmoke;
+}
+
+div#countriesFound div.countriesList, div#countryNotFound > div.errorContainer-notFound {
   flex-basis: 70%;
   text-align: center;
 }
@@ -611,7 +616,7 @@ div#countriesFound div.countriesList, div.countryNotFound > div.errorContainer-n
 
 /* 'SUGGESTION' class */
 
-div#countriesFound div.country-suggestion, div.countryNotFound div.country-suggestion {
+div#countriesFound div.country-suggestion, div#countryNotFound div.country-suggestion {
   flex-basis: 30%;
   display: flex;
   flex-direction: column;
@@ -620,11 +625,11 @@ div#countriesFound div.country-suggestion, div.countryNotFound div.country-sugge
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-div#countriesFound div.country-suggestion, div.countryNotFound div.country-suggestion > h6 {
+div#countriesFound div.country-suggestion, div#countryNotFound div.country-suggestion > h6 {
   font-weight: 700;
 }
 
-div#countriesFound div.country-suggestion figure, div.countryNotFound div.country-suggestion figure {
+div#countriesFound div.country-suggestion figure, div#countryNotFound div.country-suggestion figure {
   background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
   border: outset rgb(141, 139, 139) 2px;
   text-align: center;
@@ -633,7 +638,7 @@ div#countriesFound div.country-suggestion figure, div.countryNotFound div.countr
   width: 50%;
 }
 
-div#countriesFound div.country-suggestion figure .countryFound-link > img, div.countryNotFound div.country-suggestion figure .countryFound-link > img {
+div#countriesFound div.country-suggestion figure .countryFound-link > img, div#countryNotFound div.country-suggestion figure .countryFound-link > img {
   width: 50%;
 }
 
@@ -654,7 +659,7 @@ div#countriesFound div.country-suggestion figure:hover {
   transition: all 0.2s linear;
 }
 
-div.countryNotFound div.country-suggestion figure:hover {
+div#countryNotFound div.country-suggestion figure:hover {
   background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
   transition: all 0.2s linear;
 }
@@ -664,7 +669,7 @@ div#countriesFound div.country-suggestion figure .countryFound-link > img:hover 
   transition: all 0.2s ease-in;
 }
 
-div.countryNotFound div.country-suggestion figure .countryFound-link > img:hover {
+div#countryNotFound div.country-suggestion figure .countryFound-link > img:hover {
   border: thin sandybrown solid;
   transition: all 0.2s ease-in;
 }
@@ -674,22 +679,22 @@ div#countriesFound div.country-suggestion .countryFound-link figcaption > button
 }
 */
 
-div#deleteCountries div.countryNotFound {
+div#deleteCountries div#countryNotFound {
   background-color: beige;
   display: flex;
   flex-direction: row;
 }
 
-div.countryNotFound div.errorContainer-notFound h5.errorContainer-title > span {
+div#countryNotFound div.errorContainer-notFound h5.errorContainer-title > span {
   color: crimson;
   text-shadow: #2b62cd 1px 1px;
 }
 
-div.countryNotFound div.errorContainer-notFound h5.errorContainer-title :not(span) {
+div#countryNotFound div.errorContainer-notFound h5.errorContainer-title :not(span) {
   color: #2b62cd;
 }
 
-div.countryNotFound div.errorContainer-notFound > p.errorContainer-text {
+div#countryNotFound div.errorContainer-notFound > p.errorContainer-text {
   font-family: 'Times New Roman', Times, serif;
 
 }
@@ -1435,6 +1440,11 @@ transition: all .15s ease-out /*,color .15s ease-out*/;
     flex-direction: column;
   }
 
+/*
+  section.resultSection div#countryNotFound {
+
+  }
+*/
   div#countriesFound div.countriesList {
     text-align: center;
   }

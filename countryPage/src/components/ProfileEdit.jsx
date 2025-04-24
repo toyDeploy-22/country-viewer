@@ -10,7 +10,7 @@ import Editpage from './Editpage.jsx';
 function ProfileEdit({ cnt }) {
 
 const [clickEdit, setClickEdit] = useState(false);
-const [hasSource, setHasSource] = useState(true);
+// const [hasSource, setHasSource] = useState(true);
 
 // variables
 const continents = [{id: "eu", name: "Europe"}, {id: "na", name: "North America"}, {id: "sa", name: "South America"}, {id: "af", name: "Middle East/Africa"}, {id: "as", name: "Asia"}, {id: "oc", name: "Oceania" }, {id: "an", name: "Antarctica"}];

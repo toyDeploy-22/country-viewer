@@ -11,6 +11,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faJetFighter } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import NoImage from '../screenshot/no-image.512x512.png';
 
 /*
 Suppose we pass countries.all through props in app.js
@@ -27,7 +28,7 @@ function SearchCountry({ countries }) {
   const [countryName, setCountryName] = useState({ countryInput: '' });
   const [loader, setLoader] = useState(false);
   const [results, setResults] = useState([{ ...countrySchema }]);
-  const [suggest, setSuggest] = useState([{ ...countrySchema }]);
+  const [suggest, setSuggest] = useState({ ...countrySchema });
   const [errorStack, setErrorStack] = useState({ err: false, code: 0, title: '', msg: '' });
   const [fakeSource, setFakeSource] = useState(false);
   const [showMsg, setShowMsg] = useState(true);
@@ -39,7 +40,7 @@ function SearchCountry({ countries }) {
     setShowMsg(false);
     let { name, value } = e.target;
     let obj = { [name]: value };
-    setCountryName(() => obj);
+    setCountryName(obj);
   }
 
   const submitCountryName = (e) => {
@@ -48,7 +49,7 @@ function SearchCountry({ countries }) {
     try {
     setLoader(true);  
     let input = countryName.countryInput;
-    if(input.length < 3 || input === '' ) {
+    if(input.length < 2 || input === '' ) {
       setLoader(false); 
       const obj1 = {
         err: true,
@@ -61,20 +62,25 @@ function SearchCountry({ countries }) {
     // const url = "http://localhost:5000/countrysearch/name?countryname=" + input;
     // const findCountry = await axios.get(url);
     const continents = ["NA", "SA", "EU", "AF", "AS", "OC", "AN"];
-    let indexContinent = Math.ceil(Math.random() * continents.length);
+     
+     const indexContinent = () => { 
+     const randomizer = Math.random() * continents.length;
+     const randomContinent = continents[randomizer === 0 ? randomizer : randomizer - 1];
+     return randomContinent 
+    }
 
-    const inputCountry = countries.filter((c) => c.countryName.toLowerCase().includes(input.toLowerCase()));
+    const inputCountry = countries.filter((c) => c.countryName.toLowerCase().includes(countryName.countryInput.toLowerCase()) || c.countryId.toLowerCase().includes(countryName.countryInput.toLowerCase()));
     
-    const findCountry = inputCountry.length === 0 ? [{ countryId: '0000', countryName: input, continentId: continents[indexContinent === 0 ? indexContinent : indexContinent - 1] }] : inputCountry;
+    const findCountry = inputCountry.length === 0 ? [{ notFound: true, countryId: "", countryName: "", continent: {continentId: indexContinent()} }] : inputCountry.map((cnt) => cnt);
 
-    const suggestion = countries.filter((c) => c.continent.continentId === findCountry[0].continentId).filter((c) => c.countryName !== findCountry[0].countryNname);
+    const suggestion = countries.filter((c) => c.continent.continentId === findCountry[0].continent.continentId).filter((c) => c.countryName !== findCountry[0].countryName);
 
     let index = Math.ceil(Math.random() * suggestion.length);
     let index_2 = Math.ceil(Math.random() * countries.length); 
 
     let suggestedCountry = suggestion.length > 1 ? suggestion[index === 0 ? index : index - 1] : countries[index_2 === 0 ? index_2 : index_2 - 1];
 
-    if(findCountry[0].countryId === '0000') {
+    if(findCountry[0].hasOwnProperty('notFound')) {
       setLoader(false);
       const obj2 = {
 	    error: true,
@@ -83,14 +89,14 @@ function SearchCountry({ countries }) {
 	    msg: "We didn't find any country with the query you have typed. Please try to add the country in the 'Add a Country' section."
 	  };
 
-    setSuggest(() => [suggestedCountry]);
+    setSuggest(suggestedCountry);
     setErrorStack(obj2)
         } else {
-      const dataJson = findCountry[0];
+      const dataJson = findCountry;
       const obj3 = { err: false, code: 200, title: '', msg: '' };
-      setErrorStack(() => obj3);
-      setResults([ dataJson ]);
-      setSuggest(() => [suggestedCountry]);
+      setErrorStack(obj3);
+      setResults( dataJson );
+      setSuggest(suggestedCountry);
       setLoader(false);
       }
     }
@@ -165,8 +171,8 @@ onChange={handleCountryName}
         <h6>A country that might interest:</h6>
         <figure>
         <Link className="countryFound-link" to={"/country/" + suggest[0].countryName} target='_blank'>
-        <img src={suggest[0].countryFlag_url} alt={suggest[0].countryName} />
-        <figcaption><Button variant="">Visit country</Button></figcaption>
+        <img src={suggest.hasOwnProperty("countryFlag_url") ? suggest.countryFlag_url : noImage} alt={suggest.hasOwnProperty("countryFlag_url") ? suggest.countryName : "No Image Available"} />
+        <figcaption><Button variant="success">Visit country</Button></figcaption>
         </Link>
         </figure>
         </div>
@@ -174,7 +180,7 @@ onChange={handleCountryName}
     }
     
     {
-      errorStack.code >= 400 && <div className="countryNotFound p-2">
+      errorStack.code >= 400 && <div id="countryNotFound" className="p-2 mt-3">
       <div className="errorContainer-notFound">
       <h2 className="Oops-title mb-2">{errorStack.code === 404 ? "The World is large, but..." : "Ooops"}</h2>
       <h5><span>{errorStack.title}</span>{' '}{errorStack.code === 404 ? <FontAwesomeIcon icon={faGlobe} /> : <FontAwesomeIcon icon={faTriangleExclamation} />}</h5>
