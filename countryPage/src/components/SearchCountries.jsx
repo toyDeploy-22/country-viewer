@@ -11,7 +11,6 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faJetFighter } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import NoImage from '../screenshot/no-image.512x512.png';
 
 /*
 Suppose we pass countries.all through props in app.js
@@ -33,7 +32,7 @@ function SearchCountry({ countries }) {
   const [fakeSource, setFakeSource] = useState(false);
   const [showMsg, setShowMsg] = useState(true);
 
-  const plc = "Enter country name";  
+  const plc = "Enter country name or country ID";  
   const ttl = "Name should contain at least 3 letters";
 
   const handleCountryName = (e) => {
@@ -45,9 +44,9 @@ function SearchCountry({ countries }) {
 
   const submitCountryName = (e) => {
     e.preventDefault();
+    setLoader(true);
     setShowMsg(true);
-    try {
-    setLoader(true);  
+    try {  
     let input = countryName.countryInput;
     if(input.length < 2 || input === '' ) {
       setLoader(false); 
@@ -62,16 +61,18 @@ function SearchCountry({ countries }) {
     // const url = "http://localhost:5000/countrysearch/name?countryname=" + input;
     // const findCountry = await axios.get(url);
     const continents = ["NA", "SA", "EU", "AF", "AS", "OC", "AN"];
-     
-     const indexContinent = () => { 
-     const randomizer = Math.random() * continents.length;
+   
+     const getContinent = () => { 
+     const randomizer = Math.ceil(Math.random() * continents.length);
      const randomContinent = continents[randomizer === 0 ? randomizer : randomizer - 1];
      return randomContinent 
     }
 
+    let indexContinent = getContinent();
+
     const inputCountry = countries.filter((c) => c.countryName.toLowerCase().includes(countryName.countryInput.toLowerCase()) || c.countryId.toLowerCase().includes(countryName.countryInput.toLowerCase()));
     
-    const findCountry = inputCountry.length === 0 ? [{ notFound: true, countryId: "", countryName: "", continent: {continentId: indexContinent()} }] : inputCountry.map((cnt) => cnt);
+    const findCountry = inputCountry.length === 0 ? [{ notFound: true, countryId: "", countryName: "", continent: {continentId: indexContinent} }] : inputCountry.map((cnt) => cnt);
 
     const suggestion = countries.filter((c) => c.continent.continentId === findCountry[0].continent.continentId).filter((c) => c.countryName !== findCountry[0].countryName);
 
@@ -181,18 +182,18 @@ onChange={handleCountryName}
     
     {
       errorStack.code >= 400 && <div id="countryNotFound" className="p-2 mt-3">
-      <div className="errorContainer-notFound">
-      <h2 className="Oops-title mb-2">{errorStack.code === 404 ? "The World is large, but..." : "Ooops"}</h2>
+      <div className="errorContainer-notFound p-2">
+      <h2 className="Oops-title p-2 mb-2">{errorStack.code === 404 ? "The World is large, but..." : "Ooops"}</h2>
       <h5><span>{errorStack.title}</span>{' '}{errorStack.code === 404 ? <FontAwesomeIcon icon={faGlobe} /> : <FontAwesomeIcon icon={faTriangleExclamation} />}</h5>
       <br />
       <p>{errorStack.msg}</p>
       </div>
-      <div className="country-suggestion">
+      <div className="country-suggestion py-2">
         <h6>A country that might interest:</h6>
-        <figure>
-        <Link className="countryFound-link" to={"/country/" + suggest[0].countryName} target='_blank'>
-        <img src={suggest[0].countryFlag_url} alt={suggest[0].countryName} />
-        <figcaption><Button variant="">Visit country</Button></figcaption>
+        <figure className="py-4">
+        <Link className="countryFound-link" to={"/country/" + suggest.countryName} target='_blank'>
+        <img src={suggest.countryFlag_url} alt={suggest.countryName} />
+        <figcaption><Button className="text-light" variant="">Visit country</Button></figcaption>
         </Link>
         </figure>
         </div>
