@@ -24,7 +24,7 @@ return(
         <figure className="py-4">
         <Link className="countryFound-link" to={"/country/" + sug.countryName} target='_blank'>
         <img src={sug.hasOwnProperty('countryFlag_url') ? sug.countryFlag_url : noImage} alt={sug.hasOwnProperty('countryFlag_url') ? sug.countryName : "No Image Available"} />
-        <figcaption><Button className="text-light" variant="">Visit country</Button></figcaption>
+        <figcaption><Button className="text-light" variant="">Visit this country</Button></figcaption>
         </Link>
         </figure>
         </div>
@@ -34,8 +34,8 @@ return(
 
 <div id="countryNotFound" className="p-2 mt-3">
       <div className="errorContainer-notFound p-2">
-      <h2 className="Oops-title p-2 mb-2">{"Ooops..."}</h2>
-      <h5><span>{stack.title}</span>{' '}<FontAwesomeIcon icon={faTriangleExclamation} /></h5>
+      {stack.code === 500 ? <h2 className="Oops-title-500 p-2 mb-2">{"Ooops..."}</h2> : <h2 className="Oops-title-400 p-2 mb-2">{"Cannot Search"}</h2>}
+      <h5 className={stack.code === 500 ? "text-danger" : "text-warning"}><span>{stack.title}</span>{' '}<FontAwesomeIcon icon={faTriangleExclamation} /></h5>
       <br />
       <p>{stack.msg}</p>
       </div>
@@ -45,7 +45,7 @@ return(
         <figure className="py-4">
         <Link className="countryFound-link" to={"/country/" + sug.countryName} target='_blank'>
         <img src={sug.hasOwnProperty('countryFlag_url') ? sug.countryFlag_url : noImage} alt={sug.hasOwnProperty('countryFlag_url') ? sug.countryName : "No Image Available"} />
-        <figcaption><Button className="text-light" variant="">Visit country</Button></figcaption>
+        <figcaption><Button className="text-light" variant="">Visit this country</Button></figcaption>
         </Link>
         </figure>
         </div>

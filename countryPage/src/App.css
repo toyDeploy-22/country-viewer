@@ -606,7 +606,7 @@ section.resultSection div#countriesFound {
 
 section.resultSection > div#countryNotFound {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   background-color: #000000;
   color: ghostwhite;
@@ -647,9 +647,10 @@ div#countriesFound div.country-suggestion figure, div#countryNotFound div.countr
   background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
   
   border: outset rgb(141, 139, 139) 2px;
-  */
+
   text-align: center;
-  width: 50%;
+  */
+  width: 30%;
 }
 
 div#countriesFound div.country-suggestion figure .countryFound-link > img, div#countryNotFound div.country-suggestion figure .countryFound-link > img {
@@ -699,12 +700,23 @@ div#deleteCountries div#countryNotFound {
   flex-direction: row;
 }
 
-div.errorContainer-notFound > h2.Oops-title {
-  text-shadow: #FFFFFE 1px 1px;
+div.errorContainer-notFound > h2.Oops-title, div.errorContainer-notFound > h2.Oops-title-400, div.errorContainer-notFound > h2.Oops-title-500 {
   letter-spacing: 3px;
 }
 
-div.errorContainer-notFound > h2.Oops-title ~ h5 ~ p {
+div.errorContainer-notFound > h2.Oops-title  {
+  text-shadow: #FFFFFE 1px 1px;
+}
+
+div.errorContainer-notFound > h2.Oops-title-400  {
+  text-shadow: #edf12d 1px 1px;
+}
+
+div.errorContainer-notFound > h2.Oops-title-500  {
+  text-shadow: #FF0000 1px 1px;
+}
+
+div.errorContainer-notFound > h2.Oops-title ~ h5 ~ p, div.errorContainer-notFound > h2.Oops-title-400 ~ h5 ~ p, div.errorContainer-notFound > h2.Oops-title-500 ~ h5 ~ p {
   text-wrap: balance;
   letter-spacing: .5px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;

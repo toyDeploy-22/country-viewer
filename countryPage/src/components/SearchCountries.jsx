@@ -58,6 +58,7 @@ function SearchCountry({ countries }) {
         msg: "You need to type at least 2 characters in order to complete the search process. If you don't know the country ID, just type the first or last letters of the country name you are looking for."
       }
       setErrorStack(obj1);
+      
     } else {
     // const url = "http://localhost:5000/countrysearch/name?countryname=" + input;
     // const findCountry = await axios.get(url);
@@ -108,7 +109,7 @@ function SearchCountry({ countries }) {
         err: true,
         code: 500,
         title: 'Internal Server Error',
-        msg: 'An Internal Server Error occured. Please try to contact the network administrator if it still persists.'
+        msg: 'An Internal Server Error occured. Please contact the network administrator if this error persists.'
       };
       console.error(err);
       setErrorStack(obj4);
