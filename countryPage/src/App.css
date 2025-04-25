@@ -605,6 +605,9 @@ section.resultSection div#countriesFound {
 }
 
 section.resultSection > div#countryNotFound {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   background-color: #000000;
   color: ghostwhite;
 }
@@ -631,11 +634,20 @@ div#countriesFound div.country-suggestion, div#countryNotFound div.country-sugge
   font-weight: 700;
 }
 
+div#countriesFound div.country-suggestion figure {
+  border: outset rgb(141, 139, 139) 2px;
+}
+
+div#countryNotFound div.country-suggestion figure {
+  border: none;
+}
+
 div#countriesFound div.country-suggestion figure, div#countryNotFound div.country-suggestion figure {
   /*
   background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
-  */
+  
   border: outset rgb(141, 139, 139) 2px;
+  */
   text-align: center;
   width: 50%;
 }
@@ -690,6 +702,13 @@ div#deleteCountries div#countryNotFound {
 div.errorContainer-notFound > h2.Oops-title {
   text-shadow: #FFFFFE 1px 1px;
   letter-spacing: 3px;
+}
+
+div.errorContainer-notFound > h2.Oops-title ~ h5 ~ p {
+  text-wrap: balance;
+  letter-spacing: .5px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.02em;
 }
 
 div#countryNotFound div.errorContainer-notFound h5.errorContainer-title > span {

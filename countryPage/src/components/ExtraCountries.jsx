@@ -77,7 +77,7 @@ errorStack[0].err === true ?
 <div id="questionContainer">
 <div className="extraCountries-block"></div>
 <h5 id="play-h5">Play With Us!</h5> 
-<h5>What is the country name of this flag ?</h5>
+<h5>Which one of these nations represents this flag below ?</h5>
 <img onError={()=>errorImg} src={!hasSource ? NoImage : answer[0].countryFlag_url} alt={!hasSource ? "No Image" : "country flag"} />    
 <ol type="A">
 {

@@ -6,11 +6,12 @@ import Spinner from 'react-bootstrap/Spinner';
 import noImage from '../screenshot/no-image.512x512.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+// import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+// import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faJetFighter } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import ErrorStackComponent from './ErrorStackComponent.jsx';
 
 /*
 Suppose we pass countries.all through props in app.js
@@ -33,7 +34,7 @@ function SearchCountry({ countries }) {
   const [showMsg, setShowMsg] = useState(true);
 
   const plc = "Enter country name or country ID";  
-  const ttl = "Name should contain at least 3 letters";
+  const ttl = "Name should contain at least 2 letters";
 
   const handleCountryName = (e) => {
     setShowMsg(false);
@@ -54,7 +55,7 @@ function SearchCountry({ countries }) {
         err: true,
         code: 401,
         title: 'Short Search Characters',
-        msg: 'You need to type at least 3 characters in order to complete the search process.'
+        msg: "You need to type at least 2 characters in order to complete the search process. If you don't know the country ID, just type the first or last letters of the country name you are looking for."
       }
       setErrorStack(obj1);
     } else {
@@ -171,7 +172,7 @@ onChange={handleCountryName}
         <div className="country-suggestion me-2">
         <h6>A country that might interest:</h6>
         <figure>
-        <Link className="countryFound-link" to={"/country/" + suggest[0].countryName} target='_blank'>
+        <Link className="countryFound-link" to={"/country/" + suggest.countryName} target='_blank'>
         <img src={suggest.hasOwnProperty("countryFlag_url") ? suggest.countryFlag_url : noImage} alt={suggest.hasOwnProperty("countryFlag_url") ? suggest.countryName : "No Image Available"} />
         <figcaption><Button variant="success">Visit country</Button></figcaption>
         </Link>
@@ -181,24 +182,7 @@ onChange={handleCountryName}
     }
     
     {
-      errorStack.code >= 400 && <div id="countryNotFound" className="p-2 mt-3">
-      <div className="errorContainer-notFound p-2">
-      <h2 className="Oops-title p-2 mb-2">{errorStack.code === 404 ? "The World is large, but..." : "Ooops"}</h2>
-      <h5><span>{errorStack.title}</span>{' '}{errorStack.code === 404 ? <FontAwesomeIcon icon={faGlobe} /> : <FontAwesomeIcon icon={faTriangleExclamation} />}</h5>
-      <br />
-      <p>{errorStack.msg}</p>
-      </div>
-      <div className="country-suggestion py-2">
-        <h6>A country that might interest:</h6>
-        <figure className="py-4">
-        <Link className="countryFound-link" to={"/country/" + suggest.countryName} target='_blank'>
-        <img src={suggest.countryFlag_url} alt={suggest.countryName} />
-        <figcaption><Button className="text-light" variant="">Visit country</Button></figcaption>
-        </Link>
-        </figure>
-        </div>
-      </div>
-
+      errorStack.code >= 400 && <ErrorStackComponent stack={errorStack} sug={suggest} />
     }
 </section>    
 </section>

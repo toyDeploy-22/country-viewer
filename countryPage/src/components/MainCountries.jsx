@@ -29,7 +29,7 @@ async function launchCountries() {
     
     const data = await countries.all;
 
-    const countryFlagsOk = await data.filter((c)=>typeof c.countryFlag_url !== 'undefined' && c.countryFlag_url !== '');
+    const countryFlagsOk = await data.filter((c)=> c.hasOwnProperty('countryFlag_url') && c.countryFlag_url.length <= 4);
 
     const newCountries = randomFlags(countryFlagsOk, 18);
 
