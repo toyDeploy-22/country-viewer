@@ -662,7 +662,7 @@
   "_id": {
     "$oid": "67e5ce4eb52713cf60deb71d"
   },
-  "countryId": "US",
+  "countryId": "USA",
   "countryName": "United States of America",
   "countryFlag_url": "https://www.worldometers.info/img/flags/us-flag.gif",
   "countryDescription": "The United States is a diverse and expansive country with a wide range of landscapes and climates that offer endless opportunities for exploration and adventure. It sits between the Atlantic Ocean on the east and the Pacific Ocean on the west, visible on the world map.",

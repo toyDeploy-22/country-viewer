@@ -545,6 +545,8 @@ section#searchNameContainer form p.indication-letters {
 
 div.countriesList div#countryList-container img + p {
   font-family: fantasy, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.1em;
+  letter-spacing: 1.5px;
 }
 
 div.countriesList div#countryList-container img + p:hover {
@@ -634,15 +636,22 @@ div#countriesFound div.country-suggestion, div#countryNotFound div.country-sugge
   font-weight: 700;
 }
 
+/*
 div#countriesFound div.country-suggestion figure {
   border: outset rgb(141, 139, 139) 2px;
-}
 
-div#countryNotFound div.country-suggestion figure {
+}
+*/
+
+div#countriesFound div.country-suggestion figure, div#countryNotFound div.country-suggestion figure {
   border: none;
 }
 
-div#countriesFound div.country-suggestion figure, div#countryNotFound div.country-suggestion figure {
+div#countriesFound div.country-suggestion figure {
+  width: 55%;
+}
+
+div#countryNotFound div.country-suggestion figure {
   /*
   background: linear-gradient(114deg, rgba(49,49,52,1) 0%, rgba(130,130,130,1) 25%, rgba(160,160,160,1) 100%);
   
@@ -655,6 +664,7 @@ div#countriesFound div.country-suggestion figure, div#countryNotFound div.countr
 
 div#countriesFound div.country-suggestion figure .countryFound-link > img, div#countryNotFound div.country-suggestion figure .countryFound-link > img {
   width: 50%;
+  margin-bottom: 5%;
 }
 
 div#countriesFound div.country-suggestion figcaption > button {
@@ -672,6 +682,7 @@ div#countriesFound div.country-suggestion .countryFound-link {
 div#countriesFound div.country-suggestion figure:hover {
   background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
   transition: all 0.2s linear;
+  padding: 2% 0 2% 0;
 }
 
 div#countryNotFound div.country-suggestion figure:hover {
@@ -1258,7 +1269,7 @@ div#countriesFound-2 div.countriesList, div.countryNotFound-2 > div.errorContain
  }
 
 div.countriesList div#countryList-container a > img:hover {
-  border: thin sandybrown solid;
+  border: thick sandybrown solid;
   /*border: 1.75px rgb(229, 122, 28) solid;*/
   transition: all 0.25s ease;
 }

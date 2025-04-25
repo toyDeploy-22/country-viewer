@@ -139,7 +139,7 @@ onChange={handleCountryName}
 {countryName.countryInput === '' && <p className="indication-letters"><small>{ttl}</small></p>}
 </form>
 
-<section className={`resultSection ${!showMsg ? "d-none" : "col-md-2"}`}>
+<section className={`resultSection my-2 ${!showMsg ? "d-none" : "col-md-2"}`}>
 {
   loader &&
 <div className="loading">
@@ -158,7 +158,7 @@ onChange={handleCountryName}
 { 
   errorStack.code === 200 &&                      
     <div id="countriesFound" className="p-1 p-md-3">
-    <div className={`countriesList ps-1 ${ results.length >= 2 ? "col-md-2" : "" }`}>
+    <div className={`countriesList py-2 ps-1 ${ results.length >= 2 ? "col-md-2" : "" }`}>
     <h3 className="countries-results-nb"><span>{results.length}</span> { results.length > 1 ? 'Countries' : 'Country' } Found:</h3>
     {
     results.map((countries, _ind) =>
