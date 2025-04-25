@@ -27,7 +27,7 @@ function NavBar() {
             </p>
 
             <p className="menu-text p-2">
-            <Link to="/editcountry" className="menu-link">Modify a Country</Link>
+            <Link to="/searchandmodify" className="menu-link">Modify a Country</Link>
             </p>
                
             <p className="menu-text p-2">

@@ -685,7 +685,7 @@ div#countriesFound div.country-suggestion figure:hover {
   padding: 2% 0 2% 0;
 }
 
-div#countryNotFound div.country-suggestion figure:hover {
+div#countryNotFound div.country-suggestion figure > div:hover {
   background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
   transition: all 0.2s linear;
 }
@@ -746,6 +746,15 @@ div#countryNotFound div.errorContainer-notFound h5.errorContainer-title :not(spa
 div#countryNotFound div.errorContainer-notFound > p.errorContainer-text {
   font-family: 'Times New Roman', Times, serif;
 
+}
+
+/* ModifyAndSearch Page */
+
+section#searchNameContainer form fieldset legend > h1 {
+  text-shadow: 1px 1px #BC86D1;
+  letter-spacing: .5px;
+  text-align: center;
+  color: #9E32C2;
 }
 
 /* CountryProfile */

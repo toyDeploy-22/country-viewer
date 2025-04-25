@@ -23,7 +23,7 @@ Suppose we pass countries.all through props in app.js
 </Router>
 */
 
-function SearchCountry({ countries }) {
+function ModifyACountrySearch({ countries }) {
 
   const [countryName, setCountryName] = useState({ countryInput: '' });
   const [loader, setLoader] = useState(false);
@@ -122,7 +122,7 @@ return(
 <section id="searchNameContainer">
 <form onSubmit={submitCountryName}>
 <fieldset>
-<legend><h2>Search a Country</h2></legend>
+<legend><h1>Modify a Country</h1></legend>
 </fieldset>
 
 <div id="search-and-btn">
@@ -133,6 +133,7 @@ name="countryInput"
 value={countryName.countryInput}
 onChange={handleCountryName}
 />
+<p style={{ fontFamily: 'calibri, arial, sans-serif;' }}><small>Please search for the country you want to mdofify.</small></p>
 <br />
 <button type="submit">Search</button>
 </div>
@@ -193,4 +194,4 @@ onChange={handleCountryName}
   )
 }
 
-export default SearchCountry
+export default ModifyACountrySearch;
