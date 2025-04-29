@@ -909,14 +909,20 @@ section.ids-section input {
   width: 30%;
 }
 
+/**
+input.input_edition::placeholder {
+  color: ghostwhite;
+}
+**/
+
 .edit-readOnly:disabled {
-  color: whitesmoke;
+  color: grey;
   opacity: 1;
 }
 
 select.continent_id-selection {
   background: linear-gradient(176deg, rgba(9,121,77,1) 0%, rgba(2,0,36,0.9801838594324449) 60%);
-  color: whitesmoke;
+  color: darkgray;
   font-family: console, serif;
   font-size: .9em;
 }
@@ -955,6 +961,7 @@ div.other-ids {
 
 input, textarea {
   font-size: 1.25.em;
+  color: ghostwhite;
   padding: 2% 4.5%;
   background: none;
   border: 1px inset #d3d3d3;
@@ -1384,6 +1391,10 @@ div#countriesFound-2 div.country-suggestion figure:hover {
 div.countryNotFound-2 div.country-suggestion figure:hover {
   background: linear-gradient(114deg, rgba(192,192,197,1) 0%, rgba(171,171,171,1) 25%, rgba(49,49,52,1) 100%);
   transition: all 0.2s linear;
+}
+
+a.countryFound-link > img {
+  background-color: tan;
 }
 
 div#countriesFound-2 div.country-suggestion figure .countryFound-link > img:hover {

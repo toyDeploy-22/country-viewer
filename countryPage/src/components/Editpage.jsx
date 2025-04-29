@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +13,7 @@ function Editpage({ cnt }) {
 // states
 const [loader, setLoader] = useState(false);
 const [editable, setEditable] = useState({ countryName: cnt.country.countryName, countryFlag_url: '', countryDescription: '' });
+const [wannaEdit, setWannaEdit] = useState({ hasFlag: true, hasDescription: true });
 const [modalShow, setModalShow] = useState(false);
 // const [modalResult, setModalResult] = useState({ err: false, code: 0, title: '', msg: '' });
 const [errorStack, setErrorStack] = useState({
@@ -26,6 +28,12 @@ const handleCountry = (e) => {
 let {name, value} = e.target;
 let editObject = { ...editable, [name]: value };
 setEditable(() => editObject)
+}
+
+const handleWannaEdit = (e) => {
+  let { name, checked } = e.target;
+  const obj = {[name]: checked};
+  setWannaEdit(() => obj)
 }
 
 const cancelediting = () => {
@@ -49,6 +57,7 @@ const submitCountry = async(e) => {
       setLoader(false);
     } else {
       const submitter = await editCountries(editable);
+      console.log(submitter);
       setErrorStack(() => submitter);
       setLoader(false);
       // window.location.reload(); to refresh page
@@ -81,21 +90,20 @@ return (
   <div id="editCountry-container">
           <form>
             <h1>Edit {cnt.country.countryName} Country</h1>
+            <br />
           <div className="ids">
             <section className="ids-section">
               <label htmlFor="continent_id">
                 Continent ID<span className="req">{'*'}</span>
               </label>
               <br />
-              <select id="continent_id" className="continent_id-selection" name="continent_id" autoComplete="on" defaultValue={cnt.country.continent.continentId} disabled>
+              <select id="continent_id" className="continent_id-selection" name="continent_id" autoComplete="on" disabled>
                 {
-                  [1, 2, 3, 4, 5].map((c)=><option key={c} value={c}>{
-                    c === 1 ? "Europe" : c === 2 ? "America" : c === 3 ? "Asia" : c === 4 ? "Africa/Middle-East" : "Oceania"
-                  }</option>)
+                  [{name: "North America", id: "NA"}, {name: "South America", id: "SA"}, {name: "Europe", id: "EU"}, {name: "Middle-East/Africa", id: "AF"}, {name: "Asia", id: "AS"}, {name: "Oceania", id: "OC"}, {name: "Antarctica", id: "AN"}].filter((c) => c.id === cnt.country.continent.continentId.toUpperCase()).map((c)=><option key="continentId" value={c.name}>{c.name}</option>)
                 }
               </select>
             </section>
-<p id="country_id-zone"><small>The continent ID is <span>{cnt.country.continent.continentId}</span></small></p>
+<p id="country_id-zone"><small>The continent ID of this country is <span>{cnt.country.continent.continentId}</span></small></p>
             <section className="ids-section">
               <label htmlFor="country_id">
                 Country ID<span className="req">*</span>
@@ -109,23 +117,57 @@ return (
             <label htmlFor="country_name">
               Country Name<span className="req">*</span>
             </label>
-            <input id="country_name" type="text" className="edit-readOnly" autoComplete="on" name="countryName" value={Object.entries(cnt.country).filter((obj)=>obj[0] === 'countryName')[0].map((p)=>p)[1].substring(0,25)} disabled />
+            <input id="country_name" type="text" className="edit-readOnly text-center" autoComplete="on" name="countryName" value={Object.entries(cnt.country).filter((obj)=>obj[0] === 'countryName')[0].map((p)=>p)[1].substring(0,25)} disabled />
             
-          <p className="editcountry-note"><small><b>Note: </b> Due to technical and organizational reasons, the country name, ID and continent ID are not editable.</small></p>
+          <p className="editcountry-note"><small><b>Note: </b> The country name, country ID and continent ID are not editable.</small></p>
           <hr />
 
             <label htmlFor="country_flag">
             Flag
             </label>
-            <input type="text" className="text-light" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
-            <br />
+            <Form.Check // prettier-ignore
+            defaultChecked
+            type="switch"
+            id="flag_url"
+            name="hasFlag"
+            onChange={handleWannaEdit}
+            label={wannaEdit.hasFlag ? "I want to add a Flag" : "No Flag for now"}
+            />
+            { wannaEdit.hasFlag &&
+            <input type="text" className="mb-2 input_edition" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
+            }
             
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> The country Flag details will be removed after confirmation if the field is left in blank.{")"}</small></p>
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
+            <br />
         
             <label>
             Description
             </label>
-            <textarea className="text-light" cols="6" rows="3" placeholder={cnt.country.countryDescription && cnt.country.countryDescription.length > 15 ? cnt.country.countryDescription.substring(0, Math.ceil(cnt.country.countryDescription.length/9)) + "..." : cnt.country.countryDescription && cnt.country.countryDescription.length < 15 ? cnt.country.countryDescription : "Add some text here if needed..."} name="countryDescription" value={editable.countryDescription} onChange={handleCountry} maxLength={160}></textarea>
+            <Form.Check // prettier-ignore
+            defaultChecked
+            type="switch"
+            id="countryDescription"
+            name="hasDescription"
+            onChange={handleWannaEdit}
+            label={wannaEdit.hasDescription ? "Add a Description" : "No Description for now"}
+            />
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small><b>Note{": "}</b>{wannaEdit.hasDescription ? "Add a text below to your country." : "No text will be added to your country."}</small></p>
+
+            {
+            wannaEdit.hasDescription &&
+            <textarea className="text-light" cols="6" rows="5" placeholder={cnt.country.hasOwnProperty("countryDescription") ? cnt.country.countryDescription : "Add some text here if needed..."} name="countryDescription" value={editable.countryDescription} onChange={handleCountry} maxLength={160}></textarea>
+            }
+            
+            { wannaEdit.hasDescription &&
+            <>
+            { editable.countryDescription.length === 0 ?
+            <p className="my-2"><small>Characters Left: <b>{cnt.country.countryDescription.length === 160 ? "No character left" : 160 - (cnt.country.countryDescription.length)}</b></small></p>
+            :
+            <p className="my-2"><small>Characters Left: <b>{editable.countryDescription.length === 160 ? "No character left" : 160 - (editable.countryDescription.length)}</b></small></p>
+            }
+            </>
+            }
+
             <br />
             {typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null}
             <br />

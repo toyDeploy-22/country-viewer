@@ -3,7 +3,7 @@ function checkFlag(arr, nb) {
   
   const result = {};
   try {
-  const authorizedKeys = ['country_id', 'country_name', 'country_description', 'country_flag'];
+  const authorizedKeys = ['countryId', 'countryName', 'countryDescription', 'countryFlag_url'];
 
   const ifTrueDenied_nb = {
     is_not_a_number: typeof nb !== "number",
@@ -29,7 +29,7 @@ function checkFlag(arr, nb) {
     } else {
     result.code = 401;
     result.title = "Unauthorized Array Format"
-    result.message = `The Array submitted ${results_arr.map((nb, _ind, arr) => `${nb[0].replaceAll("_"," ")}${_ind + 1 === arr.length ? "" : ", "}`)}`
+    result.message = `The Array submitted ${results_arr.map((nb, _ind, arr) => `${nb[0].replaceAll("_"," ")}${_ind + 1 === arr.length ? "." : ", "}`)}`
     }
   } else {
     result.code = 401;

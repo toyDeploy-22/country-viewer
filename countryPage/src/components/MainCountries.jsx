@@ -29,7 +29,7 @@ async function launchCountries() {
     
     const data = await countries.all;
 
-    const countryFlagsOk = await data.filter((c)=> c.hasOwnProperty('countryFlag_url') && c.countryFlag_url.length <= 4);
+    const countryFlagsOk = await data.filter((c)=> c.hasOwnProperty('countryFlag_url') && c.countryFlag_url.length >= 4);
 
     const newCountries = randomFlags(countryFlagsOk, 18);
 
@@ -40,7 +40,7 @@ async function launchCountries() {
       } else {
         setStatus(400);
       }
-      console.log({status: status})
+      console.log(newCountries)
     } catch(err) {
       setStatus(500);
       console.error({
