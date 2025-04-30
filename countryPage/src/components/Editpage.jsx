@@ -32,7 +32,7 @@ setEditable(() => editObject)
 
 const handleWannaEdit = (e) => {
   let { name, checked } = e.target;
-  const obj = {[name]: checked};
+  const obj = {...wannaEdit, [name]: checked};
   setWannaEdit(() => obj)
 }
 
@@ -51,12 +51,13 @@ const submitCountry = async(e) => {
   setModalShow(false);
   try {
     setLoader(true);
-    const checker = editChecker("PATCH", cnt, editable);
+    const newEditable = {...editable, ...wannaEdit};
+    const checker = editChecker("PATCH", cnt, newEditable);
     if(checker.err) {
       setErrorStack(() => checker);
       setLoader(false);
     } else {
-      const submitter = await editCountries(editable);
+      const submitter = await editCountries(newEditable);
       console.log(submitter);
       setErrorStack(() => submitter);
       setLoader(false);
@@ -120,15 +121,16 @@ return (
             <input id="country_name" type="text" className="edit-readOnly text-center" autoComplete="on" name="countryName" value={Object.entries(cnt.country).filter((obj)=>obj[0] === 'countryName')[0].map((p)=>p)[1].substring(0,25)} disabled />
             
           <p className="editcountry-note"><small><b>Note: </b> The country name, country ID and continent ID are not editable.</small></p>
-          <hr />
+          <hr /><br />
 
-            <label htmlFor="country_flag">
+            <label htmlFor="has_countryFlag" style={{letterSpacing: '3px'}}>
             Flag
             </label>
+            <br />
             <Form.Check // prettier-ignore
             defaultChecked
             type="switch"
-            id="flag_url"
+            id="has_countryFlag"
             name="hasFlag"
             onChange={handleWannaEdit}
             label={wannaEdit.hasFlag ? "I want to add a Flag" : "No Flag for now"}
@@ -137,12 +139,13 @@ return (
             <input type="text" className="mb-2 input_edition" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             }
             
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this above field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
             <br />
         
-            <label>
+            <label htmlFor="countryDescription" style={{letterSpacing: '3px'}}>
             Description
             </label>
+            <br />
             <Form.Check // prettier-ignore
             defaultChecked
             type="switch"
@@ -168,10 +171,9 @@ return (
             </>
             }
 
-            <br />
-            {typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null}
-            <br />
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> The country Description details will be removed after confirmation if the field is left in blank.{")"}</small></p>
+            {/*typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null*/}
+  
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> Leave the description field if you already have a description and you do not want change it.{")"}</small></p>
             {
               errorStack.err === false && errorStack.code === 200 && 
               <div className="editpage-success">

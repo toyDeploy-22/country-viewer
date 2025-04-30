@@ -27,6 +27,11 @@ const reasons = [{
     code: 401,
     title: "Incorrect country description edition",
     msg: "The country edition, if filled in, needs to be a text up to 160 characters only."
+}, {
+    err: true,
+    code: 401,
+    title: "Incorrect edition values",
+    msg: "Please use only the checkbox to specify if you want to add or remove the flag and/or description."
 }];
 
 const success = {
@@ -39,7 +44,12 @@ let validation = {};
 const { countryFlag_url, countryDescription } = body;
 
 // conditions
-if( req !== "PATCH" && countryFlag_url === '' && countryDescription === '' ) {
+if(req === "PATCH") {
+    if(!body.hasOwnProperty('hasFlag') || !body.hasOwnProperty('hasDescription')) {
+        validation = reasons[4];
+    } else if(typeof body.hasFlag !== 'boolean' || typeof body.hasDescription !== 'boolean') {
+        validation = reasons[4];
+}} else if( req !== "PATCH" && countryFlag_url === '' && countryDescription === '' ) {
  validation = reasons[0];
 } else if( req !== "PATCH" && typeof countryFlag_url === 'undefined' && typeof countryDescription === 'undefined') { //added in another else/if block to simplify the visibility
  validation = reasons[0];
@@ -183,9 +193,10 @@ const addCountriesChecker = async(body, arr) => {
         reasonId: 16,
         title: 'Country Intials Number', 
         message: 'The country Initials cannot contain any number.'
-        },
+        }
     ]
 
+    
     if(noNumbers.test(body.id)) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 16).map((r) => r.message)[0]
