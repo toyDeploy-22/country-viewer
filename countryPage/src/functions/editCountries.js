@@ -21,19 +21,50 @@ const reasons = [{
     err: true,
     code: 401,
     title: "Incorrect country flag edition",
-    msg: "The country flag, if filled in, needs to be a text, ideally a URL."
+    msg: "The country flag, if filled in, needs to be a text, ideally a URL with at least 3 characters."
 }, {
     err: true,
     code: 401,
     title: "Incorrect country description edition",
-    msg: "The country edition, if filled in, needs to be a text up to 160 characters only."
+    msg: "The country edition, if filled in, needs to be a text between 10 and 160 characters."
 }, {
     err: true,
     code: 401,
-    title: "Incorrect edition values",
+    title: "Incorrect validation options",
     msg: "Please use only the checkbox to specify if you want to add or remove the flag and/or description."
-}];
-
+},
+{
+    err: true,
+    code: 401,
+    title: "Incorrect Flag/Description values",
+    msg: "If set to 'yes', the flag or description field is required and cannot be empty."
+},
+{
+    err: true, 
+    code: 401,
+    title: "Missing fields",
+    msg: 'Some required fields are missing. The edition request cannot be sent.'
+},
+{
+    err: true, 
+    code: 401,
+    title: "Incorrect values",
+    msg: 'Some values cannot be sent for edition. Please check your answers and try again.',
+},
+{
+    err: true,
+    code: 401,
+    title: 'Different Country Data',
+    msg: 'The country Id or country Name of the request does not correspond with the initial one. Please make sure that these details are equal and confirm again. '
+},
+{
+    err: true,
+    code: 401,
+    title: "Incorrect Value Type",
+    msg: "The values must be text only."
+}
+];
+    
 const success = {
     err: false,
     title: "Success",
@@ -41,65 +72,74 @@ const success = {
 };
 
 let validation = {};
-const { countryFlag_url, countryDescription } = body;
+
+const requiredFields = ["countryName", "countryId", "continentId", "hasFlag", "hasDescription"];
+
+const checkProps = {
+
+    missingKeys: Object.keys(body).filter((k) => k !== 'countryFlag_url' && k !== 'countryDescription').filter((k) => requiredFields.indexOf(k) === -1),
+    
+    invalidValues: Object.entries(body).filter((v) => v[1] === ''),
+
+    minLengthFlag: body.hasFlag && body.countryFlag_url.length < 3,
+
+    maxLengthDescription: (body.hasDescription && body.countryDescription.length < 10 || body.hasDescription && body.countryDescription.length > 160),
+
+    has_BOTHProps: body.hasOwnProperty('countryFlag_url') && body.hasOwnProperty('countryDescription'),
+
+    hasHAS_IncorrectTYPES: typeof body.hasFlag !== 'boolean' || typeof body.hasDescription !== 'boolean',
+
+    hasUndefinedTypes: Object.values(body).filter((v) => typeof v === 'undefined') || Object.entries(body).filter((k) => k[0] === 'countryFlag_url' || k[0] === 'countryDescription').filter((v) => typeof v[1] !== 'string'),
+
+    duplicatesVal:  (cnt.country.countryDescription === body.countryDescription && cnt.country.countryFlag_url === body.countryFlag_url),
+
+    duplicate_NameId_False: (cnt.country.countryName.toLowerCase() !== body.countryName.toLowerCase()) || (cnt.country.countryId.toLowerCase() !== body.countryId.toLowerCase())
+
+    };
+
+// const { countryFlag_url, countryDescription } = body;
 
 // conditions
 if(req === "PATCH") {
-    if(!body.hasOwnProperty('hasFlag') || !body.hasOwnProperty('hasDescription')) {
+    if(checkProps.missingKeys.length > 0) {
+    validation = reasons[0]
+} else if(checkProps.invalidValues.length > 0) {
+ validation = reasons.filter((err) => err.title === 'Incorrect values')[0] 
+ } else if(checkProps.minLengthFlag) {
+        validation = reasons[2];
+    } else if(checkProps.maxLengthDescription) {
+        validation = reasons.filter((err) => err.title === 'Incorrect country description edition')[0]
+    } else if(checkProps.hasHAS_IncorrectTYPES) {
         validation = reasons[4];
-    } else if(typeof body.hasFlag !== 'boolean' || typeof body.hasDescription !== 'boolean') {
-        validation = reasons[4];
-}} else if( req !== "PATCH" && countryFlag_url === '' && countryDescription === '' ) {
+} else if(body.hasFlag && body.hasDescription && checkProps.duplicatesVal ) {
+        validation = reasons[1]
+    } else if(checkProps.duplicate_NameId_False) {
+        validation = reasons.filter((err) => err.title === 'Different Country Data')[0]
+    } else if(checkProps.hasUndefinedTypes.length > 0) {
+        validation = reasons.filter((err) => err.title === 'Incorrect Value Type')[0]
+    }} else if( req !== "PATCH" && checkProps.invalidValues ) {
  validation = reasons[0];
-} else if( req !== "PATCH" && typeof countryFlag_url === 'undefined' && typeof countryDescription === 'undefined') { //added in another else/if block to simplify the visibility
+} else if( req !== "PATCH" && checkProps.hasUndefinedTypes.length > 0) { //added in another else/if block to simplify the visibility
  validation = reasons[0];
-} else if(cnt.countryFlag_url === countryFlag_url && cnt.countryDescription === countryDescription){
- validation = reasons[1];
-} else if(countryFlag_url !== '' && ['string', 'undefined'].indexOf(typeof countryFlag_url) === -1) {
- validation = reasons[2];
-} else if(countryDescription.length > 160 ){
-    validation = { ...reasons[3] };
 } else {
- validation = { ...success };
+        validation = { ...success };
     }
+
     return validation;
 }
 
 const editCountries = async(cnt) => {
     try {
-        let currBody = {};
-        let newBody = {};
-        const url = `http://localhost:5000/nosql/editcountry/${cnt.countryName}`;
-        const validProps = Object.entries(cnt);
+        let currBody = { ...cnt };
+
+        const url = `http://localhost:5000/nosql/editcountry/${currBody.countryName}`;
+
+        /*
         const flag = validProps.filter((cf)=>cf[0] === "countryFlag_url")[0]; // returns 1D array 
         const description = validProps.filter((cd)=>cd[0] === "countryDescription")[0]; // returns 1D array
+        */
 
-        if(flag.indexOf('') < 0 && description.indexOf('') < 0 ) {
-           currBody.hasFlag = true;
-           currBody.countryFlag = flag[1];
-           currBody.hasDescription = true; 
-           currBody.countryDescription = description[1];
-        } else if(flag.indexOf('') < 0 && description.indexOf('') >= 0 ) {
-            currBody.hasFlag = true;
-            currBody.countryFlag = flag[1];
-        } else if(description.indexOf('') < 0 && flag.indexOf('') >= 0) {
-            currBody.hasDescription = true;
-            currBody.countryDescription = description[1];
-        } else {
-           result.err = true; 
-           result.code = 401;
-           result.title = "No update detected";
-           result.msg = 'There is no update detected on the flag URL nor description. Please try to modify these fields and confirm again.';
-           return result;
-        }
-        
-        for (let [key, value] of Object.entries(currBody)) {
-            if(value !== '') {
-                newBody[key] = value;
-            }
-        };
-
-        const editor = await axios.patch(url, { ...newBody  }, {headers: { 'Content-Type': 'application/json' }});
+        const editor = await axios.patch(url, currBody, {headers: { 'Content-Type': 'application/json' }});
 
         console.log(editor.data);
 
@@ -236,7 +276,7 @@ const addCountriesChecker = async(body, arr) => {
     } else if (body.hasFlag && body.flag.length < 3) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 13).map((r) => r.message)[0] 
-    } else if(body.hasOwnProperty("description") && body.description.length > 250) {
+    } else if(body.hasOwnProperty("description") && body.description.length > 160) {
         result.ok = false;
         result.message = reasons[7]
     } else if(body.hasOwnProperty("description") && body.description.length < 10) {

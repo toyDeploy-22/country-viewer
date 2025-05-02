@@ -12,7 +12,7 @@ function Editpage({ cnt }) {
 
 // states
 const [loader, setLoader] = useState(false);
-const [editable, setEditable] = useState({ countryName: cnt.country.countryName, countryFlag_url: '', countryDescription: '' });
+const [editable, setEditable] = useState({ countryName: cnt.country.countryName, countryId: cnt.country.countryId, continentId: cnt.country.continent.continentId, countryFlag_url: cnt.country.countryFlag_url || '', countryDescription: cnt.country.countryDescription || '' });
 const [wannaEdit, setWannaEdit] = useState({ hasFlag: true, hasDescription: true });
 const [modalShow, setModalShow] = useState(false);
 // const [modalResult, setModalResult] = useState({ err: false, code: 0, title: '', msg: '' });
@@ -20,7 +20,7 @@ const [errorStack, setErrorStack] = useState({
   err: false,
   code: 0,
   title: '',
-  msg: ['']
+  msg: ''
 });
 
 // functions
@@ -37,8 +37,8 @@ const handleWannaEdit = (e) => {
 }
 
 const cancelediting = () => {
-  const initialEdition = { countryFlag_url: '', countryDescription: '' };
-  setEditable(()=>initialEdition);
+  const initialEdition = { countryName: cnt.country.countryName, countryId: cnt.country.countryId, continentId: cnt.country.continent.continentId, countryFlag_url: cnt.country.countryFlag_url || '', countryDescription: cnt.country.countryDescription || '' };
+  setEditable(() => initialEdition);
 }
 
 const confirmEdit = (e) => {
@@ -50,16 +50,18 @@ const submitCountry = async(e) => {
   e.preventDefault();
   setModalShow(false);
   try {
+
     setLoader(true);
     const newEditable = {...editable, ...wannaEdit};
     const checker = editChecker("PATCH", cnt, newEditable);
+
     if(checker.err) {
-      setErrorStack(() => checker);
+      setErrorStack(checker);
       setLoader(false);
     } else {
       const submitter = await editCountries(newEditable);
-      console.log(submitter);
-      setErrorStack(() => submitter);
+
+      setErrorStack(submitter);
       setLoader(false);
       // window.location.reload(); to refresh page
       alert("The country has been successfully modified !");
@@ -82,7 +84,7 @@ const cancelShow = () => {
   err: false,
   code: 0,
   title: '',
-  msg: ['']};
+  msg: ''};
   setErrorStack(() => initialError)
 }
 
@@ -136,7 +138,7 @@ return (
             label={wannaEdit.hasFlag ? "I want to add a Flag" : "No Flag for now"}
             />
             { wannaEdit.hasFlag &&
-            <input type="text" className="mb-2 input_edition" id="country_flag" placeholder={cnt.country.countryFlag_url ? cnt.country.countryFlag_url : "ex: http://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
+            <input type="text" className="mb-2 input_edition" id="country_flag" placeholder={cnt.country.hasOwnProperty("countryFlag_url") ? cnt.country.countryFlag_url : "ex: https://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             }
             
             <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this above field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
@@ -158,22 +160,19 @@ return (
 
             {
             wannaEdit.hasDescription &&
-            <textarea className="text-light" cols="6" rows="5" placeholder={cnt.country.hasOwnProperty("countryDescription") ? cnt.country.countryDescription : "Add some text here if needed..."} name="countryDescription" value={editable.countryDescription} onChange={handleCountry} maxLength={160}></textarea>
+            <textarea className="text-light" cols="6" rows="5" placeholder={cnt.country.hasOwnProperty("countryDescription") ? cnt.country.countryDescription : "This country has no description yet..."} name="countryDescription" value={editable.countryDescription} onChange={handleCountry} maxLength={160}></textarea>
             }
             
             { wannaEdit.hasDescription &&
-            <>
-            { editable.countryDescription.length === 0 ?
-            <p className="my-2"><small>Characters Left: <b>{cnt.country.countryDescription.length === 160 ? "No character left" : 160 - (cnt.country.countryDescription.length)}</b></small></p>
-            :
-            <p className="my-2"><small>Characters Left: <b>{editable.countryDescription.length === 160 ? "No character left" : 160 - (editable.countryDescription.length)}</b></small></p>
-            }
-            </>
+            
+            <p className="my-2"><small>Characters Left: <b>{editable.countryDescription === '' ? "160" : editable.countryDescription.length === 160 ? "No character left" : 160 - (editable.countryDescription.length)}</b></small></p>
             }
 
             {/*typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null*/}
   
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> Leave the description field if you already have a description and you do not want change it.{")"}</small></p>
+            { wannaEdit.hasDescription &&
+              <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> Leave the description field if you already have a description and you do not want change it.{")"}</small></p>
+            }
             {
               errorStack.err === false && errorStack.code === 200 && 
               <div className="editpage-success">
@@ -184,12 +183,12 @@ return (
             {
               errorStack.err === true && 
               <div className={errorStack.code === 401 ? "editpage-failure-orange" : "editpage-failure-red"}>
-              <div className="editpage-failure-header">
+              <div className="editpage-failure-header pt-1 mt-1">
               <CloseButton className='closeedit-button' onClick={cancelShow} />
-              <h5>{errorStack.title}</h5><span className="d-inline-block p-3"></span>
+              <h5 style={{textShadow: 'ghostwhite 0.5px 0.5px', letterSpacing: '1px'}}>{errorStack.title}</h5><span className="d-inline-block p-3"></span>
               </div>
               <article>
-              {errorStack.msg.map((msg, _ind)=><p key={_ind}>{msg}</p>)}
+              <p>{errorStack.msg}</p>
               <Button className="fw-bold" style={{fontFamily: 'tahoma, sans-serif'}} variant="secondary" size="sm" onClick={cancelShow}>Understood</Button>              
               </article>
               </div>

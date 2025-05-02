@@ -188,43 +188,42 @@ if(checker.length > 0) {
 		
 		console.log(obj.reasons);
 		res.status(401).json(obj)	
+		
 	} else {
 		
 	let finalResult;
 	const countryProps = {};
 	const removeProps = {};
 
+		/*
 		req.body.countryFlag_url === '' || !req.body.hasOwnProperty('countryFlag_url') ? Object.assign(removeProps, {countryFlag_url: "" }) : Object.assign(countryProps, {countryFlag_url: req.body.countryFlag_url });  
 		
 		req.body.countryDescription === '' || !req.body.hasOwnProperty('countryDescription') ? Object.assign(removeProps, { countryDescription: "" }) : Object.assign(countryProps, { countryDescription: req.body.countryDescription });
-	
-	if(Object.keys(removeProps).length > 0) {
+		*/
 		
 	const finder = await countryModel.findOne({ countryName: editCountry });
-	const countryFinder = {
+	
+	if(finder) {
+		
+		const countryFinder = {
 			countryId: finder.countryId,
 			countryName: finder.countryName,
-			continent: { continentId: req.body.continentId }
-		}
+			continent: { ...finder['continent'] }
+		};
 		
-		finalResult = await countryModel.findOneAndReplace({countryName: editCountry}, {...countryFinder}, {returnDocument: 'after'});
+		req.body.hasFlag ? countryFinder.countryFlag_url = req.body.countryFlag_url : null;
+		
+		req.body.hasDescription ? countryFinder.countryDescription = req.body.countryDescription : null;
+		
+		finalResult = await countryModel.findOneAndReplace({ countryId: countryFinder['countryId'] }, { ...countryFinder }, {returnDocument: 'after'})
+		
+		const success = { editedRow: 1 };
+		// console.log(finalResult)
+		console.log(success);
+		res.status(202).json(success) // Accepted
 		
 	} else {
 		
-		finalResult = await countryModel.findOneAndUpdate({countryName: editCountry}, {...countryProps}, {runValidators: true, returnDocument: 'after'}); // no need to specify '$set'
-	}	
-	
-	console.log(finalResult)
-	
-	switch(!finalResult) {
-		
-		case false:
-		const success = { editedRow: 1 };
-		console.log(success);
-		res.status(202).json(success) // Accepted
-		break;
-		
-		default:
 		const failure = {
 		  error: true,
 		  title: "Country Not Found",
