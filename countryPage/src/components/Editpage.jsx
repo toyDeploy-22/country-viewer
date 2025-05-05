@@ -23,14 +23,27 @@ const [errorStack, setErrorStack] = useState({
   msg: ''
 });
 
+const initialError = {
+  err: false,
+  code: 0,
+  title: '',
+  msg: ''};
+
 // functions
+
+const cancelShow = () => {
+  setErrorStack(() => initialError)
+}
+
 const handleCountry = (e) => {
+cancelShow();
 let {name, value} = e.target;
 let editObject = { ...editable, [name]: value };
 setEditable(() => editObject)
 }
 
 const handleWannaEdit = (e) => {
+  cancelShow();
   let { name, checked } = e.target;
   const obj = {...wannaEdit, [name]: checked};
   setWannaEdit(() => obj)
@@ -77,15 +90,6 @@ const submitCountry = async(e) => {
     setErrorStack(() => obj4);
     setLoader(false); 
      }
-}
-
-const cancelShow = () => {
-  const initialError = {
-  err: false,
-  code: 0,
-  title: '',
-  msg: ''};
-  setErrorStack(() => initialError)
 }
 
 return (

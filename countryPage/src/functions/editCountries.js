@@ -15,18 +15,18 @@ const reasons = [{
 }, {
     err: true,
     code: 401,
-    title: "Duplicate Fields",
-    msg: "No change have been detected. Make sure that you have entered the new details in the specific fields."
+    title: "Duplicate Values",
+    msg: "No change have been detected. Please make some changes and confirm again your edition request."
     }, {
     err: true,
     code: 401,
     title: "Incorrect country flag edition",
-    msg: "The country flag, if filled in, needs to be a text, ideally a URL with at least 3 characters."
+    msg: "The country flag, if desired, must be a text, ideally a URL, with at least 3 characters."
 }, {
     err: true,
     code: 401,
     title: "Incorrect country description edition",
-    msg: "The country edition, if filled in, needs to be a text between 10 and 160 characters."
+    msg: "The country edition, if desired, must be a text between 10 and 160 characters."
 }, {
     err: true,
     code: 401,
@@ -78,6 +78,10 @@ const requiredFields = ["countryName", "countryId", "continentId", "hasFlag", "h
 const checkProps = {
 
     missingKeys: Object.keys(body).filter((k) => k !== 'countryFlag_url' && k !== 'countryDescription').filter((k) => requiredFields.indexOf(k) === -1),
+
+    invalidFlag: body.hasFlag && body.countryFlag_url === '',
+
+    invalidDescription: body.hasDescription && body.countryDescription === '',
     
     invalidValues: Object.entries(body).filter((v) => v[1] === ''),
 
@@ -103,6 +107,8 @@ const checkProps = {
 if(req === "PATCH") {
     if(checkProps.missingKeys.length > 0) {
     validation = reasons[0]
+} else if(checkProps.invalidFlag || checkProps.invalidDescription) {
+validation = reasons.filter((err) => err.title === 'Incorrect Flag/Description values')[0] 
 } else if(checkProps.invalidValues.length > 0) {
  validation = reasons.filter((err) => err.title === 'Incorrect values')[0] 
  } else if(checkProps.minLengthFlag) {
