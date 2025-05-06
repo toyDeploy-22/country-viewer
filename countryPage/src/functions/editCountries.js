@@ -37,7 +37,7 @@ const reasons = [{
     err: true,
     code: 401,
     title: "Incorrect Flag/Description values",
-    msg: "If set to 'yes', the flag or description field is required and cannot be empty."
+    msg: "If activated, the flag or description field is required and cannot be empty."
 },
 {
     err: true, 
@@ -105,13 +105,12 @@ const checkProps = {
 
 // conditions
 if(req === "PATCH") {
+    // console.log(checkProps)
     if(checkProps.missingKeys.length > 0) {
     validation = reasons[0]
 } else if(checkProps.invalidFlag || checkProps.invalidDescription) {
 validation = reasons.filter((err) => err.title === 'Incorrect Flag/Description values')[0] 
-} else if(checkProps.invalidValues.length > 0) {
- validation = reasons.filter((err) => err.title === 'Incorrect values')[0] 
- } else if(checkProps.minLengthFlag) {
+} else if(checkProps.minLengthFlag) {
         validation = reasons[2];
     } else if(checkProps.maxLengthDescription) {
         validation = reasons.filter((err) => err.title === 'Incorrect country description edition')[0]
@@ -193,7 +192,7 @@ const addCountriesChecker = async(body, arr) => {
         message: 'The country initials must contain 2 letters at least.'},
         { reasonId: 4,
         title: 'Continent Value Invalid', 
-        message: 'Make sure that you select the continent in the list.'},
+        message: 'Make sure that the continent you have selected is in the list.'},
         { reasonId: 5,
         title: 'Country Name Too Short', 
         message: 'The country name should at least contain 3 letters.'},
@@ -206,7 +205,7 @@ const addCountriesChecker = async(body, arr) => {
         {
             reasonId: 8,
             title: 'Too Long Description',
-            message: 'A valid description can only contain 160 characters.'
+            message: 'A valid description cannot contain more than 160 characters.'
         },
         {
             reasonId: 9,
@@ -227,7 +226,7 @@ const addCountriesChecker = async(body, arr) => {
         {
             reasonId: 13,
             title: 'Country Flag Invalid',
-            message: 'The country flag url is not mandatory. Make sure to fill-in this field only if you have a valid link address.'
+            message: "The country flag is not mandatory. Make sure to set this option to 'yes' only if you have a valid link address with more than 3 characters."
         },
         { reasonId: 14, 
         title: 'Country Name Already Exists',
@@ -285,7 +284,7 @@ const addCountriesChecker = async(body, arr) => {
     } else if(body.hasOwnProperty("description") && body.description.length > 160) {
         result.ok = false;
         result.message = reasons[7]
-    } else if(body.hasOwnProperty("description") && body.description.length < 10) {
+    } else if(body.description.length > 0 && body.description.length < 10) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 12).map((r) => r.message)[0]
     } else {

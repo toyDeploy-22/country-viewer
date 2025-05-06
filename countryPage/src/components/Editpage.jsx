@@ -142,7 +142,7 @@ return (
             label={wannaEdit.hasFlag ? "I want to add a Flag" : "No Flag for now"}
             />
             { wannaEdit.hasFlag &&
-            <input type="text" className="mb-2 input_edition" id="country_flag" placeholder={cnt.country.hasOwnProperty("countryFlag_url") ? cnt.country.countryFlag_url : "ex: https://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
+            <input type="text" className="mb-2 text-light" id="country_flag" placeholder={cnt.country.hasOwnProperty("countryFlag_url") ? cnt.country.countryFlag_url : "ex: https://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             }
             
             <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this above field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
@@ -160,7 +160,7 @@ return (
             onChange={handleWannaEdit}
             label={wannaEdit.hasDescription ? "Add a Description" : "No Description for now"}
             />
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small><b>Note{": "}</b>{wannaEdit.hasDescription ? "Add a text below to your country." : "No text will be added to your country."}</small></p>
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small><b>Note{": "}</b>{wannaEdit.hasDescription ? "Add a text below your country." : "No text will be added to your country."}</small></p>
 
             {
             wannaEdit.hasDescription &&
@@ -181,7 +181,7 @@ return (
               errorStack.err === false && errorStack.code === 200 && 
               <div className="editpage-success">
               <p>Success !</p>
-              <button className="btn-editpage leaveedit p-2" onClick={cancelediting} >Leave</button>
+              <button className="btn-editpage leaveedit p-3" onClick={cancelediting} >Leave</button>
               </div>
             }
             {

@@ -961,7 +961,6 @@ div.other-ids {
 
 input, textarea {
   font-size: 1.25.em;
-  color: ghostwhite;
   padding: 2% 4.5%;
   background: none;
   border: 1px inset #d3d3d3;
@@ -1029,6 +1028,7 @@ div.editpage-success > button.leaveedit {
 
 div.editpage-success > button.leaveedit:hover {
   background: linear-gradient(227deg, rgba(2,0,36,1) 0%, rgba(42,131,181,1) 35%, rgba(19,123,145,1) 100%);
+  text-shadow: azure 1px 1px;
 }
 
 div.editpage-failure-orange > div.editpage-failure-header, div.editpage-failure-red > div.editpage-failure-header {

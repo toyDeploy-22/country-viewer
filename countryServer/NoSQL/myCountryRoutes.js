@@ -148,8 +148,8 @@ try {
 	  
   } else {
 	  
-	req.body.hasOwnProperty('countryFlag_url') ? Object.assign(country, {countryFlag_url: req.body.countryFlag_url }) : null;  
-   req.body.hasOwnProperty('countryDescription') ? Object.assign(country, { countryDescription: req.body.countryDescription }) : null;
+	hasFlag && req.body.hasOwnProperty('countryFlag_url') ? Object.assign(country, {countryFlag_url: req.body.countryFlag_url }) : null;  
+   hasDescription && req.body.hasOwnProperty('countryDescription') ? Object.assign(country, { countryDescription: req.body.countryDescription }) : null;
    
    // const finalResult = await new countryModel.create(country).save();
 	// console.log(country)

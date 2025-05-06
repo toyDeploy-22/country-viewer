@@ -29,7 +29,8 @@ const [newCountry, setNewCountry] = useState({
   id: "",
   continent: "",
   name: "",
-  hasFlag: false,  
+  hasFlag: false,
+  hasDescription: true,  
   flag: "",  
   description: ""
 });
@@ -38,6 +39,7 @@ const [spinner, setSpinner] = useState(false);
 const [result, setResult] = useState("init");
 const [message, setMessage] = useState("");
 const [showCanvas, setShowCanvas] = useState(false);
+
 // 2) variables  
 // const instruction = "Please tell us if you have a URL link for the country";
 
@@ -87,7 +89,7 @@ const submitCountry = async(e) => {
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
 	  hasFlag: newCountry.hasFlag,
-	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length >= 10  ? true : false	  
+	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length >= 10 && newCountry.description.length >= 160 ? true : false	  
     }
      
  // check flag:
@@ -134,19 +136,20 @@ const closeCanvas = () => {
   setMessage("")
 }
 
-const closeCanvas_AndReset = () => {
+const closeCanvas_AndReset = (e) => {
 
   const reset = {id: "",
-  continent: "",
+  continent: "EU",
   name: "",
-  hasFlag: false,  
+  hasFlag: false,
+  hasDescription: true,  
   flag: "",  
   description: ""};
-
   setShowCanvas(false);
   setResult("init");
-  setMessage("")
-  setNewCountry(reset)
+  setMessage("");
+  setNewCountry(reset);
+  window.location.reload()
 }
   
 return(
@@ -206,7 +209,7 @@ return(
 <option value="AS">Asia</option>
 <option value="AF">Middle East/Africa</option>
 <option value="OC">Oceania</option>
-<option value="AN">Antartica</option>
+<option value="AN">Antarctica</option>
 </select>
 </div>
 <br />
@@ -267,7 +270,7 @@ onChange={handleCountry}
    maxLength={160}
    rows={6} cols={50}>
    </textarea>
-   {newCountry.description.length <= 9 ? <p className="mt-auto fw-light fst-italic"><small>{"("}<b>Note:</b> Your description needs to contain <b>10 characters mimnimum</b>. Otherwise, your description will be ignored.{")"}</small></p> : <br />}
+   {newCountry.description.length <= 9 ? <p className="mt-auto fw-light fst-italic"><small>{"("}<b>Note:</b> If desired, your description must contain <b>10 characters mimnimum</b>.{")"}</small></p> : <br />}
    
   </div>
  
