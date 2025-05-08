@@ -320,7 +320,7 @@ div.countryContainer {
 div.countryContainer > section#mainCountries {
   flex-grow: 2;
   background-image: url('./background/countriesBackground-1.png'); 
-  /*url('./background/countriesBackground-2.png'), url('./background/countriesBackground-3.png');*/
+  /* url('./background/countriesBackground-2.png'), url('./background/countriesBackground-3.png');*/
   background-size: 40%;
   background-repeat: repeat;
   /* filter: saturate(80%) opacity(85%) contrast(105%); */
@@ -703,7 +703,7 @@ div#countryNotFound div.country-suggestion figure .countryFound-link > img:hover
 div#countriesFound div.country-suggestion .countryFound-link figcaption > button:hover {
   color: rgba(157, 157, 239, 0.779); 
 }
-*/
+
 
 div#deleteCountries div#countryNotFound {
   background-color: beige;
@@ -909,11 +909,11 @@ section.ids-section input {
   width: 30%;
 }
 
-/**
+/*
 input.input_edition::placeholder {
   color: ghostwhite;
 }
-**/
+*/
 
 .edit-readOnly:disabled {
   color: grey;
@@ -1066,8 +1066,7 @@ div#buttons_container {
 
 
 /*
-/*ExtraCountries*/
-/*
+ExtraCountries
 #errorQuestion {}
 #questionContainer {}
 #answerContainer {}
