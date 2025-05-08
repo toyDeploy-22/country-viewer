@@ -14,7 +14,7 @@ import myCountryRoutes from "./NoSQL/myCountryRoutes.js";
 // Variables
 const myServer = Express();
 let connectionData = new Object();
-const { MY_PORT, MY_MONGO_DB, MY_MONGO_LOCAL } = process.env;
+const { MY_PORT, MY_MONGO_DB, MY_MONGO_LOCAL, MY_MONGO_URI } = process.env;
 const options = { dbName: MY_MONGO_DB };
 const successPage = join(dirname(fileURLToPath(import.meta.url)), "htmlSuccessPage.html");
 
@@ -40,7 +40,7 @@ myServer.use("/nosql", myCountryRoutes);
 
 const launchConnect = async() => {
 try {
-	const conn = await countryPoolAsync(MY_MONGO_LOCAL, options);
+	const conn = await countryPoolAsync(MY_MONGO_URI, options);
 	connectionData = {...conn} // overwrite
 	console.log("Database connected !")
 } catch(err) {
