@@ -62,6 +62,12 @@ const reasons = [{
     code: 401,
     title: "Incorrect Value Type",
     msg: "The values must be text only."
+},
+{
+    err: true,
+    code: 401,
+    title: "country Flag Too Long",
+    msg: "For security reasons, the country flag cannot contain more than 250 characters."
 }
 ];
     
@@ -86,6 +92,8 @@ const checkProps = {
     invalidValues: Object.entries(body).filter((v) => v[1] === ''),
 
     minLengthFlag: body.hasFlag && body.countryFlag_url.length < 3,
+
+    maxLengthFlag: body.hasFlag && body.countryFlag_url.length > 250,
 
     maxLengthDescription: (body.hasDescription && body.countryDescription.length < 10 || body.hasDescription && body.countryDescription.length > 160),
 
@@ -112,6 +120,8 @@ if(req === "PATCH") {
 validation = reasons.filter((err) => err.title === 'Incorrect Flag/Description values')[0] 
 } else if(checkProps.minLengthFlag) {
         validation = reasons[2];
+    } else if (checkProps.maxLengthFlag) {
+        validation = reasons.filter((err) => err.title === 'country Flag Too Long')[0]
     } else if(checkProps.maxLengthDescription) {
         validation = reasons.filter((err) => err.title === 'Incorrect country description edition')[0]
     } else if(checkProps.hasHAS_IncorrectTYPES) {
@@ -238,7 +248,12 @@ const addCountriesChecker = async(body, arr) => {
         reasonId: 16,
         title: 'Country Intials Number', 
         message: 'The country Initials cannot contain any number.'
-        }
+        },
+        {
+            reasonId: 17,
+            title: 'Too Long Country Flag',
+            message: 'The country Flag cannot exceed 250 characters.'
+        },
     ]
 
     
@@ -287,6 +302,9 @@ const addCountriesChecker = async(body, arr) => {
     } else if(body.description.length > 0 && body.description.length < 10) {
         result.ok = false;
         result.message = reasons.filter((r) => r.reasonId === 12).map((r) => r.message)[0]
+    } else if (body.hasFlag && body.flag.length > 250) {
+        result.ok = false;
+        result.message = reasons.filter((r) => r.reasonId === 17).map((r) => r.message)[0]
     } else {
         result.ok = true;
         result.message = `The country ${body.name} has been successfully added !`

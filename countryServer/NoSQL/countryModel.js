@@ -22,7 +22,7 @@ const countrySchema = new mongoose.Schema({
 	 type: String, minLength: [2, "A country name must contain at least more than one letter."], maxLength: [40, "The country Name can contain 40 characters maximum."], required: [true, "The country Name is required."]
 	 },
 	 
- countryFlag_url: {type: String, required: false,  minLength: [3, "The country flag url is not mandatory. Make sure to fill-in this field only if you have a valid link address."]}, 
+ countryFlag_url: {type: String, required: false,  minLength: [3, "The country flag url is not mandatory. Make sure to fill-in this field only if you have a valid link address."], maxLength: [250, "for security reasons, the country Flag cannot contain more than 250 characters."]}, 
  
  countryDescription: {
 	 type: String, minLength: [10, "If filled-in, the country Description must at least contain a sentence of 10 characters. You can leave this field empty if you want."], maxLength: [160, "The country Description cannot contain more than 250 characters."], required: false

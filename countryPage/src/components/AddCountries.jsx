@@ -81,14 +81,14 @@ const submitCountry = async(e) => {
     if((conditions.flagTrue && conditions.flagType) || (conditions.descriptionType)){
       setSpinner(false);
       setResult("false");
-      setMessage("You must add a valid URL flag and description. If not, please uncheck the option concerned and confirm again.");
+      setMessage("You must add a valid URL flag and description. If not, please uncheck the specific option and confirm again.");
       console.log(message);
     } else  {
     const countryBody = {
       countryId: newCountry.id,
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
-	  hasFlag: newCountry.hasFlag,
+	  hasFlag: newCountry.hasFlag === true ? true : false,
 	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length >= 10 && newCountry.description.length >= 160 ? true : false	  
     }
      

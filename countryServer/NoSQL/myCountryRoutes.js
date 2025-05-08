@@ -148,8 +148,8 @@ try {
 	  
   } else {
 	  
-	hasFlag && req.body.hasOwnProperty('countryFlag_url') ? Object.assign(country, {countryFlag_url: req.body.countryFlag_url }) : null;  
-   hasDescription && req.body.hasOwnProperty('countryDescription') ? Object.assign(country, { countryDescription: req.body.countryDescription }) : null;
+	hasFlag === true && req.body.hasOwnProperty('countryFlag_url') ? Object.assign(country, {countryFlag_url: req.body.countryFlag_url }) : null;  
+   hasDescription === true && req.body.hasOwnProperty('countryDescription') ? Object.assign(country, { countryDescription: req.body.countryDescription }) : null;
    
    // const finalResult = await new countryModel.create(country).save();
 	// console.log(country)
@@ -176,10 +176,32 @@ myCountryRoutes.patch("/editcountry/:country", cors(), async(req,res)=>{
 // edit only country flag and (or) country description field
 try {
 
-const editCountry = req.params.country.substring(0, 1).toUpperCase() + req.params.country.substring(1).toLowerCase();
-const checker = bodyValidator('PATCH', req.body);
 
-if(checker.length > 0) {
+if(req.params.country.toLowerCase() !== req.body.countryName.toLowerCase()) {
+	
+	const errMsg = {
+			reason: "Different Country Names",
+			error: true,
+			title: "Country Names Not Equal",
+			msg: "The country name of the request does not correspond to the country name it has been sent for. Please make sure that both country names are similar."
+		};
+		
+	const obj = {
+		err: true,
+		msg: "The edition country request is not authorized for the following reasons: ",
+		reasons: errMsg		
+		};
+		
+		console.log(obj.reasons);
+		res.status(401).json(obj)
+	
+} else {
+	
+	const editCountry = req.params.country.substring(0, 1).toUpperCase() + req.params.country.substring(1).toLowerCase();
+	
+	const checker = bodyValidator('PATCH', req.body);
+	
+ if(checker.length > 0) {
 		const obj = {
 		err: true,
 		msg: "The edition country request is not authorized for the following reasons: ",
@@ -234,7 +256,7 @@ if(checker.length > 0) {
 		
 			}
 		}
-	} catch(err) {
+	}} catch(err) {
 	const obj = {error: true, title: "Internal Server Error", msg: err.message};
 	console.error(err);
 	res.status(500).json(obj);	  

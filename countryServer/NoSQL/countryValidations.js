@@ -1,4 +1,6 @@
 
+import noDuplicates from './noDuplicates.js';
+
 const noNumbers_NoSpecial = new RegExp(/[0-9+\]\/\s(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm)
 
 function mongoTypesCheck(obj) {
@@ -53,7 +55,7 @@ function bodyValidator(req, body) {
 			reason: "countryFlag value empty",
 			error: true, 
 			title: "Invalid Flag Data", 
-			msg: "If country Flag set to 'yes', country flag value cannot be empty, nor contain less than 3 characters."
+			msg: "If country Flag is desired, country flag value cannot be empty, nor contain less than 3 characters."
 		},
 		{	reason: "countryFlag value unauthorized",
 			error: true,
@@ -72,17 +74,33 @@ function bodyValidator(req, body) {
 			msg: "If country description set to 'yes', description field cannot be empty, nor contain less than 10 characters."
 		},
 		{
-			reason: "Flag or Description not not checked",
+			reason: "Flag or Description incorrectly checked",
 			error: true, 
 			title: "Flag or Description checked values not detected", 
-			msg: "You need to check or uncheck flag and description options to confirm the edition."
+			msg: "The flag and/or description, if desired, needs to contain at least 10 characters."
 		},
 		{
 			reason: "Missing required Fields",
 			error: true, 
 			title: "Required Fields Not Detected", 
 			msg: "" // To modify on the fly
-		}
+		},
+		{
+			reason: "country Flag Too Long",
+			error: true,
+			title: "Country Flag Characters Number Exceeded",
+			msg: "For security reasons, the country flag cannot contain more than 250 characters."
+}, 		{
+			reason: "Unrecognized Country Flag Value",
+			error: true,
+			title: "Country Flag Value Not Recognized",
+			msg: "The country Flag value is not recognized. Please make sure that you activate the function before validating. If you do not want any flag, uncheck this option."
+}, {
+			reason: "Unrecognized Country Description Value",
+			error: true,
+			title: "Country Description Value Not Recognized",
+			msg: "The country Description value is not recognized. Please make sure that you activate the function before validating. If you do not want to add any description, uncheck this option."
+}
 	];
 	
 	if(req === 'POST') {
@@ -93,7 +111,7 @@ function bodyValidator(req, body) {
 			error: true,
 			title: "Required Fields Not Detected",
 			fields: checkTypes.length > 0 ? checkTypes : requiredKeys, // Array
-			msg: `The ${checkTypes.length > 0 ? checkTypes.join(", and ") : requiredKeys.join(", and ")} fields must exist and values must only be letters.` 
+			msg: `The ${checkTypes.length > 0 ? checkTypes.join(", and ") : requiredKeys.join(", and ")} field must exist with a respective value.` 
 		}
 		results.push(fieldsReason)
 		validation = 0;
@@ -140,13 +158,17 @@ function bodyValidator(req, body) {
 			
 			body.countryFlag_url === '' || body.countryFlag_url.length < 3 ? results.push(reasons.filter((err) => err.reason === "countryFlag value empty")[0]) : null;
 			
-		}}
+			body.countryFlag_url.length > 250 ? results.push(reasons.filter((err) => err.reason === "country Flag Too Long")[0]) : null;
+			
+		}} else if(body.hasFlag !== false && body.hasFlag !== true) {
+			results.push(reasons.filter((err) => err.reason === 'Unrecognized Country Flag Value')[0])
+		}
 		
 		if(body.hasDescription === true) {
 			
 			if(!body.hasOwnProperty("countryDescription")){
 				
-				results.push(reasons.filter((err) => err.reason === "Incorrect countryDescription Value"));
+				results.push(reasons.filter((err) => err.reason === "Incorrect countryDescription Value")[0]);
 				
 			} else {
 			checkDescription.length > 0 ? results.push(reasons.filter((err) => err.reason === "countryDescription value unauthorized")[0]) : null;
@@ -156,19 +178,23 @@ function bodyValidator(req, body) {
 			body.countryDescription === '' || body.countryDescription.length < 10 ? results.push(reasons.filter((err) => err.reason === "countryDescription value empty")[0]) : null;
 			
 			}
+		} else if(body.hasDescription !== false && body.hasDescription !== true) {
+			results.push(reasons.filter((err) => err.reason === 'Flag or Description incorrectly checked')[0])
 		}} else if (req === 'PATCH') {
 		
 		const Not_hasFlag_key = !body.hasOwnProperty('hasFlag') || !body.hasOwnProperty('hasDescription');
 		
 		const Not_hasFlag_type = typeof body.hasFlag !== 'boolean' || typeof body.hasDescription !== 'boolean';
 
-		Not_hasFlag_key || Not_hasFlag_type ? results.push(reasons.filter((err) => err.reason === 'Flag or Description not not checked')[0]) : null;
+		Not_hasFlag_key || Not_hasFlag_type ? results.push(reasons.filter((err) => err.reason === 'Flag or Description incorrectly checked')[0]) : null;
 	
 		if(body.hasFlag === true) {
 			
 			if(!body.hasOwnProperty("countryFlag_url")) {
 				
 				results.filter((r) => r.reason === "countryFlag value unauthorized").length === 0 ? results.push(reasons.filter((err) => err.reason === "countryFlag value unauthorized")[0]) : null;
+				
+				body.countryFlag_url.length > 250 ? results.push(reasons.filter((err) => err.reason === "country Flag Too Long")[0]) : null;
 			
 			} else {			
 			
@@ -176,6 +202,8 @@ function bodyValidator(req, body) {
 			
 			body.countryFlag_url === '' || body.countryFlag_url.length < 3  ? results.push(reasons.filter((err) => err.reason === "countryFlag value empty")[0]) : null;
 			}
+		} else if(body.hasFlag !== false && body.hasFlag !== true) {
+			results.push(reasons.filter((err) => err.reason === 'Unrecognized Country Flag Value')[0])
 		}
 		
 		if(body.hasDescription === true) {
@@ -191,9 +219,13 @@ function bodyValidator(req, body) {
 			body.countryDescription === '' || body.countryDescription.length < 10 ? results.push(reasons.filter((err) => err.reason === "countryDescription value empty")[0]) : null;
 			
 		}
-	}}}
+	} else if(body.hasDescription !== false && body.hasDescription !== true) {
+			results.push(reasons.filter((err) => err.reason === 'Unrecognized Country Description Value')[0])
+		}}}
 			
-		return results.filter((elem) => elem !== undefined && elem !== null)
+		
+		return noDuplicates(results);
+		
 }
 
 export { bodyValidator }
