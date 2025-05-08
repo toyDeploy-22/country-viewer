@@ -95,7 +95,7 @@ const checkProps = {
 
     maxLengthFlag: body.hasFlag && body.countryFlag_url.length > 250,
 
-    maxLengthDescription: (body.hasDescription && body.countryDescription.length < 10 || body.hasDescription && body.countryDescription.length > 160),
+    maxLengthDescription: ((body.hasDescription && body.countryDescription.length < 10) || (body.hasDescription && body.countryDescription.length > 160)),
 
     has_BOTHProps: body.hasOwnProperty('countryFlag_url') && body.hasOwnProperty('countryDescription'),
 
@@ -187,7 +187,8 @@ const addCountriesChecker = async(body, arr) => {
     // const continents = ["Europe", "North America", "South America", "Asia", "Middle East and Africa", "Oceania", "Antarctica"];
     const continents = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"];
     const noNumbers = new RegExp(/[0-9]/);
-    const noSpecial = new RegExp(/[\]\[\/\s(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm);
+    // const noSpecial = new RegExp(/[\]\[\/\s(\)\{\}\'\'\?\¿\,\;\_\!\|\*\+\"\"\$\%\º\ª]/gm);
+    const noSpecial = new RegExp(/[][/s(){}''?¿,;_!|*+""$%ºª]/gm)
     // No number allowed for all sequence const noNumbers = new RegExp(/^[^0-9]+$/);
 
     let reasons = [
