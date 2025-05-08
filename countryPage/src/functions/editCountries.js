@@ -147,7 +147,7 @@ const editCountries = async(cnt) => {
     try {
         let currBody = { ...cnt };
 
-        const url = `http://https://country-viewer-backend.vercel.app/nosql/editcountry/${currBody.countryName}`;
+        const url = `https://country-viewer-backend.vercel.app/nosql/editcountry/${currBody.countryName}`;
 
         /*
         const flag = validProps.filter((cf)=>cf[0] === "countryFlag_url")[0]; // returns 1D array 

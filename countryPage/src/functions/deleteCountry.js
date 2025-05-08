@@ -65,7 +65,7 @@ const deleteCountry = async(arr, cnt) => {
         result.title = 'Not Found For Deletion';
         result.msg = "Cannot proceed deletion of '" + cnt.countryName + "' because the country does not appear in the list. It is possible that the country has already been deleted.";    
         } else {
-        const url = `http://https://country-viewer-backend.vercel.app/nosql/deletecountry/${found[0].countryId}`;
+        const url = `https://country-viewer-backend.vercel.app/nosql/deletecountry/${found[0].countryId}`;
 
         const deletor = await axios({
             url: url, 
