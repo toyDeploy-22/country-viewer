@@ -28,7 +28,7 @@ function App() {
       
       try {
         setSpinner(true);
-        const myUrl = 'http://localhost:5000/nosql/allcountries';
+        const myUrl = 'http://https://country-viewer-backend.vercel.app/nosql/allcountries';
         // const getCountries = 
         const countriesJson = await axios.get(myUrl, {
           signal: signal

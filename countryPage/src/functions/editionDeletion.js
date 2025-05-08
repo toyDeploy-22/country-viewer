@@ -6,7 +6,7 @@ const result = {};
 export const edition = async(country) => {
   
 try{
-  const myUrl = `http://localhost:5000/nosql/editcountry/${country.name}`
+  const myUrl = `http://https://country-viewer-backend.vercel.app/nosql/editcountry/${country.name}`
 
   const bodyCountry = {
   countryFlag: country.flag,
@@ -36,7 +36,7 @@ try{
 export const deletion = async(countryName) => {
  
   try{
-  const myUrl = `http://localhost:5000/nosql/deletecountry/${countryName}`;
+  const myUrl = `http://https://country-viewer-backend.vercel.app/nosql/deletecountry/${countryName}`;
   await axios({
    method: 'delete',
    url: myUrl
