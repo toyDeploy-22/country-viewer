@@ -105,7 +105,7 @@ const submitCountry = async(e) => {
   console.log(countryBody)
   await axios({
     method: 'post',
-    url: 'http://localhost:5000/nosql/addcountry',   
+    url: 'https://country-viewer-backend.vercel.app/nosql/addcountry',   
     headers: {'Content-Type': 'application/json'},
     data: countryBody
   });

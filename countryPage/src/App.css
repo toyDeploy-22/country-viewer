@@ -161,6 +161,10 @@ nav .menu-text a:hover {
     /* color: rgba(255,255,255,0.5);*/
 }
 
+div#notFoundContainer {
+  height: 100vh;
+}
+
 
 /* AllCountriesList */
 section#CountriesList-Section {
@@ -1085,7 +1089,7 @@ div#content {
 .mainbox {
   background-color: #111111;
   color: whitesmoke;
-  height: 55vh;
+  height: 80vh;
 }
 
 div.errorNumStack {
@@ -1109,6 +1113,7 @@ p#oops {
 }
 
 .msg {
+   height: 20vh;
    background-color: #15274b;
    color: whitesmoke;
    text-align: center;
