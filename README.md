@@ -1,5 +1,5 @@
 
-# Foodbooking #
+# Country-Viewer #
 
 ### Purpose ###
 
@@ -26,7 +26,7 @@ _This app lists some countries randomly and let you play a quizz game!_
 - React (used for the Frontend)
 - NodeJS (used for the backend)
 - MySQL (used to store country images, links and more)
-- Mongo (used as SQL backup data)
+- MongoDB (used as SQL backup data)
 
 ### Characteristics ###
 
