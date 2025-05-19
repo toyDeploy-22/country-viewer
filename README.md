@@ -25,13 +25,14 @@ _This app lists some countries randomly and let you play a quizz game!_
 
 - React (used for the Frontend)
 - NodeJS (used for the backend)
-- MySQL (used to store country image, links and more)
+- MySQL (used to store country images, links and more)
+- Mongo (used as SQL backup data)
 
 ### Characteristics ###
 
 - The countries are not all listed in the homepage, this is a partial random set. If you want to see all the countries available, go to "All Countries" section
 
-- The quizz game is also random, that will display different flag, with different answers (except the correct one) in different order at each refresh page
+- The quizz game is also random, it displays random flags, with random suggestions (always one of those is correct) in different order at each refresh
 
 
 
