@@ -13,13 +13,13 @@ _This app lists some countries randomly and let you play a quizz game!_
 - There is also a section to search a country
 - You can add a country so that it will be appear on the list (do not forget the image link of the new country!)
 <br/>
-<img alt="Main Homepage" src="/src/gifs/CountryViewer - Homepage Country Selection.gif" width="800" height="600" />
+<img alt="Main Homepage" src="countryPage/src/gifs/CountryViewer - Homepage Country Selection.gif" width="800" height="600" />
 
 ###### Quizz ######
 
 - Try to guess the country name of each flag displayed: Do you know them all ?
 <br/>
-<img alt="Quizz" src="/src/gifs/CountryViewer - Homepage Quizz.gif" width="800" height="600" />
+<img alt="Quizz" src="countryPage/src/gifs/CountryViewer - Homepage Quizz.gif" width="800" height="600" />
 
 ### Technologies used ###
 
