@@ -1,16 +1,16 @@
 
 import React, { useState } from 'react';
-import countrySchema from '../functions/countrySchema';
+// import countrySchema from '../functions/countrySchema';
 import DeleteComponent from './DeleteComponent';
 import ModalDeleteCountry from './ModalDeleteCountry';
 
 function DeleteCountry({ cntrs }) {
   
   const [show, setShow] = useState(false);
-  const [selected, setSelected] = useState({ ...countrySchema });
+  // const [selected, setSelected] = useState({ ...countrySchema });
 
-  const handleOpen = (cnt) => {
-    setSelected(cnt);
+  const handleOpen = () => {
+    // setSelected(cnt);
     setShow(true)
   }
 
@@ -20,7 +20,7 @@ function DeleteCountry({ cntrs }) {
 
     const successAndRefresh = () => {
     setShow(false)
-    window.location.reload(false);
+    window.location.reload(true);
     /** 
     This method takes an optional parameter which by default is set to false. If set to true, the browser will do a complete page refresh from the server and not from the cached version of the page. 
     **/

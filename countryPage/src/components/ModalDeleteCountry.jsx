@@ -1,7 +1,8 @@
 // subcomponent
 import React, { useState } from 'react';
 // import DeleteCountry from './DeleteCountry.jsx';
-import deleteCountry from '../functions/deleteCountry';
+// import deleteCountry from '../functions/deleteCountry';
+import { deletion } from '../functions/editionDeletion';
 import Spinner from 'react-bootstrap/Spinner'; 
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -22,16 +23,18 @@ async function handleDelete() {
 // function and spinner
 const deletor = async() => {
 try {
-const deletion = await deleteCountry(arr, country); // Full object
+// const deletor = await deleteCountry(arr, country); // Full object
 
-if(deletion.err === false) {
+const deletor = await deletion(country.countryId);
+
+if(deletor.err === false) {
 setResult("true");
 setSpinner(false);
 setMessage(`${country.countryName} country has been successfully deleted from the database.`);
   } else {
     setResult("false");
     setSpinner(false);
-    setMessage(deletion.message);
+    setMessage(deletor.msg);
   }
 } catch(err) {
   setSpinner(false); 

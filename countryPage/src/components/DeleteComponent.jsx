@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import countrySchema from '../functions/countrySchema.js';
 // import ModalDeleteCountry from './ModalDeleteCountry.jsx';
 // import axios from 'axios';
@@ -14,7 +14,7 @@ import noImage from '../screenshot/no-image.512x512.png';
 // import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
-function DeleteComponent ({ cnt, wannaDelete }) {
+function DeleteComponent ({ cnt }) {
 
   const [countryName, setCountryName] = useState({ countryInput: '' });
   const [loader, setLoader] = useState(false);
@@ -156,7 +156,7 @@ onChange={handleCountryName}
           <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.countryFlag_url} alt={fakeSource ? "Unknown Flag" : countries.countryName} />
           </Link>
           <span className="p-2">{' '}</span>
-          <FontAwesomeIcon className="trashIcon" onClick={() => wannaDelete(countries)} icon={faTrashCan} />
+          <FontAwesomeIcon className="trashIcon" onClick={wannaDelete} icon={faTrashCan} />
           </div>
         )}
         </div>
