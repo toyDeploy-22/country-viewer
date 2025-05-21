@@ -94,7 +94,7 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
           }
          
           { result === "init" || result === "true" ?
-        <Button variant="secondary" className='m-1' onClick={handleClose}>
+        <Button variant="secondary" className='m-1' onClick={handleCloseAndExit}>
             Close
         </Button>
           :
