@@ -5,6 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
 
 function ModalDeletion({ cnt }) {
 
@@ -42,6 +43,11 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
 };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleCloseAndExit = () => {
+    setShow(false);
+    useNavigate(-1);
+    window.location.reload(true) // if true, refresh is done from server, not from cache
+  }
   /*
   const handleLeave = () => {
     setShow(false);
