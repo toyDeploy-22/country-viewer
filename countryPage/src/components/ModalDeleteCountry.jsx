@@ -27,22 +27,25 @@ try {
 
 const deletor = await deletion(country.countryId);
 
-if(deletor.err === false) {
+if(deletor.ok) {
+
 setResult("true");
 setSpinner(false);
-setMessage(`${country.countryName} country has been successfully deleted from the database.`);
+setMessage(`${cnt.country.countryName} country has been successfully deleted from the database.`)
+
   } else {
-    setResult("false");
-    setSpinner(false);
-    setMessage(deletor.msg);
+setResult("false");
+setSpinner(false);
+setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.country.countryName} failed because the country has not been found. This may occur because the country has been already deleted.` : "The deletion failed because something did not went well this time...Please try again")
   }
+
 } catch(err) {
   setSpinner(false); 
   console.error(err);
   setResult("false");
-  setMessage("An error occured during deletion. Please try again.")
+  setMessage("An error occured during deletion. Please contact your administrator.")
   }
- }
+};
  setSpinner(true);
  setTimeout(deletor, 2000)
 };
@@ -99,7 +102,7 @@ setMessage(`${country.countryName} country has been successfully deleted from th
         <Badge bg="success">Deletion of {country.countryName} complete.</Badge>
         }
         { result === "false" &&
-        <Badge bg="danger">The deletion of {country.countryName} country not complete.</Badge>
+        <Badge bg="danger">The deletion of {country.countryName} country failed.</Badge>
         }
         </Modal.Body>
         <Modal.Footer>
