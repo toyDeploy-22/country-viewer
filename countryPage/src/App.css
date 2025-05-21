@@ -1334,6 +1334,7 @@ div.countriesList div#countryList-container-2 .image[target="_blank"] > img:hove
 }
 
 div.countriesList div#countryList-container-2 a {
+  width: 80%;
   text-decoration: none;
   color: #111111;
 }
