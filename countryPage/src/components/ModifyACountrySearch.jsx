@@ -133,7 +133,7 @@ name="countryInput"
 value={countryName.countryInput}
 onChange={handleCountryName}
 />
-<p style={{ fontFamily: 'calibri, arial, sans-serif' }}><small>Please search for the country you want to mdofify.</small></p>
+<p style={{ fontFamily: 'calibri, arial, sans-serif' }}><small>Please search for the country you want to modify.</small></p>
 <br />
 <button type="submit">Search</button>
 </div>

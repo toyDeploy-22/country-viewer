@@ -19,15 +19,25 @@ const handleDelete = async() => {
 // function and spinner
 try {
 setSpinner(true);
-await deletion(cnt.country.countryName); // Full object
+const deletor = await deletion(cnt.country.countryId); // Full object
+
+if(deletor.ok) {
+
 setResult("true");
 setSpinner(false);
-setMessage(`${cnt.country.countryName} country has been successfully deleted from the database.`);
+setMessage(`${cnt.country.countryName} country has been successfully deleted from the database.`)
+
+  } else {
+setResult("false");
+setSpinner(false);
+setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.country.countryName} failed because the country has not been found. This may occur because the country has been already deleted.` : "The deletion failed because something did not went well this time...Please try again")
+  }
+
 } catch(err) {
   setSpinner(false); 
   console.error(err);
   setResult("false");
-  setMessage("An error occured during deletion. Please try again.")
+  setMessage("An error occured during deletion. Please contact your administrator.")
   }
 };
   const handleClose = () => setShow(false);

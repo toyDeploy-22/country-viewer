@@ -13,43 +13,60 @@ try{
   countryDescription: country.description,
   countryName: country.name,
 }
-  await axios({
+
+const newAdded = await axios({
     method: 'post',    
     url: myUrl,
     data: bodyCountry
   });
 
+if(newAdded.status >= 200 && newAdded.status < 300) {
   result.ok = true;
   result.code = 201;
-  result.msg = "success"
+  result.msg = "success";
+} else {
+  result.ok = false;
+  result.code = 400;
+  result.msg = "failure";
+}
+
+  return result
 }
   catch(err){
     console.log(err);
     result.ok = false;
     result.code = 500;
-    result.msg = err.message
+    result.msg = err.message;
+
+    return result
   }
-  return result;
 }
 
 
-export const deletion = async(countryName) => {
+export const deletion = async(countryid) => {
  
   try{
-  const myUrl = `https://country-viewer-backend.vercel.app/nosql/deletecountry/${countryName}`;
-  await axios({
+  const myUrl = `https://country-viewer-backend.vercel.app/nosql/deletecountry/${countryid}`;
+  
+  const deletor = await axios({
    method: 'delete',
    url: myUrl
  });
   
+  if(deletor.status >= 200 && deletor.status < 300) {
   result.ok = true;
   result.code = 201;
   result.msg = "success"
+  } else {
+    result.ok = false;
+    result.code = 404;
+    result.msg = "Not found"
+  }
+  return result
    } catch(err){
-    console.log(err);
-    console.log(err);
+    console.error(err);
     result.ok = false;
     result.code = 500;
-    result.msg = err;
+    result.msg = err.message;
   }
 }

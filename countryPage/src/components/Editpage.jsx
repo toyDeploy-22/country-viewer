@@ -145,7 +145,7 @@ return (
             <input type="text" className="mb-2 text-light" id="country_flag" placeholder={cnt.country.hasOwnProperty("countryFlag_url") ? cnt.country.countryFlag_url : "ex: https://www.image.com"} autoComplete="on" name="countryFlag_url" value={editable.countryFlag_url} onChange={handleCountry} />
             }
             
-            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this above field if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
+            <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b>{ wannaEdit.hasFlag ? " You can add a Flag to your country. Leave this above field empty if you already have a Flag Link and do not want to change it)." : " No country Flag will be assigned to your country)."}</small></p>
             <br />
         
             <label htmlFor="countryDescription" style={{letterSpacing: '3px'}}>
@@ -175,7 +175,7 @@ return (
             {/*typeof editable.countryDescription !== 'undefined' && editable.countryDescription.length > 0 ? <p className="text-light fst-italic">Characters left: <small className={`text-${editable.countryDescription.length >= 80 && editable.countryDescription.length < 150 ? "primary" : editable.countryDescription.length >= 150 ? "danger" : "light" }`}>{Number(160 - editable.countryDescription.length)}</small></p> : null*/}
   
             { wannaEdit.hasDescription &&
-              <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> Leave the description field if you already have a description and you do not want change it.{")"}</small></p>
+              <p className="fw-light fst-italic"><FontAwesomeIcon icon={faExclamation} size="sm" style={{color: "#FFD43B",}} /><small>{"("}<b>Note:</b> Leave the description field empty if you already have a description and you do not want change it.{")"}</small></p>
             }
             {
               errorStack.err === false && errorStack.code === 200 && 

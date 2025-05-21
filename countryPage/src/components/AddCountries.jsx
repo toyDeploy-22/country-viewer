@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { addCountriesChecker } from '../functions/editCountries';
 import Form from 'react-bootstrap/Form'; // For switch checkbox
 import Badge from 'react-bootstrap/Badge';
@@ -88,12 +88,12 @@ const submitCountry = async(e) => {
       countryId: newCountry.id,
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
-	  hasFlag: newCountry.hasFlag === true ? true : false,
-	  hasDescription: typeof newCountry.description === "string" && newCountry.description.length >= 10 && newCountry.description.length >= 160 ? true : false	  
+	  hasFlag: newCountry.hasFlag,
+	  hasDescription: !conditions.descriptionType && (newCountry.description.length >= 10 && newCountry.description.length >= 160) ? true : false	  
     }
      
  // check flag:
-      if(newCountry.hasFlag) {
+      if(newCountry.hasFlag === true) {
       (countryBody['countryFlag_url'] = newCountry.flag)
       }
   

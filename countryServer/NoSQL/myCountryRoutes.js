@@ -282,22 +282,20 @@ myCountryRoutes.delete("/deletecountry/:countryid", async(req, res)=>{
 	
 	const finalResult = await countryModel.findOneAndDelete({ countryId: isCountryID })
 	
-	switch(!finalResult){
-	
-	case true:
+	if(!finalResult){
+		
 	const obj = {
 	error: true, 
 	title: "No Result found", 
-	msg: "Deletion failed because the query did not match any country."};
+	msg: "Deletion failed because the query did not match any country."
+	};
+	
 	console.error(obj)
 	res.status(404).json(obj)
-	break;
+	} else {
 	
-	default:
 	console.log(finalResult);
     res.json({deletionRow: 1});
-	break;
-	
         
 	}} catch(err) {
 	const obj = {error: true, title: "Internal Server Error", msg: err.message};
