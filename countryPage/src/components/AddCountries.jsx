@@ -96,7 +96,7 @@ const submitCountry = async(e) => {
     }
      
  // check flag:
-      if(countryBody.hasFlag === true) {
+      if(countryBody.hasFlag === false) {
       (countryBody['countryFlag_url'] = newCountry.flag)
       }
   
@@ -104,8 +104,11 @@ const submitCountry = async(e) => {
 /*
    if((!conditions.descriptionType) && (conditions.emptyDescription) && (conditions.fewDescription))
    */
-   if(countryBody.hasDescription === true) {
-   (countryBody['countryDescription'] = newCountry.description)
+   if(!conditions.descriptionType) {
+    (!conditions.emptyDescription) && (!conditions.fewDescription) && (!conditions.longDescription) ?
+   Object.assign(countryBody, { hasDescription: true, countryDescription: newCountry['description']} ) : Object.assign(countryBody, { hasDescription: false })
+   } else {
+    countryBody['hasDescription'] = false; // To avoid error types messages
    }
 
   console.log(countryBody)
