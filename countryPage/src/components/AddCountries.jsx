@@ -30,7 +30,7 @@ const [newCountry, setNewCountry] = useState({
   continent: "",
   name: "",
   hasFlag: false,
-  hasDescription: true,  
+  hasDescription: false,  
   flag: "",  
   description: ""
 });
@@ -66,7 +66,8 @@ const submitCountry = async(e) => {
        descriptionType: typeof newCountry.description !== "string",
 
        emptyDescription: newCountry.description !== '', 
-       fewDescription: newCountry.description.length >= 10
+       fewDescription: newCountry.description.length < 10,
+       longDescription: newCountry.description.length > 160
     };
     let continentSelected = continents.indexOf(newCountry.continent.toUpperCase());
 
@@ -84,21 +85,26 @@ const submitCountry = async(e) => {
       setMessage("You must add a valid URL flag and description. If not, please uncheck the specific option and confirm again.");
       console.log(message);
     } else  {
+
     const countryBody = {
-      countryId: newCountry.id,
+    countryId: newCountry.id,
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
 	  hasFlag: newCountry.hasFlag,
-	  hasDescription: !conditions.descriptionType && (newCountry.description.length >= 10 && newCountry.description.length >= 160) ? true : false	  
+	  hasDescription: conditions.descriptionType ? false : 
+    (!conditions.emptyDescription && !fewDescription && !longDescription)
     }
      
  // check flag:
-      if(newCountry.hasFlag === true) {
+      if(countryBody.hasFlag === true) {
       (countryBody['countryFlag_url'] = newCountry.flag)
       }
   
 // check description:
-   if((!conditions.descriptionType) && (conditions.emptyDescription) && (conditions.fewDescription)) {
+/*
+   if((!conditions.descriptionType) && (conditions.emptyDescription) && (conditions.fewDescription))
+   */
+   if(countryBody.hasDescription === true) {
    (countryBody['countryDescription'] = newCountry.description)
    }
 
