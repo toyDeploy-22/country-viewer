@@ -48,7 +48,7 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
   
   const handleCloseAndExit = () => {
     setShow(false);
-    navigate(-1);
+    navigate(-2);
     window.location.reload(true) // if true, refresh is done from server, not from cache
   };
   const handleShow = () => setShow(true);
