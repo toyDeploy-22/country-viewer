@@ -1,8 +1,9 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import countrySchema from '../functions/countrySchema.js';
 // import ModalDeleteCountry from './ModalDeleteCountry.jsx';
 // import axios from 'axios';
+import ModalDeleteCountry from './ModalDeleteCountry';
 import Spinner from 'react-bootstrap/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlaneArrival } from '@fortawesome/free-solid-svg-icons';
@@ -17,10 +18,12 @@ import { Link } from 'react-router-dom';
 function DeleteComponent ({ cnt }) {
 
   const [countryName, setCountryName] = useState({ countryInput: '' });
+  const [selected, setSelected] = useState("");
   const [loader, setLoader] = useState(false);
   const [results, setResults] = useState([{ ...countrySchema }]);
   const [errorStack, setErrorStack] = useState({ err: false, code: 0, title: '', msg: '' });
   const [fakeSource, setFakeSource] = useState(false);
+  const [show, setShow] = useState(false);
 
   const plc = "Enter country name or country ID";  
   const ttl = "Name should contain at least 2 letters";
@@ -88,6 +91,29 @@ function DeleteComponent ({ cnt }) {
     }
   }
 
+  const wannaDelete = (id) => {
+    setSelected(id);
+    setShow(true)
+  }
+
+    const handleOpen = () => {
+  
+      setShow(true)
+    }
+  
+      const successAndRefresh = () => {
+      setShow(false)
+      window.location.reload(true);
+      /** 
+      This method takes an optional parameter which by default is set to false. If set to true, the browser will do a complete page refresh from the server and not from the cached version of the page. 
+      **/
+  
+    }
+
+   const handleClose = () => {
+    setShow(false)
+  }
+
 /*
   const wannaDelete = (cnt) => {
     const item = {country: [cnt], show: true}
@@ -97,6 +123,7 @@ function DeleteComponent ({ cnt }) {
   */
     
 return(
+<React.Fragment>
 <div id="deleteCountries">
 
 <section id="searchNameContainer-2">
@@ -156,7 +183,7 @@ onChange={handleCountryName}
           <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.countryFlag_url} alt={fakeSource ? "Unknown Flag" : countries.countryName} />
           </Link>
           <span className="p-2">{' '}</span>
-          <FontAwesomeIcon className="trashIcon" onClick={wannaDelete} icon={faTrashCan} />
+          <FontAwesomeIcon className="trashIcon" onClick={() => wannaDelete(countries.countryId)} icon={faTrashCan} />
           </div>
         )}
         </div>
@@ -175,7 +202,9 @@ onChange={handleCountryName}
 
 </section>    
 </section>
-</div>    
+</div> 
+<ModalDeleteCountry propShow={show} propHide={handleClose} propHideRefresh={successAndRefresh} arr={cnt} country={selected} />
+</React.Fragment>   
   )
 }
 
