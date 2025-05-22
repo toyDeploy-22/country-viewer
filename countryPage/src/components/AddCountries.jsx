@@ -65,7 +65,7 @@ const submitCountry = async(e) => {
        flagType: typeof newCountry.flag !== "string",
        descriptionType: typeof newCountry.description !== "string",
 
-       emptyDescription: newCountry.description !== '', 
+       emptyDescription: newCountry.description === '', 
        fewDescription: newCountry.description.length < 10,
        longDescription: newCountry.description.length > 160
     };
