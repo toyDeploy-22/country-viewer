@@ -90,9 +90,7 @@ const submitCountry = async(e) => {
     countryId: newCountry.id,
 	  countryName: newCountry.name,
 	  continentId: continents[continentSelected],
-	  hasFlag: newCountry.hasFlag,
-	  hasDescription: conditions.descriptionType ? false : 
-    (!conditions.emptyDescription && !conditions.fewDescription && !conditions.longDescription)
+	  hasFlag: newCountry.hasFlag
     }
      
  // check flag:
