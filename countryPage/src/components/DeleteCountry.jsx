@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 // import countrySchema from '../functions/countrySchema';
 import DeleteComponent from './DeleteComponent';
 

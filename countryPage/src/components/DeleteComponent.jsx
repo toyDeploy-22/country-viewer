@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 function DeleteComponent ({ cnt }) {
 
   const [countryName, setCountryName] = useState({ countryInput: '' });
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState({ countryName: '', countryId: '' });
   const [loader, setLoader] = useState(false);
   const [results, setResults] = useState([{ ...countrySchema }]);
   const [errorStack, setErrorStack] = useState({ err: false, code: 0, title: '', msg: '' });
@@ -91,15 +91,17 @@ function DeleteComponent ({ cnt }) {
     }
   }
 
-  const wannaDelete = (id) => {
-    setSelected(id);
+  const wannaDelete = (name, id) => {
+    setSelected(() => ({ countryName: name, countryId: id }));
     setShow(true)
   }
 
+   /*
     const handleOpen = () => {
   
       setShow(true)
     }
+    */
   
       const successAndRefresh = () => {
       setShow(false)
@@ -183,7 +185,7 @@ onChange={handleCountryName}
           <img onError={()=>setFakeSource(true)} src={fakeSource ? noImage : countries.countryFlag_url} alt={fakeSource ? "Unknown Flag" : countries.countryName} />
           </Link>
           <span className="p-2">{' '}</span>
-          <FontAwesomeIcon className="trashIcon" onClick={() => wannaDelete(countries.countryId)} icon={faTrashCan} />
+          <FontAwesomeIcon className="trashIcon" onClick={() => wannaDelete(countries.countryName, countries.countryId)} icon={faTrashCan} />
           </div>
         )}
         </div>

@@ -15,6 +15,9 @@ const [spinner, setSpinner] = useState(false);
 const [result, setResult] = useState("init");
 const [message, setMessage] = useState("");
 
+// variables
+const navigate = useNavigate();
+
 const handleDelete = async() => {
 // setShow(false);
 // function and spinner
@@ -45,7 +48,7 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
   const handleShow = () => setShow(true);
   const handleCloseAndExit = () => {
     setShow(false);
-    useNavigate(-1);
+    navigate(-1);
     window.location.reload(true) // if true, refresh is done from server, not from cache
   }
   /*
