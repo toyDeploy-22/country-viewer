@@ -44,13 +44,14 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
   setMessage("An error occured during deletion. Please contact your administrator.")
   }
 };
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
+  
   const handleCloseAndExit = () => {
     setShow(false);
     navigate(-1);
     window.location.reload(true) // if true, refresh is done from server, not from cache
-  }
+  };
+  const handleShow = () => setShow(true);
   /*
   const handleLeave = () => {
     setShow(false);
@@ -63,7 +64,7 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
         Delete Country
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleCloseAndExit}>
         <Modal.Header className={result === "init" ? "bg-light" : result === "true" ? "bg-success text-light" : "bg-danger text-light"} closeButton>
         {result === "init" && <Modal.Title>Delete country</Modal.Title>}
         {result === "true" && <Modal.Title>Deletion Successful</Modal.Title>}
@@ -108,7 +109,7 @@ setMessage(() => deletor.code === 404 ? `The deletion of the country ${cnt.count
         <Badge bg="success">Deletion of {cnt.country.countryName} complete.</Badge>
         }
         { result === "false" &&
-        <Badge bg="danger">The deletion of {cnt.country.countryName} country not complete.</Badge>
+        <Badge bg="danger">The deletion of {cnt.country.countryName} country failed.</Badge>
         }
         </Modal.Body>
         <Modal.Footer>

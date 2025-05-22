@@ -13,6 +13,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import noImage from '../screenshot/no-image.512x512.png';
 // import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 function DeleteComponent ({ cnt }) {
@@ -25,6 +26,7 @@ function DeleteComponent ({ cnt }) {
   const [fakeSource, setFakeSource] = useState(false);
   const [show, setShow] = useState(false);
 
+  const navigate = useNavigate();
   const plc = "Enter country name or country ID";  
   const ttl = "Name should contain at least 2 letters";
 
@@ -113,7 +115,9 @@ function DeleteComponent ({ cnt }) {
     }
 
    const handleClose = () => {
-    setShow(false)
+    setShow(false);
+    navigate(-1);
+    window.location.reload(true);
   }
 
 /*
